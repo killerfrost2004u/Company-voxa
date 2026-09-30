@@ -14,26 +14,31 @@ export default function HomeServicesSection({ lang }: HomeServicesSectionProps) 
       title: lang === 'en' ? 'Applicant Tracking (Voxa)' : 'تتبع المتقدمين (Voxa)',
       description: lang === 'en' ? 'Multimodal AI recruitment pipeline powered by Gemini 2.5 Flash.' : 'مسار توظيف مدعوم بالذكاء الاصطناعي متعدد الوسائط (Gemini 2.5).',
       image: '/services/Voxa(ATS)design1.svg',
+      slug: 'voxa-ats',
     },
     {
       title: lang === 'en' ? 'E-Learning (Skillup)' : 'التعليم الإلكتروني (Skillup)',
       description: lang === 'en' ? 'Privacy-first educational platforms with local LLM integration.' : 'منصات تعليمية تحترم الخصوصية بذكاء اصطناعي محلي.',
       image: '/services/Voxa(E-learning)design1.svg',
+      slug: 'skillup',
     },
     {
       title: lang === 'en' ? 'Web Security' : 'أمان الويب',
       description: lang === 'en' ? 'Protect your business with advanced threat prevention.' : 'احمِ عملك من خلال منع التهديدات المتقدمة.',
       image: '/services/Voxa(Security)design1.svg',
+      slug: 'web-security',
     },
     {
       title: lang === 'en' ? 'Stress Testing' : 'اختبار التحمل',
       description: lang === 'en' ? 'Ensure stability under massive user loads.' : 'ضمان الاستقرار تحت ضغط المستخدمين.',
       image: '/services/Voxa(Stress)design1.svg',
+      slug: 'stress-testing',
     },
     {
       title: lang === 'en' ? 'Sports Analysis' : 'تحليل الأداء الرياضي',
       description: lang === 'en' ? 'AI-driven insights for sports professionals.' : 'رؤى مدعومة بالذكاء الاصطناعي للمحترفين الرياضيين.',
       image: '/services/Voxa(TennisAnalyze)design1.svg',
+      slug: 'sports-analysis',
     }
   ];
 
@@ -67,16 +72,20 @@ export default function HomeServicesSection({ lang }: HomeServicesSectionProps) 
               <Card 
                 className="group relative bg-surface/50 p-8 overflow-hidden hover:bg-surface transition-all duration-300 hover:border-accent/30 hover:shadow-[0_0_40px_var(--color-accent)] h-full rounded-[2rem]"
               >
-                <div className="relative w-full aspect-video mb-8 bg-background/50 rounded-xl overflow-hidden flex items-center justify-center p-6 border border-white/5">
+                <Link href={`/${lang}/work/${service.slug}`} className="block relative w-full aspect-video mb-8 bg-background/50 rounded-xl overflow-hidden flex items-center justify-center p-6 border border-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent">
                   <Image 
                     src={service.image} 
                     alt={service.title} 
                     fill 
                     className="object-contain p-4 group-hover:scale-110 transition-transform duration-500"
                   />
-                </div>
+                </Link>
                 <CardHeader className="p-0">
-                  <CardTitle className="mb-3">{service.title}</CardTitle>
+                  <CardTitle className="mb-3">
+                    <Link href={`/${lang}/work/${service.slug}`} className="hover:text-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm">
+                      {service.title}
+                    </Link>
+                  </CardTitle>
                   <CardDescription>{service.description}</CardDescription>
                 </CardHeader>
               </Card>
