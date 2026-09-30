@@ -50,14 +50,14 @@ export default async function WorkPage({ params }: { params: Promise<{ lang: 'en
                 
                 {/* Image Container */}
                 <div className="w-full lg:w-1/2">
-                  <div className="relative w-full aspect-[4/3] rounded-[2rem] bg-surface/50 border border-white/5 overflow-hidden group flex items-center justify-center p-8 hover:bg-surface transition-colors duration-500">
+                  <Link href={`/${lang}/work/${project.slug}`} className="block relative w-full aspect-[4/3] rounded-[2rem] bg-surface/50 border border-white/5 overflow-hidden group flex items-center justify-center p-8 hover:bg-surface transition-colors duration-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent">
                     <Image 
                       src={project.image} 
                       alt={project.title[lang]}
                       fill
                       className="object-contain p-8 group-hover:scale-105 transition-transform duration-500"
                     />
-                  </div>
+                  </Link>
                 </div>
 
                 {/* Content Container */}
@@ -66,7 +66,9 @@ export default async function WorkPage({ params }: { params: Promise<{ lang: 'en
                     {project.category[lang]}
                   </div>
                   <h2 className="text-3xl md:text-5xl font-bold tracking-tight">
-                    {project.title[lang]}
+                    <Link href={`/${lang}/work/${project.slug}`} className="hover:text-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm">
+                      {project.title[lang]}
+                    </Link>
                   </h2>
                   <p className="text-lg text-muted leading-relaxed">
                     {project.problem[lang]}
