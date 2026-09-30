@@ -21,7 +21,7 @@ export default async function Home({ params }: { params: Promise<{ lang: 'en' | 
       <section className="relative flex flex-col items-center justify-start min-h-screen pt-32 md:pt-48 pb-12 px-4 overflow-hidden">
         {/* Huge Heading */}
         <div className="container relative z-10 flex flex-col items-center text-center w-full px-2 sm:px-4 mb-10 md:mb-16">
-          <h1 className="text-5xl sm:text-6xl md:text-8xl lg:text-[11rem] font-black tracking-tighter leading-[1.1] md:leading-none animate-fade-in-up text-gradient max-w-[100vw] overflow-hidden px-2">
+          <h1 className="text-5xl sm:text-6xl md:text-8xl lg:text-[11rem] font-black tracking-tighter leading-[1.2] animate-fade-in-up text-gradient max-w-[100vw] pb-4 md:pb-8 px-2">
             {lang === 'en' ? 'Build the Future.' : 'اصنع المستقبل.'}
           </h1>
           
