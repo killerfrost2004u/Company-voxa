@@ -51,7 +51,7 @@ export default function HomeServicesSection({ lang }: HomeServicesSectionProps) 
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 md:mb-24 gap-6">
             <div className="max-w-xl">
               <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight text-foreground">
-                {lang === 'en' ? 'Our Expertise' : 'خبراتنا المتخصصة'}
+                {lang === 'en' ? 'Featured Work' : 'أعمالنا المميزة'}
               </h2>
               <p className="text-lg text-muted">
                 {lang === 'en' 
@@ -59,8 +59,8 @@ export default function HomeServicesSection({ lang }: HomeServicesSectionProps) 
                   : 'نحن نقدم حلولاً رقمية مخصصة مصممة للنمو والتوسع.'}
               </p>
             </div>
-            <Link href={`/${lang}/services`} className="flex items-center gap-2 text-accent hover:text-white transition-colors group font-semibold">
-              {lang === 'en' ? 'View All Services' : 'عرض جميع الخدمات'}
+            <Link href={`/${lang}/work`} className="flex items-center gap-2 text-accent hover:text-white transition-colors group font-semibold">
+              {lang === 'en' ? 'View All Work' : 'عرض جميع الأعمال'}
               <ArrowRight className={`w-5 h-5 transition-transform group-hover:${lang === 'ar' ? '-translate-x-1' : 'translate-x-1'} rtl:rotate-180`} />
             </Link>
           </div>
