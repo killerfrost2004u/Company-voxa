@@ -80,24 +80,13 @@ export default function Footer({ lang = 'ar' }: { lang?: 'en' | 'ar' }) {
             </div>
           </div>
 
-          {/* Subscribe Column (Spans 4 columns) */}
+          {/* Social Column (Spans 4 columns) */}
           <div className="lg:col-span-4 flex flex-col gap-6">
-            <h4 className="text-foreground font-semibold text-lg">{dict.subscribeTitle}</h4>
-            <div className="flex flex-col sm:flex-row gap-3 w-full">
-              <input 
-                type="email" 
-                placeholder={dict.emailPlaceholder}
-                className="flex-1 bg-background border border-white/10 rounded-lg px-4 py-3 text-base text-foreground focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-colors"
-                aria-label={dict.emailPlaceholder}
-              />
-              <button 
-                type="button" 
-                className="bg-white/10 hover:bg-white/20 text-foreground text-base font-medium px-6 py-3 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent whitespace-nowrap"
-              >
-                {dict.subscribeBtn}
-              </button>
-            </div>
-            <div className="flex items-center gap-4 mt-4">
+            <h4 className="text-foreground font-semibold text-lg">
+              {lang === 'en' ? 'Follow Us' : 'تابعنا'}
+            </h4>
+            
+            <div className="flex items-center gap-4">
               {/* Social Icons */}
               <a href="https://www.facebook.com/profile.php?id=61574289903460" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-accent hover:text-background text-muted transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent" aria-label="Facebook">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
