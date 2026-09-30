@@ -8,14 +8,14 @@ export default function Footer({ lang = 'ar' }: { lang?: 'en' | 'ar' }) {
     articles: lang === 'en' ? 'Articles' : 'المقالات',
     about: lang === 'en' ? 'About' : 'من نحن',
     contact: lang === 'en' ? 'Contact' : 'تواصل معنا',
-    brandStrategy: lang === 'en' ? 'Brand Strategy' : 'استراتيجية العلامة التجارية',
-    uiuxDesign: lang === 'en' ? 'UI/UX Design' : 'تصميم واجهة المستخدم',
-    webDev: lang === 'en' ? 'Web Development' : 'تطوير الويب',
-    seo: lang === 'en' ? 'SEO' : 'تحسين محركات البحث',
-    motionGraphics: lang === 'en' ? 'Motion Graphics' : 'موشن جرافيك',
-    featuredProjects: lang === 'en' ? 'Featured Projects' : 'مشاريع مميزة',
-    caseStudies: lang === 'en' ? 'Client Case Studies' : 'دراسات حالة العملاء',
-    process: lang === 'en' ? 'Our Process' : 'منهجية العمل',
+    brandStrategy: lang === 'en' ? 'Web Platforms' : 'منصات الويب',
+    uiuxDesign: lang === 'en' ? 'Custom AI & ML' : 'الذكاء الاصطناعي',
+    webDev: lang === 'en' ? 'Enterprise ERP' : 'أنظمة ERP',
+    seo: lang === 'en' ? 'Workflow Automation' : 'أتمتة سير العمل',
+    motionGraphics: lang === 'en' ? 'Data Analytics' : 'تحليل البيانات',
+    featuredProjects: lang === 'en' ? 'Voxa ATS' : 'نظام التوظيف Voxa',
+    caseStudies: lang === 'en' ? 'Skillup E-Learning' : 'منصة Skillup',
+    process: lang === 'en' ? 'Smart Vision' : 'نظام الرؤية الذكي',
     insights: lang === 'en' ? 'Insights & Trends' : 'رؤى واتجاهات',
     news: lang === 'en' ? 'Industry News' : 'أخبار الصناعة',
     subscribeTitle: lang === 'en' ? 'Subscribe for Insights' : 'اشترك للحصول على أحدث الرؤى',
@@ -63,20 +63,20 @@ export default function Footer({ lang = 'ar' }: { lang?: 'en' | 'ar' }) {
           <div className="lg:col-span-2 flex flex-col gap-6">
             <h4 className="text-foreground font-semibold text-lg">{dict.services}</h4>
             <div className="flex flex-col gap-4 text-base">
-              <Link href={`/${lang}/services`} className="text-muted hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm w-fit">{dict.brandStrategy}</Link>
-              <Link href={`/${lang}/services`} className="text-muted hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm w-fit">{dict.uiuxDesign}</Link>
-              <Link href={`/${lang}/services`} className="text-muted hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm w-fit">{dict.webDev}</Link>
-              <Link href={`/${lang}/services`} className="text-muted hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm w-fit">{dict.seo}</Link>
-              <Link href={`/${lang}/services`} className="text-muted hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm w-fit">{dict.motionGraphics}</Link>
+              <Link href={`/${lang}/services#web-platforms`} className="text-muted hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm w-fit">{dict.brandStrategy}</Link>
+              <Link href={`/${lang}/services#custom-ai`} className="text-muted hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm w-fit">{dict.uiuxDesign}</Link>
+              <Link href={`/${lang}/services#erp-systems`} className="text-muted hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm w-fit">{dict.webDev}</Link>
+              <Link href={`/${lang}/services#workflow-automation`} className="text-muted hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm w-fit">{dict.seo}</Link>
+              <Link href={`/${lang}/services#data-intelligence`} className="text-muted hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm w-fit">{dict.motionGraphics}</Link>
             </div>
           </div>
 
           <div className="lg:col-span-2 flex flex-col gap-6">
             <h4 className="text-foreground font-semibold text-lg">{dict.work}</h4>
             <div className="flex flex-col gap-4 text-base">
-              <Link href={`/${lang}/work`} className="text-muted hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm w-fit">{dict.featuredProjects}</Link>
-              <Link href={`/${lang}/work`} className="text-muted hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm w-fit">{dict.caseStudies}</Link>
-              <Link href={`/${lang}/work`} className="text-muted hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm w-fit">{dict.process}</Link>
+              <Link href={`/${lang}/work/voxa-ats`} className="text-muted hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm w-fit">{dict.featuredProjects}</Link>
+              <Link href={`/${lang}/work/skillup-elearning`} className="text-muted hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm w-fit">{dict.caseStudies}</Link>
+              <Link href={`/${lang}/work/smart-vision-system`} className="text-muted hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm w-fit">{dict.process}</Link>
             </div>
           </div>
 

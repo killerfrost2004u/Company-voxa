@@ -112,12 +112,13 @@ export default async function ServicesPage({ params }: { params: Promise<{ lang:
             <FadeIn key={service.id} direction="up" delay={index * 0.1} className={`h-full ${
                 index === 2 && 'xl:col-span-1'
               } ${index === 3 && 'md:col-span-2 xl:col-span-2'} ${index === 4 && 'md:col-span-2 xl:col-span-1'}`}>
-              <Card 
-                className="p-8 md:p-10 flex flex-col h-full group"
-              >
-                <div className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center mb-8 border border-white/10 group-hover:scale-110 transition-transform duration-500">
-                  {service.icon}
-                </div>
+              <div id={service.id} className="h-full scroll-mt-24">
+                <Card 
+                  className="p-8 md:p-10 flex flex-col h-full group"
+                >
+                  <div className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center mb-8 border border-white/10 group-hover:scale-110 transition-transform duration-500">
+                    {service.icon}
+                  </div>
                 
                 <h3 className="text-2xl font-bold mb-4 text-foreground">{service.title}</h3>
                 <p className="text-muted mb-8 flex-grow leading-relaxed">
@@ -132,7 +133,8 @@ export default async function ServicesPage({ params }: { params: Promise<{ lang:
                     </li>
                   ))}
                 </ul>
-              </Card>
+                </Card>
+              </div>
             </FadeIn>
           ))}
         </div>
