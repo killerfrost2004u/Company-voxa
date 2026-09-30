@@ -1,0 +1,155 @@
+{
+  "services": {
+    "hero": {
+      "title_prefix": "Elevate Your Brand with Our ",
+      "title_highlight": "Digital Solutions",
+      "description": "From cutting-edge web development to targeted digital marketing campaigns, VOXA provides the tools and expertise to accelerate your growth in the digital landscape.",
+      "cta": "Start Your Project",
+      "image_alt": "Strategic Digital Growth"
+    },
+    "web_dev": {
+      "title": "Custom Web ",
+      "highlight": "Development",
+      "description": "We build blazing fast, highly accessible, and strictly modular web applications. From complex SaaS platforms to stunning marketing sites, we engineer for performance and scale.",
+      "features": [
+        "Next.js & React Server Components",
+        "Responsive, Mobile-First Design",
+        "E-commerce Integrations",
+        "CMS & Headless Architecture"
+      ],
+      "image_alt": "Web Development Illustration"
+    },
+    "marketing": {
+      "title": "Data-Driven ",
+      "highlight": "Marketing",
+      "description": "Transform traffic into revenue. Our marketing strategies are built on solid analytics and creative excellence, ensuring you reach the right audience at the exact right moment.",
+      "features": [
+        "Social Media Management",
+        "Pay-Per-Click (PPC) Campaigns",
+        "Conversion Rate Optimization",
+        "Email Automation Flows"
+      ],
+      "image_alt": "Digital Marketing Dashboard"
+    },
+    "seo": {
+      "title": "SEO & Brand ",
+      "highlight": "Positioning",
+      "description": "Dominate search results and establish a brand identity that commands respect. We ensure your business is not just seen, but remembered.",
+      "features": [
+        "Technical SEO Audits",
+        "Content Strategy & Copywriting",
+        "Brand Identity & Logo Design",
+        "Local SEO & GBP Optimization"
+      ],
+      "image_alt": "SEO Growth Chart"
+    },
+    "pricing": {
+      "title_prefix": "Choose Your ",
+      "title_highlight": "Plan",
+      "description": "Whether you want to get organized, keep your personal life on track, or boost workplace productivity, we have the right plan for you.",
+      "per_project": "/project",
+      "basic": {
+        "name": "Basic",
+        "price": "$1,500",
+        "description": "Perfect for small businesses looking to establish a digital footprint.",
+        "features": [
+          "Responsive 5-page Website",
+          "Basic SEO Setup",
+          "1 Month Support"
+        ],
+        "cta": "Get Started"
+      },
+      "pro": {
+        "name": "Pro",
+        "price": "$3,000",
+        "description": "Ideal for growing companies needing advanced integrations and marketing.",
+        "features": [
+          "Full Custom Web App",
+          "Advanced SEO & Analytics",
+          "Digital Marketing Strategy",
+          "6 Months Support"
+        ],
+        "cta": "Choose Pro"
+      },
+      "enterprise": {
+        "name": "Enterprise",
+        "price": "Custom",
+        "description": "For large organizations requiring scalable infrastructure and dedicated teams.",
+        "features": [
+          "Cloud Architecture & Scaling",
+          "Full Scope Marketing Ops",
+          "24/7 Priority Support"
+        ],
+        "cta": "Contact Sales"
+      }
+    },
+    "ats": {
+      "title": "AI-Driven ",
+      "highlight": "Applicant Tracking (Voxa)",
+      "description": "An end-to-end ATS that injects multimodal AI directly into the recruitment pipeline. We automate candidate screening and generate intelligence reports to drastically reduce time-to-hire.",
+      "features": [
+        "Multimodal AI (Gemini 2.5 Flash)",
+        "Twilio WhatsApp Automation",
+        "N-Tier PostgreSQL Backend",
+        "Cloudflare R2 Storage"
+      ],
+      "image_alt": "Voxa ATS Dashboard",
+      "image_src": "/services/Voxa(ATS)design1.svg"
+    },
+    "elearning": {
+      "title": "Privacy-First ",
+      "highlight": "E-Learning (Skillup)",
+      "description": "A secure, interactive educational system utilizing local, embedded AI (Ollama) to guarantee data privacy, entirely eliminating cloud API costs and third-party dependencies.",
+      "features": [
+        "Local LLM Integration (Ollama)",
+        "Secure JWT Authentication",
+        "Dynamic Progress Tracking",
+        "Hybrid SQL/JSON Storage"
+      ],
+      "image_alt": "Skillup E-Learning Platform",
+      "image_src": "/services/Voxa(E-learning)design1.svg"
+    },
+    "security": {
+      "title": "AI Smart Vision ",
+      "highlight": "Surveillance",
+      "description": "Transform raw CCTV streams into a proactive security command center with YOLOv8 person detection, weapon detection, and spatial analytics.",
+      "features": [
+        "YOLOv8 Weapon & Person Detection",
+        "ByteTrack Multi-Object Tracking",
+        "Real-Time Next.js WebSockets",
+        "Spatial & Loitering Heatmaps"
+      ],
+      "image_alt": "Smart Vision System Dashboard",
+      "image_src": "/services/Voxa(Security)design1.svg"
+    },
+    "stress": {
+      "title": "AI Mental Health ",
+      "highlight": "Classification",
+      "description": "Proactive, data-driven machine learning models that accurately classify academic stress levels to empower institutional intervention.",
+      "features": [
+        "85% Accuracy ML Modeling",
+        "Kaggle Dataset Preprocessing",
+        "Interactive Streamlit Dashboards",
+        "Dynamic Predictive Visualization"
+      ],
+      "image_alt": "Academic Stress ML Model",
+      "image_src": "/services/Voxa(Stress)design1.svg"
+    },
+    "tennis": {
+      "title": "AI Sports ",
+      "highlight": "Analytics",
+      "description": "Democratize elite sports analytics with AI. We transform standard video footage into professional-grade performance data, extracting ball trajectories and stroke mechanics.",
+      "features": [
+        "Real-Time YOLO Object Tracking",
+        "ResNet50 Deep Learning Action Recognition",
+        "High-Performance FastAPI Backend",
+        "Interactive Streamlit Dashboards"
+      ],
+      "image_alt": "Tennis Analytics Dashboard",
+      "image_src": "/services/Voxa(TennisAnalyze)design1.svg"
+    }
+  },
+  "nav": {
+    "switch_language": "عربي"
+  }
+}

@@ -1,0 +1,129 @@
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
+
+:root {
+  /* VOXA Professional Palette - High Contrast */
+  --voxa-primary: #5fcdd7;       /* Core Logo Cyan */
+  --voxa-primary-dark: #45aeb7;  /* Hover State */
+  --voxa-secondary: #1e7594;     /* Core Logo Deep Blue */
+  --voxa-secondary-dark: #155870;
+  
+  --voxa-action: #ff6b6b;        /* Vibrant Coral/Orange */
+  --voxa-action-dark: #e85555;
+  
+  --voxa-bg-base: #121212;       /* Deep Charcoal Black */
+  --voxa-bg-surface: #1e1e1e;    /* Elevated Charcoal */
+  --voxa-bg-surface-hover: #2a2a2a; 
+  
+  --voxa-text-primary: #FFFFFF;  /* Pure White */
+  --voxa-text-secondary: #a1a1aa; /* Zinc 400 */
+  --voxa-text-muted: #71717a;    /* Zinc 500 */
+  
+  --voxa-success: #10b981;
+  --voxa-warning: #f59e0b;
+  --voxa-error: #ef4444;
+
+  --voxa-cyan-gradient: linear-gradient(135deg, var(--voxa-primary) 0%, var(--voxa-secondary) 100%);
+  --voxa-action-gradient: linear-gradient(135deg, var(--voxa-action) 0%, #ff8e8e 100%);
+  --voxa-glow-shadow: 0 0 25px rgba(95, 205, 215, 0.35);
+}
+
+@theme {
+  --color-background: var(--voxa-bg-base);
+  --color-surface: var(--voxa-bg-surface);
+  --color-foreground: var(--voxa-text-primary);
+  --color-muted: var(--voxa-text-secondary);
+  --color-accent: var(--voxa-primary);
+  --color-accent-secondary: var(--voxa-secondary);
+  --color-action: var(--voxa-action);
+  --font-sans: 'Cairo', sans-serif;
+}
+
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--voxa-bg-base);
+  color: var(--voxa-text-primary);
+  font-family: 'Cairo', sans-serif;
+  overflow-x: hidden;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--voxa-bg-base);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--voxa-text-muted);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--voxa-primary);
+}
+
+/* Custom Utilities */
+.bg-cyan-gradient {
+  background-image: var(--voxa-cyan-gradient);
+}
+.bg-action-gradient {
+  background-image: var(--voxa-action-gradient);
+}
+.text-gradient {
+  background-image: var(--voxa-cyan-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  padding-bottom: 0.15em;
+}
+
+/* Mockup Specific Utilities */
+.text-glow-cyan {
+  text-shadow: 0 0 20px rgba(95, 205, 215, 0.6), 0 0 40px rgba(95, 205, 215, 0.2);
+}
+
+.bg-starry {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Sleek Minimalist Cards */
+.minimal-card {
+  background: rgba(255, 255, 255, 0.015);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.minimal-card:hover {
+  border-color: rgba(95, 205, 215, 0.25);
+  background: rgba(255, 255, 255, 0.03);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in-up {
+  animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 0;
+}
+.animate-delay-100 { animation-delay: 0.1s; }
+.animate-delay-200 { animation-delay: 0.2s; }
+.animate-delay-300 { animation-delay: 0.3s; }
+
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
