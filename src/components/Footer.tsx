@@ -76,16 +76,16 @@ export default function Footer({ lang = 'ar' }: { lang?: 'en' | 'ar' }) {
             <div className="lg:col-span-2 flex flex-col gap-8 lg:items-end">
               <div className="w-full max-w-sm flex flex-col gap-4">
                 <h4 className="text-foreground font-bold tracking-wider text-sm uppercase">{dict.subscribeTitle}</h4>
-                <form className="flex gap-2 w-full" onSubmit={(e) => e.preventDefault()}>
+                <div className="flex gap-2 w-full">
                   <input 
                     type="email" 
                     placeholder={dict.emailPlaceholder}
                     className="flex-1 bg-background/50 border border-white/10 rounded-lg px-4 py-2 text-sm text-foreground focus:outline-none focus:border-accent transition-colors"
                   />
-                  <button className="bg-action hover:bg-action-dark text-white text-sm font-bold px-6 py-2 rounded-lg transition-colors shadow-[0_0_15px_rgba(255,107,107,0.3)] hover:shadow-[0_0_20px_rgba(255,107,107,0.5)]">
+                  <button type="button" className="bg-action hover:bg-action-dark text-white text-sm font-bold px-6 py-2 rounded-lg transition-colors shadow-[0_0_15px_rgba(255,107,107,0.3)] hover:shadow-[0_0_20px_rgba(255,107,107,0.5)]">
                     {dict.subscribeBtn}
                   </button>
-                </form>
+                </div>
               </div>
               
               <Link href={`/${lang}/contact`} className="group w-full max-w-sm mt-auto relative overflow-hidden rounded-xl bg-cyan-gradient p-[2px] transition-transform hover:scale-[1.02]">
