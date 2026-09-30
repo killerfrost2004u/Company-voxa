@@ -12,7 +12,7 @@ const WhatsAppIcon = ({ className }: { className?: string }) => (
 
 export default function FloatingWhatsApp() {
   // Replace this phone number with the actual VOXA WhatsApp number
-  const phoneNumber = "+201000000000";
+  const phoneNumber = "+201125537697";
   const message = "Hello! I'm interested in your digital solutions.";
   const encodedMessage = encodeURIComponent(message);
   
