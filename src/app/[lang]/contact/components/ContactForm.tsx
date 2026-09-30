@@ -92,25 +92,41 @@ export default function ContactForm({ lang }: ContactFormProps) {
         </div>
       </div>
 
-      {/* Service Type */}
-      <div className="space-y-2">
-        <label className="text-sm font-semibold text-foreground ml-1">
-          {lang === 'en' ? 'What do you need help with?' : 'بم يمكننا مساعدتك؟'}
-        </label>
-        <select 
-          name="service"
-          className="w-full bg-background/50 border border-white/10 rounded-2xl px-6 py-4 text-foreground focus:outline-none focus:border-accent/50 focus:bg-background transition-all appearance-none cursor-pointer"
-          style={{ WebkitAppearance: 'none', MozAppearance: 'none' }}
-          defaultValue=""
-          required
-        >
-          <option value="" disabled>{lang === 'en' ? 'Select a service...' : 'اختر خدمة...'}</option>
-          <option value="Web/E-Commerce">{lang === 'en' ? 'Web Platform / E-Commerce' : 'منصة ويب / تجارة إلكترونية'}</option>
-          <option value="Custom AI">{lang === 'en' ? 'Custom AI & Machine Learning' : 'ذكاء اصطناعي مخصص'}</option>
-          <option value="ERP">{lang === 'en' ? 'ERP / Enterprise Software' : 'أنظمة ERP للمؤسسات'}</option>
-          <option value="Automation">{lang === 'en' ? 'Workflow Automation' : 'أتمتة سير العمل'}</option>
-          <option value="Other">{lang === 'en' ? 'Other' : 'أخرى'}</option>
-        </select>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Phone Number */}
+        <div className="space-y-2">
+          <label className="text-sm font-semibold text-foreground ml-1">
+            {lang === 'en' ? 'Phone Number' : 'رقم الهاتف'}
+          </label>
+          <input 
+            type="tel" 
+            name="phone"
+            required
+            placeholder={lang === 'en' ? '+1 (555) 000-0000' : '+966 50 000 0000'}
+            className="w-full bg-background/50 border border-white/10 rounded-2xl px-6 py-4 text-foreground placeholder:text-muted focus:outline-none focus:border-accent/50 focus:bg-background transition-all"
+          />
+        </div>
+
+        {/* Service Type */}
+        <div className="space-y-2">
+          <label className="text-sm font-semibold text-foreground ml-1">
+            {lang === 'en' ? 'What do you need help with?' : 'بم يمكننا مساعدتك؟'}
+          </label>
+          <select 
+            name="service"
+            className="w-full bg-background/50 border border-white/10 rounded-2xl px-6 py-4 text-foreground focus:outline-none focus:border-accent/50 focus:bg-background transition-all appearance-none cursor-pointer"
+            style={{ WebkitAppearance: 'none', MozAppearance: 'none' }}
+            defaultValue=""
+            required
+          >
+            <option value="" disabled>{lang === 'en' ? 'Select a service...' : 'اختر خدمة...'}</option>
+            <option value="Web/E-Commerce">{lang === 'en' ? 'Web Platform / E-Commerce' : 'منصة ويب / تجارة إلكترونية'}</option>
+            <option value="Custom AI">{lang === 'en' ? 'Custom AI & Machine Learning' : 'ذكاء اصطناعي مخصص'}</option>
+            <option value="ERP">{lang === 'en' ? 'ERP / Enterprise Software' : 'أنظمة ERP للمؤسسات'}</option>
+            <option value="Automation">{lang === 'en' ? 'Workflow Automation' : 'أتمتة سير العمل'}</option>
+            <option value="Other">{lang === 'en' ? 'Other' : 'أخرى'}</option>
+          </select>
+        </div>
       </div>
 
       {/* Message */}

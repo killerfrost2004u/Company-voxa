@@ -6,6 +6,7 @@ export async function sendContactEmail(formData: FormData) {
   try {
     const name = formData.get("name") as string;
     const email = formData.get("email") as string;
+    const phone = formData.get("phone") as string;
     const service = formData.get("service") as string;
     const message = formData.get("message") as string;
 
@@ -23,13 +24,14 @@ export async function sendContactEmail(formData: FormData) {
     });
 
     const mailOptions = {
-      from: process.env.EMAIL_USER,
+      from: `"${name} (Website Contact)" <${process.env.EMAIL_USER}>`,
       to: "voxaa.business@gmail.com",
       replyTo: email,
       subject: `New Lead from VOXA Website: ${name} (${service || 'General Inquiry'})`,
       text: `
 Name: ${name}
 Email: ${email}
+Phone: ${phone || "Not provided"}
 Service Required: ${service || "Not specified"}
 
 Message:
@@ -39,6 +41,7 @@ ${message}
         <h3>New Contact Request from VOXA Website</h3>
         <p><strong>Name:</strong> ${name}</p>
         <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Phone:</strong> ${phone || "Not provided"}</p>
         <p><strong>Service Required:</strong> ${service || "Not specified"}</p>
         <hr />
         <p><strong>Message:</strong></p>
