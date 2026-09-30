@@ -20,25 +20,25 @@ export default function HomeServicesSection({ lang }: HomeServicesSectionProps) 
       title: lang === 'en' ? 'E-Learning (Skillup)' : 'التعليم الإلكتروني (Skillup)',
       description: lang === 'en' ? 'Privacy-first educational platforms with local LLM integration.' : 'منصات تعليمية تحترم الخصوصية بذكاء اصطناعي محلي.',
       image: '/services/Voxa(E-learning)design1.svg',
-      slug: 'skillup',
+      slug: 'skillup-elearning',
     },
     {
       title: lang === 'en' ? 'Web Security' : 'أمان الويب',
       description: lang === 'en' ? 'Protect your business with advanced threat prevention.' : 'احمِ عملك من خلال منع التهديدات المتقدمة.',
       image: '/services/Voxa(Security)design1.svg',
-      slug: 'web-security',
+      slug: 'smart-vision-system',
     },
     {
       title: lang === 'en' ? 'Stress Testing' : 'اختبار التحمل',
       description: lang === 'en' ? 'Ensure stability under massive user loads.' : 'ضمان الاستقرار تحت ضغط المستخدمين.',
       image: '/services/Voxa(Stress)design1.svg',
-      slug: 'stress-testing',
+      slug: 'academic-stress-classification',
     },
     {
       title: lang === 'en' ? 'Sports Analysis' : 'تحليل الأداء الرياضي',
       description: lang === 'en' ? 'AI-driven insights for sports professionals.' : 'رؤى مدعومة بالذكاء الاصطناعي للمحترفين الرياضيين.',
       image: '/services/Voxa(TennisAnalyze)design1.svg',
-      slug: 'sports-analysis',
+      slug: 'tennis-match-analyzer',
     }
   ];
 
