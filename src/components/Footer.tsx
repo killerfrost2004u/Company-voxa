@@ -23,7 +23,7 @@ export default function Footer({ lang = 'ar' }: { lang?: 'en' | 'ar' }) {
     emailPlaceholder: lang === 'en' ? 'Email Address' : 'البريد الإلكتروني',
     buildGreat: lang === 'en' ? "Let's build something great" : 'دعنا نصنع شيئاً عظيماً',
     slogan: lang === 'en' ? 'Elevating Digital Experiences.' : 'نرتقي بالتجارب الرقمية.',
-    rights: lang === 'en' ? '© 2024 VOXA AGENCY. ALL RIGHTS RESERVED.' : '© 2024 وكالة فوكسا. جميع الحقوق محفوظة.',
+    rights: lang === 'en' ? `© ${new Date().getFullYear()} VOXA. ALL RIGHTS RESERVED.` : `© ${new Date().getFullYear()} VOXA. جميع الحقوق محفوظة.`,
   };
 
   return (
