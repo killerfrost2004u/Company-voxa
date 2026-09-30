@@ -10,7 +10,8 @@ export const client = createClient({
 
 // Bypass sanity fetch if the project ID is not configured (e.g. placeholder) to prevent build crashes
 const originalFetch = client.fetch.bind(client);
-client.fetch = async (query, params, options) => {
+// @ts-ignore
+client.fetch = async (query: any, params?: any, options?: any) => {
   if (!projectId || projectId === "yoursanityid") {
     console.warn("Sanity projectId is not configured. Bypassing fetch.");
     return [];
