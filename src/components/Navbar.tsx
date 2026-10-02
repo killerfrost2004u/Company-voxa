@@ -27,7 +27,7 @@ export default function Navbar({ lang = 'ar' }: { lang?: 'en' | 'ar' }) {
         {/* Logo */}
         <Link href={`/${lang}`} className="flex items-center gap-2 relative z-50 opacity-90 hover:opacity-100 transition-opacity">
           <img 
-            src="/assets/svgs/voxa_logo_transparent.svg" 
+            src="/logos/voxa_logo_original.svg" 
             alt="VOXA Logo" 
             className="h-9 md:h-11 w-auto object-contain"
           />

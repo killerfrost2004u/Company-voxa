@@ -37,7 +37,7 @@ export default function Footer({ lang = 'ar' }: { lang?: 'en' | 'ar' }) {
           <div className="lg:col-span-4 flex flex-col gap-6">
             <Link href={`/${lang}`} className="block w-32 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm">
               <img 
-                src="/assets/svgs/voxa_logo_transparent.svg" 
+                src="/logos/voxa_logo_original.svg" 
                 alt="VOXA Logo" 
                 className="w-full h-auto object-contain"
               />
