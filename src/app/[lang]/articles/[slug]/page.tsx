@@ -15,10 +15,17 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: 'en
   if (!article) return { title: 'Not Found' };
 
   return {
-    title: `${article.title[resolvedParams.lang]}`,
+    title: `${article.title[resolvedParams.lang]} | VOXA`,
     description: article.excerpt[resolvedParams.lang],
+    alternates: {
+      canonical: `https://voxa.dev/${resolvedParams.lang}/articles/${resolvedParams.slug}`,
+      languages: {
+        'en': `https://voxa.dev/en/articles/${resolvedParams.slug}`,
+        'ar': `https://voxa.dev/ar/articles/${resolvedParams.slug}`,
+      },
+    },
     openGraph: {
-      title: article.title[resolvedParams.lang],
+      title: `${article.title[resolvedParams.lang]} | VOXA`,
       description: article.excerpt[resolvedParams.lang],
       type: 'article',
       url: `https://voxa.dev/${resolvedParams.lang}/articles/${resolvedParams.slug}`,
@@ -33,7 +40,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: 'en
     },
     twitter: {
       card: 'summary_large_image',
-      title: article.title[resolvedParams.lang],
+      title: `${article.title[resolvedParams.lang]} | VOXA`,
       description: article.excerpt[resolvedParams.lang],
       images: [article.image],
     }
@@ -50,6 +57,31 @@ export default async function ArticleReaderPage({ params }: { params: Promise<{ 
     notFound();
   }
 
+  // Fallback date just in case the CMS date isn't a valid ISO string
+  const validDate = article.date[lang] ? new Date(article.date[lang]).toISOString() : new Date().toISOString();
+
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: article.title[lang],
+    image: [article.image],
+    datePublished: validDate,
+    dateModified: validDate,
+    author: [{
+      '@type': 'Organization',
+      name: 'VOXA',
+      url: 'https://voxa.dev'
+    }],
+    publisher: {
+      '@type': 'Organization',
+      name: 'VOXA',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://voxa.dev/logos/voxa_logo_512x512.png'
+      }
+    }
+  };
+
   return (
     <main className="relative flex flex-col min-h-screen bg-background">
       <Navbar lang={lang} />
@@ -58,6 +90,12 @@ export default async function ArticleReaderPage({ params }: { params: Promise<{ 
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-[400px] bg-accent/10 rounded-[100%] blur-[120px] -z-10 pointer-events-none" />
 
       <article className="pt-32 md:pt-48 pb-12 px-4 container mx-auto max-w-4xl relative z-10 flex-grow">
+        
+        {/* Inject JSON-LD Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         
         {/* Back Link */}
         <Link 
@@ -77,13 +115,24 @@ export default async function ArticleReaderPage({ params }: { params: Promise<{ 
             <span className="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs font-bold text-accent">
               {article.category[lang]}
             </span>
-            <span className="text-sm font-medium text-muted">
+            <time dateTime={validDate} className="text-sm font-medium text-muted">
               {article.date[lang]}
-            </span>
+            </time>
           </div>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-gradient leading-tight mb-8">
             {article.title[lang]}
           </h1>
+
+          {/* Author Byline / E-E-A-T Signal */}
+          <div className="flex items-center justify-center md:justify-start gap-3 mt-8">
+            <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center overflow-hidden shrink-0">
+              <Image src="/logos/voxa_logo_512x512.png" alt="VOXA Logo" width={40} height={40} className="object-cover" />
+            </div>
+            <div className="flex flex-col text-left">
+              <span className="text-sm font-bold text-foreground">VOXA</span>
+              <span className="text-xs text-muted">{lang === 'en' ? 'Digital Agency' : 'وكالة رقمية'}</span>
+            </div>
+          </div>
         </header>
 
         {/* Featured Image */}
