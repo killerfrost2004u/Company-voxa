@@ -35,7 +35,7 @@ export default function Footer({ lang = 'ar' }: { lang?: 'en' | 'ar' }) {
           
           {/* Brand Column (Spans 4 columns on large screens) */}
           <div className="lg:col-span-4 flex flex-col gap-6">
-            <Link href={`/${lang}`} className="block w-32 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm">
+            <Link href={`/${lang}`} className="block w-56 md:w-64 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm">
               <img 
                 src="/logos/LOGO.svg" 
                 alt="VOXA Logo" 

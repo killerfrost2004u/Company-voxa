@@ -29,7 +29,7 @@ export default function Navbar({ lang = 'ar' }: { lang?: 'en' | 'ar' }) {
           <img 
             src="/logos/LOGO.svg" 
             alt="VOXA Logo" 
-            className="h-9 md:h-11 w-auto object-contain"
+            className="h-14 md:h-16 lg:h-[4.5rem] w-auto object-contain"
           />
         </Link>
 
