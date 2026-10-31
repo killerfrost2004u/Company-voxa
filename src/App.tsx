@@ -38,18 +38,25 @@ function WaveBackdrop() {
 
 export default function App() {
   const [planRequest, setPlanRequest] = useState<{ plan: string; id: number } | null>(null)
+  const [preloadKey, setPreloadKey] = useState(0)
   const [isLoaded, setIsLoaded] = useState(
     () => typeof window !== 'undefined' && sessionStorage.getItem('voxa_preloaded') === 'true',
   )
 
   const onChoosePlan = useCallback((plan: string) => setPlanRequest({ plan, id: Date.now() }), [])
   const handlePreloadComplete = useCallback(() => setIsLoaded(true), [])
+  const handleReplayIntro = useCallback(() => {
+    if (typeof window !== 'undefined') {
+      sessionStorage.removeItem('voxa_preloaded')
+    }
+    setPreloadKey((k) => k + 1)
+  }, [])
 
   useScrollEffects(isLoaded)
 
   return (
     <>
-      <Preloader onComplete={handlePreloadComplete} />
+      <Preloader key={preloadKey} onComplete={handlePreloadComplete} />
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-voxa focus:px-4 focus:py-2 focus:font-manrope focus:font-bold focus:text-ash"
@@ -69,7 +76,7 @@ export default function App() {
         </div>
         <Cta />
       </main>
-      <Footer />
+      <Footer onReplayIntro={handleReplayIntro} />
       <FloatingWhatsApp />
     </>
   )

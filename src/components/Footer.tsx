@@ -6,7 +6,11 @@ const LINKS = [
   { label: 'Contact', href: '#contact' },
 ]
 
-export function Footer() {
+type FooterProps = {
+  onReplayIntro?: () => void
+}
+
+export function Footer({ onReplayIntro }: FooterProps) {
   return (
     <footer className="bg-black px-5 py-12 sm:px-8 lg:h-[8.9375rem] lg:p-0">
       <div
@@ -27,7 +31,7 @@ export function Footer() {
           Designing better digital experiences from Cairo to the world.
         </p>
 
-        {/* Primary Navigation Links */}
+        {/* Primary Navigation Links & Replay */}
         <nav aria-label="Footer" className="flex items-center justify-center gap-6 lg:ml-auto lg:gap-[1.875rem]">
           {LINKS.map((link) => (
             <a
@@ -38,6 +42,16 @@ export function Footer() {
               {link.label}
             </a>
           ))}
+
+          {onReplayIntro && (
+            <button
+              type="button"
+              onClick={onReplayIntro}
+              className="cursor-pointer whitespace-nowrap rounded-full border border-white/20 bg-white/5 px-3 py-1 font-dm text-xs font-semibold text-white/70 transition-colors duration-300 hover:border-voxa hover:text-voxa"
+            >
+              ↺ Replay Intro
+            </button>
+          )}
         </nav>
 
         {/* Copyright Notice */}
