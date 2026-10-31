@@ -45,12 +45,6 @@ export default function App() {
 
   const onChoosePlan = useCallback((plan: string) => setPlanRequest({ plan, id: Date.now() }), [])
   const handlePreloadComplete = useCallback(() => setIsLoaded(true), [])
-  const handleReplayIntro = useCallback(() => {
-    if (typeof window !== 'undefined') {
-      sessionStorage.removeItem('voxa_preloaded')
-    }
-    setPreloadKey((k) => k + 1)
-  }, [])
 
   useScrollEffects(isLoaded)
 

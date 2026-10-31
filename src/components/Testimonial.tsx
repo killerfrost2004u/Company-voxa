@@ -208,23 +208,77 @@ export const TESTIMONIALS: TestimonialItem[] = [
   },
 ]
 
+function repeatToFill<T>(items: T[], minLength: number = 8): T[] {
+  if (items.length === 0) return []
+  let result = [...items]
+  while (result.length < minLength) {
+    result = [...result, ...items]
+  }
+  // Double the array for a seamless 0% -> -50% CSS marquee translation
+  return [...result, ...result]
+}
+
 export function Testimonial() {
   const [activeCategory, setActiveCategory] = useState<'all' | 'startup' | 'ecommerce' | 'corporate'>('all')
+  const [viewMode, setViewMode] = useState<'matrix' | 'slider'>('matrix')
+  const [activeSlideIndex, setActiveSlideIndex] = useState(0)
   const scrollContainerRef = useRef<HTMLDivElement | null>(null)
+
+  // Drag-to-scroll state
+  const isDraggingRef = useRef(false)
+  const startXRef = useRef(0)
+  const scrollLeftRef = useRef(0)
 
   const filtered =
     activeCategory === 'all'
       ? TESTIMONIALS
       : TESTIMONIALS.filter((t) => t.category === activeCategory)
 
+  // Ensure activeSlideIndex is clamped when filter changes
+  const clampedIndex = Math.min(activeSlideIndex, Math.max(0, filtered.length - 1))
+  const currentSlide = filtered[clampedIndex] ?? filtered[0]
+
   // Split into two rows for staggered infinite floating marquee
   const row1 = filtered.slice(0, Math.ceil(filtered.length / 2))
   const row2 = filtered.slice(Math.ceil(filtered.length / 2))
 
-  const scrollByAmount = (offset: number) => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollBy({ left: offset, behavior: 'smooth' })
+  const track1Items = repeatToFill(row1.length > 0 ? row1 : filtered)
+  const track2Items = repeatToFill(row2.length > 0 ? row2 : filtered)
+
+  const handlePrevSlide = () => {
+    if (viewMode === 'slider') {
+      setActiveSlideIndex((prev) => (prev > 0 ? prev - 1 : filtered.length - 1))
+    } else if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollBy({ left: -380, behavior: 'smooth' })
     }
+  }
+
+  const handleNextSlide = () => {
+    if (viewMode === 'slider') {
+      setActiveSlideIndex((prev) => (prev < filtered.length - 1 ? prev + 1 : 0))
+    } else if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollBy({ left: 380, behavior: 'smooth' })
+    }
+  }
+
+  // Mouse drag handlers for the marquee container
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (!scrollContainerRef.current) return
+    isDraggingRef.current = true
+    startXRef.current = e.pageX - scrollContainerRef.current.offsetLeft
+    scrollLeftRef.current = scrollContainerRef.current.scrollLeft
+  }
+
+  const handleMouseLeaveOrUp = () => {
+    isDraggingRef.current = false
+  }
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDraggingRef.current || !scrollContainerRef.current) return
+    e.preventDefault()
+    const x = e.pageX - scrollContainerRef.current.offsetLeft
+    const walk = (x - startXRef.current) * 1.5
+    scrollContainerRef.current.scrollLeft = scrollLeftRef.current - walk
   }
 
   return (
@@ -239,10 +293,10 @@ export function Testimonial() {
         className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[35rem] w-[70rem] -z-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_50%,rgb(99_161_242/0.08),transparent_75%)]"
       />
 
-      <div className="relative mx-auto max-w-[82rem] px-5 sm:px-8 mb-12 sm:mb-16 text-center">
+      <div className="relative mx-auto max-w-[82rem] px-5 sm:px-8 mb-10 sm:mb-14 text-center">
         {/* Rating Pill Badge */}
         <div data-reveal="pop" className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5 backdrop-blur-md mb-6">
-          <div className="flex text-[#ffb800] text-sm">
+          <div className="flex text-[#ffb800] text-sm tracking-widest">
             {'★'.repeat(5)}
           </div>
           <span className="font-dm text-xs font-bold tracking-wider uppercase text-white/80">
@@ -264,8 +318,9 @@ export function Testimonial() {
           From Cairo and Alexandria to Dubai and London, we partner with ambitious teams to engineer digital experiences that convert.
         </p>
 
-        {/* Interactive Category Filter Pills & Slider Scrub Buttons */}
-        <div className="mt-8 flex flex-wrap items-center justify-between gap-4">
+        {/* Interactive Controls Bar: Category Filters + View Mode Switcher + Scrub Arrows */}
+        <div className="mt-10 flex flex-wrap items-center justify-between gap-4 border-b border-white/10 pb-6">
+          {/* Category Filter Pills */}
           <div className="flex flex-wrap items-center gap-2">
             {[
               { id: 'all', label: `All (${TESTIMONIALS.length})` },
@@ -276,7 +331,10 @@ export function Testimonial() {
               <button
                 key={cat.id}
                 type="button"
-                onClick={() => setActiveCategory(cat.id as typeof activeCategory)}
+                onClick={() => {
+                  setActiveCategory(cat.id as typeof activeCategory)
+                  setActiveSlideIndex(0)
+                }}
                 className={`cursor-pointer rounded-full px-4 py-1.5 font-dm text-xs sm:text-sm font-semibold tracking-wide transition-all duration-300 ${
                   activeCategory === cat.id
                     ? 'bg-voxa text-ink shadow-[0_0_15px_rgba(99,161,242,0.45)]'
@@ -288,47 +346,145 @@ export function Testimonial() {
             ))}
           </div>
 
-          {/* Manual Scroll Controls */}
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={() => scrollByAmount(-380)}
-              aria-label="Scroll left"
-              className="cursor-pointer flex size-10 items-center justify-center rounded-full border border-white/15 bg-white/5 text-white/70 hover:border-voxa hover:text-voxa hover:bg-voxa/10 transition-all"
-            >
-              ←
-            </button>
-            <button
-              type="button"
-              onClick={() => scrollByAmount(380)}
-              aria-label="Scroll right"
-              className="cursor-pointer flex size-10 items-center justify-center rounded-full border border-white/15 bg-white/5 text-white/70 hover:border-voxa hover:text-voxa hover:bg-voxa/10 transition-all"
-            >
-              →
-            </button>
+          {/* Right side: View Mode Toggle & Next/Prev Arrows */}
+          <div className="flex items-center gap-3">
+            {/* View Mode Toggle: Floating Matrix vs Spotlight Slider */}
+            <div className="flex items-center rounded-full border border-white/15 bg-white/5 p-1 backdrop-blur-md">
+              <button
+                type="button"
+                onClick={() => setViewMode('matrix')}
+                aria-label="Floating Matrix View"
+                className={`cursor-pointer flex items-center gap-1.5 rounded-full px-3 py-1 font-dm text-xs font-semibold transition-all ${
+                  viewMode === 'matrix' ? 'bg-white/20 text-white shadow-sm' : 'text-white/50 hover:text-white'
+                }`}
+              >
+                <span>Floating Wall</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setViewMode('slider')}
+                aria-label="Spotlight Slider View"
+                className={`cursor-pointer flex items-center gap-1.5 rounded-full px-3 py-1 font-dm text-xs font-semibold transition-all ${
+                  viewMode === 'slider' ? 'bg-white/20 text-white shadow-sm' : 'text-white/50 hover:text-white'
+                }`}
+              >
+                <span>Slider Carousel</span>
+              </button>
+            </div>
+
+            {/* Manual Scrub / Navigation Buttons */}
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={handlePrevSlide}
+                aria-label="Previous testimonial"
+                className="cursor-pointer flex size-10 items-center justify-center rounded-full border border-white/15 bg-white/5 text-white/80 hover:border-voxa hover:text-voxa hover:bg-voxa/10 transition-all active:scale-95"
+              >
+                ←
+              </button>
+              <button
+                type="button"
+                onClick={handleNextSlide}
+                aria-label="Next testimonial"
+                className="cursor-pointer flex size-10 items-center justify-center rounded-full border border-white/15 bg-white/5 text-white/80 hover:border-voxa hover:text-voxa hover:bg-voxa/10 transition-all active:scale-95"
+              >
+                →
+              </button>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Floating Marquee / Horizontal Slider Wall */}
-      <div
-        ref={scrollContainerRef}
-        className="group relative flex flex-col gap-6 overflow-x-auto pb-6 scrollbar-none [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]"
-      >
-        {/* Track 1: Drift Left */}
-        <div className="flex w-max gap-6 animate-drift-slow group-hover:[animation-play-state:paused] px-4">
-          {[...row1, ...row1].map((item, index) => (
-            <TestimonialCard key={`r1-${item.id}-${index}`} item={item} />
-          ))}
-        </div>
+      {/* VIEW 1: Dual-Track Infinite Floating Marquee Boxes */}
+      {viewMode === 'matrix' && (
+        <div
+          ref={scrollContainerRef}
+          onMouseDown={handleMouseDown}
+          onMouseLeave={handleMouseLeaveOrUp}
+          onMouseUp={handleMouseLeaveOrUp}
+          onMouseMove={handleMouseMove}
+          className="group relative flex flex-col gap-6 overflow-x-auto pb-6 cursor-grab active:cursor-grabbing scrollbar-none [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]"
+        >
+          {/* Track 1: Leftward Marquee */}
+          <div className="flex w-max gap-6 animate-marquee-left group-hover:[animation-play-state:paused] px-4">
+            {track1Items.map((item, index) => (
+              <TestimonialCard key={`t1-${item.id}-${index}`} item={item} />
+            ))}
+          </div>
 
-        {/* Track 2: Drift Right */}
-        <div className="flex w-max gap-6 animate-drift-slow [animation-direction:reverse] group-hover:[animation-play-state:paused] px-4">
-          {[...row2, ...row2].map((item, index) => (
-            <TestimonialCard key={`r2-${item.id}-${index}`} item={item} />
-          ))}
+          {/* Track 2: Rightward Marquee */}
+          <div className="flex w-max gap-6 animate-marquee-right group-hover:[animation-play-state:paused] px-4">
+            {track2Items.map((item, index) => (
+              <TestimonialCard key={`t2-${item.id}-${index}`} item={item} />
+            ))}
+          </div>
         </div>
-      </div>
+      )}
+
+      {/* VIEW 2: Interactive Spotlight Carousel Slider */}
+      {viewMode === 'slider' && currentSlide && (
+        <div className="relative mx-auto max-w-4xl px-5 sm:px-8">
+          <div className="relative overflow-hidden rounded-3xl border border-white/15 bg-gradient-to-b from-white/[0.08] via-white/[0.03] to-transparent p-8 sm:p-12 backdrop-blur-2xl shadow-[0_30px_70px_rgba(0,0,0,0.85)]">
+            {/* Top Indicator & Stars */}
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-white/10 pb-6 mb-8">
+              <div className="flex items-center gap-3">
+                <div className="flex text-[#ffb800] text-lg tracking-wider">
+                  {'★'.repeat(currentSlide.rating)}
+                </div>
+                <span className="font-dm text-xs font-bold text-white/50 tracking-widest uppercase">
+                  VERIFIED CLIENT
+                </span>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="rounded-full border border-voxa/40 bg-voxa/10 px-3 py-1 font-dm text-xs font-bold text-voxa tracking-wider uppercase">
+                  {currentSlide.metric}
+                </span>
+                <span className="font-manrope text-sm font-bold text-white/50">
+                  {String(clampedIndex + 1).padStart(2, '0')} / {String(filtered.length).padStart(2, '0')}
+                </span>
+              </div>
+            </div>
+
+            {/* Giant Luxury Quote */}
+            <blockquote className="font-manrope text-xl sm:text-2xl lg:text-3xl font-medium leading-relaxed text-white">
+              “{currentSlide.quote}”
+            </blockquote>
+
+            {/* Founder Footer */}
+            <footer className="mt-10 flex items-center justify-between border-t border-white/10 pt-6">
+              <div className="flex items-center gap-4">
+                <div className="flex size-14 items-center justify-center rounded-full bg-gradient-to-tr from-voxa to-flame font-manrope text-base font-black text-ink shadow-[0_0_20px_rgba(99,161,242,0.5)]">
+                  {currentSlide.initials}
+                </div>
+                <div>
+                  <h3 className="font-manrope text-lg font-bold text-white">{currentSlide.name}</h3>
+                  <p className="font-dm text-sm text-white/60">
+                    {currentSlide.role},{' '}
+                    <span className="text-white font-medium">{currentSlide.company}</span>
+                    <span className="mx-2 text-white/30">•</span>
+                    <span className="text-voxa">{currentSlide.location}</span>
+                  </p>
+                </div>
+              </div>
+
+              {/* Slider Scrub Dots */}
+              <div className="hidden sm:flex items-center gap-1.5">
+                {filtered.map((_, dotIdx) => (
+                  <button
+                    key={dotIdx}
+                    type="button"
+                    onClick={() => setActiveSlideIndex(dotIdx)}
+                    aria-label={`Jump to review ${dotIdx + 1}`}
+                    className={`h-1.5 rounded-full transition-all duration-300 ${
+                      dotIdx === clampedIndex ? 'w-6 bg-voxa' : 'w-1.5 bg-white/20 hover:bg-white/40'
+                    }`}
+                  />
+                ))}
+              </div>
+            </footer>
+          </div>
+        </div>
+      )}
     </section>
   )
 }
