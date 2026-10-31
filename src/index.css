@@ -1,0 +1,364 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400..800&family=Gelasio:ital,wght@1,400;1,700&family=Manrope:wght@400..800&display=swap');
+@import 'tailwindcss';
+
+/*
+ * Layout scale: below 1024px the root stays at the browser default. From 1024px up the
+ * root font-size tracks the viewport (1.25vw = 16px at the 1280px design width), so every
+ * rem value equals its Figma pixel value at 1280px+ and scales proportionally down to 1024px.
+ */
+
+@theme {
+  --font-manrope: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: Georgia, 'Gelasio', 'Times New Roman', serif;
+
+  --color-voxa: #63a1f2;
+  --color-flame: #ff5a3c;
+  --color-ink: #0c0c0c;
+  --color-paper: #fffefa;
+  --color-ash: #141414;
+  --color-cloud: #e3e3e3;
+
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --animate-header-in: header-in 1s var(--ease-expo) both;
+  --animate-float: float 8s ease-in-out infinite;
+  --animate-orbit: orbit 36s linear infinite;
+  --animate-drift: drift 22s ease-in-out infinite;
+  --animate-drift-slow: drift-slow 40s ease-in-out infinite;
+  --animate-breathe: breathe 9s ease-in-out infinite;
+  --animate-twinkle: twinkle 3.6s ease-in-out infinite;
+  --animate-ping-soft: ping-soft 2.2s cubic-bezier(0, 0, 0.2, 1) infinite;
+  --animate-card-switch: card-switch-in 0.6s var(--ease-expo) both;
+  --animate-shimmer: shimmer-sweep 3.5s linear infinite;
+  --animate-glow-pulse: glow-pulse 3s ease-in-out infinite;
+
+  @keyframes card-switch-in {
+    0% {
+      opacity: 0;
+      transform: translate3d(0, 24px, 0) scale(0.98);
+    }
+    100% {
+      opacity: 1;
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+  }
+  @keyframes shimmer-sweep {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+  @keyframes glow-pulse {
+    0%,
+    100% {
+      box-shadow: 0 0 15px rgba(99, 161, 242, 0.15), inset 0 0 10px rgba(99, 161, 242, 0.05);
+    }
+    50% {
+      box-shadow: 0 0 32px rgba(99, 161, 242, 0.4), inset 0 0 18px rgba(99, 161, 242, 0.2);
+    }
+  }
+
+  @keyframes header-in {
+    from {
+      opacity: 0;
+      transform: translate3d(0, -100%, 0);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes float {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0) rotate(0deg);
+    }
+    50% {
+      transform: translate3d(0, -1.25rem, 0) rotate(1.4deg);
+    }
+  }
+  @keyframes orbit {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes drift {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+    }
+    50% {
+      transform: translate3d(2%, -3%, 0) rotate(4deg) scale(1.04);
+    }
+  }
+  @keyframes drift-slow {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0) rotate(0deg);
+    }
+    50% {
+      transform: translate3d(-1%, 1%, 0) rotate(1.5deg);
+    }
+  }
+  @keyframes breathe {
+    0%,
+    100% {
+      opacity: 0.8;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.07);
+    }
+  }
+  @keyframes twinkle {
+    0%,
+    100% {
+      transform: rotate(0deg) scale(1);
+    }
+    50% {
+      transform: rotate(14deg) scale(1.12);
+    }
+  }
+  @keyframes ping-soft {
+    75%,
+    100% {
+      opacity: 0;
+      transform: scale(2.6);
+    }
+  }
+}
+
+/* DM Sans is set at optical size 14 in the Figma file. */
+@utility font-dm {
+  font-family: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
+  font-variation-settings: 'opsz' 14;
+}
+
+@utility perspective-1000 {
+  perspective: 1000px;
+}
+
+@utility transform-style-3d {
+  transform-style: preserve-3d;
+}
+
+@utility backface-hidden {
+  backface-visibility: hidden;
+}
+
+@layer base {
+  html {
+    background: var(--color-ink);
+    scroll-behavior: smooth;
+    scroll-padding-top: 4.5rem;
+    -webkit-text-size-adjust: 100%;
+  }
+  @media (min-width: 64rem) {
+    html {
+      font-size: min(100%, 1.25vw);
+      scroll-padding-top: 5.8125rem;
+    }
+  }
+  body {
+    min-width: 320px;
+    background: var(--color-ink);
+    color: var(--color-paper);
+    font-family: var(--font-manrope);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  ::selection {
+    background: var(--color-voxa);
+    color: var(--color-ash);
+  }
+  button,
+  a,
+  input,
+  textarea {
+    outline-color: var(--color-voxa);
+  }
+}
+
+@layer components {
+  /* Approximation of Figma's GLASS effect: frosted backdrop, inner shade, lit edges. */
+  .glass {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: rgb(0 0 0 / var(--glass-alpha, 0.3));
+    -webkit-backdrop-filter: blur(var(--glass-blur, 14px));
+    backdrop-filter: blur(var(--glass-blur, 14px));
+    box-shadow: inset 0 0 1.5rem rgb(0 0 0 / 0.45);
+  }
+  .glass::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+      135deg,
+      rgb(255 255 255 / 0.42),
+      rgb(255 255 255 / 0.12) 26%,
+      rgb(255 255 255 / 0.07) 52%,
+      rgb(255 255 255 / 0.12) 76%,
+      rgb(255 255 255 / 0.36)
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask-composite: exclude;
+  }
+
+  /* Light sweep across primary buttons on hover. */
+  .btn-shine {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .btn-shine::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(110deg, transparent 30%, rgb(255 255 255 / 0.45) 50%, transparent 70%);
+    transform: translateX(-120%);
+    transition: transform 0.9s var(--ease-expo);
+  }
+  .btn-shine:hover::after,
+  .btn-shine:focus-visible::after {
+    transform: translateX(120%);
+  }
+
+  /* Shimmer gradient text for pricing and highlights */
+  .text-shimmer {
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.92) 0%,
+      rgba(99, 161, 242, 1) 45%,
+      rgba(255, 255, 255, 1) 50%,
+      rgba(99, 161, 242, 1) 55%,
+      rgba(255, 255, 255, 0.92) 100%
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer-sweep 4s linear infinite;
+  }
+
+  /* Animated subtle glowing border for cards */
+  .animated-gradient-border {
+    position: relative;
+  }
+  .animated-gradient-border::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+      135deg,
+      rgba(99, 161, 242, 0.4),
+      rgba(255, 90, 60, 0.25) 50%,
+      rgba(99, 161, 242, 0.4)
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+    opacity: 0.5;
+    transition: opacity 0.4s ease;
+  }
+  .animated-gradient-border:hover::before {
+    opacity: 1;
+  }
+
+  /*
+   * Scroll reveals. Elements start hidden and get `.is-in` from the observer in useScrollEffects.
+   * Children of a `[data-reveal-group]` reveal together when the group enters the viewport.
+   * `lift` / `slide-*` move without fading so frosted-glass children keep their backdrop blur.
+   */
+  [data-reveal] {
+    transition-property: opacity, transform, filter;
+    transition-duration: 0.9s, 1.2s, 0.9s;
+    transition-timing-function: var(--ease-expo);
+    transition-delay: var(--d, 0ms);
+  }
+  [data-reveal='up'] {
+    opacity: 0;
+    transform: translate3d(0, 2.5rem, 0);
+  }
+  [data-reveal='fade'] {
+    opacity: 0;
+  }
+  [data-reveal='blur'] {
+    opacity: 0;
+    filter: blur(14px);
+    transform: translate3d(0, 1.5rem, 0);
+  }
+  [data-reveal='scale'] {
+    opacity: 0;
+    filter: blur(10px);
+    transform: scale(0.88);
+  }
+  [data-reveal='pop'] {
+    opacity: 0;
+    transform: scale(0.4) rotate(-24deg);
+  }
+  [data-reveal='rise'] {
+    transform: translate3d(0, 110%, 0) rotate(3deg);
+    transform-origin: left top;
+  }
+  [data-reveal='line'] {
+    transform: scaleX(0);
+    transform-origin: left center;
+  }
+  [data-reveal='lift'] {
+    transform: translate3d(0, 4.5rem, 0);
+  }
+  [data-reveal='slide-left'] {
+    transform: translate3d(-3.5rem, 0, 0);
+  }
+  [data-reveal='slide-right'] {
+    transform: translate3d(3.5rem, 0, 0);
+  }
+  [data-reveal].is-in,
+  .is-in [data-reveal] {
+    opacity: 1;
+    filter: none;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  [data-reveal] {
+    opacity: 1 !important;
+    filter: none !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
