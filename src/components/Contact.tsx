@@ -51,25 +51,53 @@ export function Contact({ planRequest }: ContactProps) {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [message, setMessage] = useState('')
-  const [sent, setSent] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   useEffect(() => {
     if (planRequest) setMessage(`Hi Voxa, I'm interested in the ${planRequest.plan} plan. `)
   }, [planRequest])
 
-  useEffect(() => {
-    if (!sent) return
-    const timer = window.setTimeout(() => setSent(false), 4000)
-    return () => window.clearTimeout(timer)
-  }, [sent])
-
-  // No backend in this project: hand the enquiry to the visitor's mail client.
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const subject = encodeURIComponent(`New project enquiry from ${name}`)
-    const body = encodeURIComponent(`${message}\n\n${name}\n${email}`)
-    window.location.href = `mailto:${EMAIL}?subject=${subject}&body=${body}`
-    setSent(true)
+    if (isSubmitting) return
+
+    setIsSubmitting(true)
+    setSubmitStatus('idle')
+    setErrorMessage(null)
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: name.trim(),
+          email: email.trim(),
+          message: message.trim(),
+          plan: planRequest?.plan,
+        }),
+      })
+
+      const data = await response.json().catch(() => ({}))
+
+      if (response.ok && data.success) {
+        setSubmitStatus('success')
+        setName('')
+        setEmail('')
+        setMessage('')
+      } else {
+        throw new Error(data.error || 'Failed to deliver message.')
+      }
+    } catch (err: any) {
+      console.error('Contact submission failed:', err)
+      setSubmitStatus('error')
+      setErrorMessage(err.message || 'Something went wrong while sending. Please try again.')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -198,12 +226,95 @@ export function Contact({ planRequest }: ContactProps) {
                 className={`${field} block h-48 resize-none pt-[1.125rem] lg:h-[16.5rem]`}
               />
             </div>
-            <div data-reveal="up" style={delay(390)} className="relative z-[2] mt-[0.9375rem]">
+            <div data-reveal="up" style={delay(390)} className="relative z-[2] mt-[0.9375rem] space-y-3">
+              {submitStatus === 'success' && (
+                <div
+                  role="status"
+                  aria-live="polite"
+                  className="rounded-xl border border-emerald-500/30 bg-emerald-950/40 p-4 text-emerald-300 backdrop-blur-md transition-all duration-300"
+                >
+                  <div className="flex items-center gap-2.5">
+                    <span className="relative flex size-2.5">
+                      <span className="absolute inset-0 animate-ping rounded-full bg-emerald-400 opacity-75" />
+                      <span className="relative size-full rounded-full bg-emerald-400" />
+                    </span>
+                    <span className="font-manrope text-sm font-semibold tracking-wide">
+                      Enquiry received! We will reply to your email shortly.
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              {submitStatus === 'error' && (
+                <div
+                  role="alert"
+                  className="rounded-xl border border-rose-500/30 bg-rose-950/40 p-4 text-rose-300 backdrop-blur-md transition-all duration-300"
+                >
+                  <div className="flex items-start gap-2.5">
+                    <span className="mt-1 size-2 rounded-full bg-rose-400 shrink-0" />
+                    <div className="text-sm">
+                      <p className="font-semibold">{errorMessage || 'Unable to deliver message right now.'}</p>
+                      <p className="mt-1 text-xs text-white/70">
+                        You can also contact us directly at{' '}
+                        <a href={`mailto:${EMAIL}`} className="text-voxa underline hover:text-white">
+                          {EMAIL}
+                        </a>{' '}
+                        or via{' '}
+                        <a
+                          href="https://wa.me/201111717189"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-emerald-400 underline hover:text-white"
+                        >
+                          WhatsApp
+                        </a>
+                        .
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               <button
                 type="submit"
-                className="btn-shine block h-14 w-full rounded-[0.875rem] bg-voxa font-manrope text-[1.5rem] font-bold leading-[1.6875rem] text-white transition-[box-shadow,filter] duration-300 hover:shadow-[0_0.75rem_2rem_-0.75rem_rgb(99_161_242/0.9)] active:brightness-95 lg:h-[4.25rem] lg:text-[2rem]"
+                disabled={isSubmitting}
+                className={`btn-shine block h-14 w-full rounded-[0.875rem] font-manrope text-[1.5rem] font-bold leading-[1.6875rem] text-white transition-[box-shadow,filter,opacity] duration-300 lg:h-[4.25rem] lg:text-[2rem] ${
+                  isSubmitting
+                    ? 'cursor-not-allowed bg-voxa/70 opacity-80'
+                    : submitStatus === 'success'
+                      ? 'bg-emerald-600 hover:bg-emerald-500'
+                      : 'bg-voxa hover:shadow-[0_0.75rem_2rem_-0.75rem_rgb(99_161_242/0.9)] active:brightness-95'
+                }`}
               >
-                <span aria-live="polite">{sent ? 'Opening your email…' : 'Submit'}</span>
+                <span aria-live="polite" className="inline-flex items-center justify-center gap-3">
+                  {isSubmitting && (
+                    <svg
+                      className="size-6 animate-spin text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      />
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      />
+                    </svg>
+                  )}
+                  {isSubmitting
+                    ? 'Sending enquiry…'
+                    : submitStatus === 'success'
+                      ? 'Sent Successfully ✓'
+                      : 'Submit'}
+                </span>
               </button>
             </div>
           </form>
