@@ -20,8 +20,43 @@ function getAudioContext(): AudioContext | null {
 }
 
 /**
- * Low-frequency ambient swell as the particle vortex accelerates.
+ * High-tech laser cutting beam sizzle & hum for Approach C WebGL Volumetric Laser Burn.
  */
+export function playLaserSizzle() {
+  try {
+    const ctx = getAudioContext()
+    if (!ctx || ctx.state !== 'running') return
+
+    // Carrier tone
+    const osc = ctx.createOscillator()
+    const gain = ctx.createGain()
+    const filter = ctx.createBiquadFilter()
+
+    osc.type = 'sawtooth'
+    osc.frequency.setValueAtTime(80, ctx.currentTime)
+    osc.frequency.exponentialRampToValueAtTime(220, ctx.currentTime + 1.8)
+
+    // Resonant bandpass filter sweeps with heat
+    filter.type = 'bandpass'
+    filter.frequency.setValueAtTime(450, ctx.currentTime)
+    filter.frequency.exponentialRampToValueAtTime(1600, ctx.currentTime + 1.8)
+    filter.Q.setValueAtTime(3.0, ctx.currentTime)
+
+    gain.gain.setValueAtTime(0.001, ctx.currentTime)
+    gain.gain.linearRampToValueAtTime(0.06, ctx.currentTime + 0.3)
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 2.0)
+
+    osc.connect(filter)
+    filter.connect(gain)
+    gain.connect(ctx.destination)
+
+    osc.start()
+    osc.stop(ctx.currentTime + 2.1)
+  } catch {
+    // Silently ignore
+  }
+}
+
 export function playVortexSwell() {
   try {
     const ctx = getAudioContext()
