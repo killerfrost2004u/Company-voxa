@@ -76,7 +76,7 @@ export default function App() {
         </div>
         <Cta />
       </main>
-      <Footer onReplayIntro={handleReplayIntro} />
+      <Footer />
       <FloatingWhatsApp />
     </>
   )
