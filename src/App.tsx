@@ -5,6 +5,7 @@ import { FloatingWhatsApp } from '@/components/FloatingWhatsApp'
 import { Footer } from '@/components/Footer'
 import { Header } from '@/components/Header'
 import { Hero } from '@/components/Hero'
+import { PageScrollSlider } from '@/components/PageScrollSlider'
 import { Preloader } from '@/components/Preloader'
 import { Pricing } from '@/components/Pricing'
 import { Services } from '@/components/Services'
@@ -72,6 +73,7 @@ export default function App() {
       </main>
       <Footer />
       <FloatingWhatsApp />
+      <PageScrollSlider />
     </>
   )
 }
