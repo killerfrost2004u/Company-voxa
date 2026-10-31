@@ -1,32 +1,15 @@
 import { useEffect, useRef, useState } from 'react'
-import { playLaserSizzle, playSupernovaChime, playVortexSwell } from '@/lib/audio'
-import { KineticFoldPreloader } from './KineticFoldPreloader'
+import { playSupernovaChime, playVortexSwell } from '@/lib/audio'
+import { logos } from '@/lib/assets'
 import { PlasmaTracerCanvas } from './PlasmaTracerCanvas'
-import { VolumetricLaserBurnCanvas } from './VolumetricLaserBurnCanvas'
-
-export type PreloadVariant = 'a' | 'b' | 'c'
 
 type PreloaderProps = {
   onComplete?: () => void
-  forcedVariant?: PreloadVariant
 }
 
-export function Preloader({ onComplete, forcedVariant }: PreloaderProps) {
-  // Determine variant from props, URL param ?preload=a|b|c, or localStorage (defaults to 'c')
-  const [variant, setVariant] = useState<PreloadVariant>(() => {
-    if (forcedVariant) return forcedVariant
-    if (typeof window !== 'undefined') {
-      const param = new URLSearchParams(window.location.search).get('preload')?.toLowerCase()
-      if (param === 'a' || param === 'b' || param === 'c') return param
-      const saved = localStorage.getItem('voxa_preload_variant') as PreloadVariant
-      if (saved === 'a' || saved === 'b' || saved === 'c') return saved
-    }
-    return 'c'
-  })
-
+export function Preloader({ onComplete }: PreloaderProps) {
   const [progress, setProgress] = useState(0)
   const [phase, setPhase] = useState<'counting' | 'holding' | 'exiting' | 'hidden'>('counting')
-  const [isExploding, setIsExploding] = useState(false)
   const [soundEnabled, setSoundEnabled] = useState(false)
   const completedRef = useRef(false)
   const soundEnabledRef = useRef(soundEnabled)
@@ -34,17 +17,12 @@ export function Preloader({ onComplete, forcedVariant }: PreloaderProps) {
 
   const runAnimation = () => {
     completedRef.current = false
-    setIsExploding(false)
     setPhase('counting')
     setProgress(0)
     document.body.style.overflow = 'hidden'
 
     if (soundEnabledRef.current) {
-      if (variant === 'c') {
-        playLaserSizzle()
-      } else {
-        playVortexSwell()
-      }
+      playVortexSwell()
     }
 
     let frameId: number
@@ -65,7 +43,6 @@ export function Preloader({ onComplete, forcedVariant }: PreloaderProps) {
         frameId = requestAnimationFrame(updateCounter)
       } else {
         setProgress(100)
-        setIsExploding(true)
         setPhase('holding')
 
         if (soundEnabledRef.current) {
@@ -104,10 +81,19 @@ export function Preloader({ onComplete, forcedVariant }: PreloaderProps) {
       sessionStorage.removeItem('voxa_preloaded')
     }
 
+    const holdParam = params.get('preload')
+    if (holdParam === 'hold' || (holdParam !== null && holdParam !== 'reset' && !isNaN(Number(holdParam)))) {
+      const fixedProgress = holdParam === 'hold' ? 75 : Math.min(Math.max(Number(holdParam), 0), 100)
+      setProgress(fixedProgress)
+      setPhase('holding')
+      document.body.style.overflow = 'hidden'
+      return
+    }
+
     const hasPreloaded = sessionStorage.getItem('voxa_preloaded') === 'true'
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-    // If previously preloaded and not requested via query param or switcher, skip
+    // If previously preloaded and not requested via reset query param, skip immediately
     if (hasPreloaded && !params.get('preload') && !prefersReducedMotion) {
       setPhase('hidden')
       onComplete?.()
@@ -120,15 +106,7 @@ export function Preloader({ onComplete, forcedVariant }: PreloaderProps) {
       cleanup?.()
       document.body.style.overflow = ''
     }
-  }, [variant, onComplete])
-
-  const handleSwitchVariant = (next: PreloadVariant) => {
-    setVariant(next)
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('voxa_preload_variant', next)
-    }
-    runAnimation()
-  }
+  }, [onComplete])
 
   const handleReplay = () => {
     runAnimation()
@@ -138,8 +116,7 @@ export function Preloader({ onComplete, forcedVariant }: PreloaderProps) {
     setSoundEnabled((prev) => {
       const next = !prev
       if (next) {
-        if (variant === 'c') playLaserSizzle()
-        else playVortexSwell()
+        playVortexSwell()
       }
       return next
     })
@@ -149,12 +126,9 @@ export function Preloader({ onComplete, forcedVariant }: PreloaderProps) {
     return null
   }
 
-  // Visual thresholds for Approach A & C
+  // Visual thresholds for convergence
   const isFlash = progress >= 68 && progress <= 82
   const isEmbossed = progress >= 72
-
-  // Laser cutting percentage for Approach C
-  const laserCutPercent = Math.min(Math.max((progress - 6) / 78, 0), 1) * 100
 
   return (
     <aside
@@ -164,19 +138,17 @@ export function Preloader({ onComplete, forcedVariant }: PreloaderProps) {
         phase === 'exiting' ? '-translate-y-full shadow-[0_40px_100px_rgba(0,0,0,0.95)]' : 'translate-y-0'
       }`}
     >
-      {/* Dynamic Backgrounds per Variant */}
-      {variant === 'a' && <PlasmaTracerCanvas progress={progress} />}
-      {variant === 'b' && null}
-      {variant === 'c' && <VolumetricLaserBurnCanvas progress={progress} />}
+      {/* Background Plasma Spark Optical Tracer */}
+      <PlasmaTracerCanvas progress={progress} />
 
-      {/* Atmospheric depth lighting */}
+      {/* Atmospheric depth radial lighting */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_55%_at_50%_50%,rgb(99_161_242/0.12),transparent_75%)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_55%_at_50%_50%,rgb(99_161_242/0.14),transparent_75%)]"
       />
 
-      {/* Top Bar: Brand, Variant Switcher & Sound */}
-      <div className="relative z-20 flex flex-wrap items-center justify-between gap-3 text-xs sm:text-sm font-semibold tracking-[0.16em] uppercase">
+      {/* Top Bar: Brand & Controls */}
+      <div className="relative z-20 flex items-center justify-between gap-3 text-xs sm:text-sm font-semibold tracking-[0.16em] uppercase">
         <div className="flex items-center gap-2.5 text-white/70">
           <span className="relative flex size-2">
             <span className="absolute inset-0 animate-ping-soft rounded-full bg-flame opacity-75" />
@@ -185,52 +157,12 @@ export function Preloader({ onComplete, forcedVariant }: PreloaderProps) {
           <span className="font-dm">VOXA DIGITAL LAB</span>
         </div>
 
-        {/* Live Approach Switcher for User Testing */}
-        <div className="flex items-center gap-1.5 rounded-full border border-white/15 bg-black/60 backdrop-blur-md p-1 shadow-lg">
-          <button
-            type="button"
-            onClick={() => handleSwitchVariant('c')}
-            className={`cursor-pointer rounded-full px-2.5 py-1 font-dm text-[0.68rem] tracking-wider transition-all duration-300 ${
-              variant === 'c'
-                ? 'bg-voxa text-ink font-bold shadow-[0_0_12px_rgba(99,161,242,0.5)]'
-                : 'text-white/60 hover:text-white'
-            }`}
-            title="Approach C: WebGL Volumetric Laser Burn with Heat Shimmer & Anamorphic Lens Flare"
-          >
-            C: Laser Burn (WebGL) 🔥
-          </button>
-          <button
-            type="button"
-            onClick={() => handleSwitchVariant('a')}
-            className={`cursor-pointer rounded-full px-2.5 py-1 font-dm text-[0.68rem] tracking-wider transition-all duration-300 ${
-              variant === 'a'
-                ? 'bg-voxa text-ink font-bold shadow-[0_0_12px_rgba(99,161,242,0.5)]'
-                : 'text-white/60 hover:text-white'
-            }`}
-            title="Approach A: Plasma Spark Contour Tracer into 3D Embossed Logo"
-          >
-            A: Plasma Tracer
-          </button>
-          <button
-            type="button"
-            onClick={() => handleSwitchVariant('b')}
-            className={`cursor-pointer rounded-full px-2.5 py-1 font-dm text-[0.68rem] tracking-wider transition-all duration-300 ${
-              variant === 'b'
-                ? 'bg-voxa text-ink font-bold shadow-[0_0_12px_rgba(99,161,242,0.5)]'
-                : 'text-white/60 hover:text-white'
-            }`}
-            title="Approach B: Kinetic Fold & Laser Plane"
-          >
-            B: Kinetic Fold
-          </button>
-        </div>
-
         {/* Sound & Replay Buttons */}
         <div className="flex items-center gap-2">
           <button
             type="button"
             onClick={handleReplay}
-            className="cursor-pointer rounded-full border border-white/20 bg-white/5 px-2.5 py-1 font-dm text-[0.68rem] tracking-wider text-white/70 hover:border-white/40 hover:text-white transition-all"
+            className="cursor-pointer rounded-full border border-white/20 bg-white/5 px-3 py-1 font-dm text-[0.7rem] tracking-wider text-white/70 hover:border-white/40 hover:text-white transition-all shadow-sm"
             title="Replay intro sequence"
           >
             ↺ REPLAY
@@ -239,7 +171,7 @@ export function Preloader({ onComplete, forcedVariant }: PreloaderProps) {
           <button
             type="button"
             onClick={toggleSound}
-            className={`cursor-pointer rounded-full border px-2.5 py-1 font-dm text-[0.68rem] tracking-wider transition-all duration-300 ${
+            className={`cursor-pointer rounded-full border px-3 py-1 font-dm text-[0.7rem] tracking-wider transition-all duration-300 shadow-sm ${
               soundEnabled
                 ? 'border-voxa bg-voxa/20 text-voxa shadow-[0_0_12px_rgba(99,161,242,0.4)]'
                 : 'border-white/20 bg-white/5 text-white/50 hover:border-white/40 hover:text-white'
@@ -253,115 +185,91 @@ export function Preloader({ onComplete, forcedVariant }: PreloaderProps) {
       {/* Centerpiece Container */}
       <div className="relative z-10 my-auto flex flex-col items-center justify-center text-center select-none pointer-events-none">
         {/* Flash Burst during Convergence */}
-        {(variant === 'a' || variant === 'c') && (
+        <div
+          className="pointer-events-none absolute -inset-32 rounded-full transition-opacity duration-300 z-[1]"
+          style={{
+            opacity: isFlash ? 0.45 : 0,
+            background: 'radial-gradient(circle, rgba(255,255,255,0.95) 0%, rgba(99,161,242,0.45) 40%, transparent 70%)',
+          }}
+        />
+
+        {/* Background Atmospheric Ambient Aura */}
+        <div
+          className="pointer-events-none absolute -inset-24 rounded-full blur-3xl transition-opacity duration-700"
+          style={{
+            background: 'radial-gradient(circle, rgba(99,161,242,0.35) 0%, rgba(255,90,60,0.2) 50%, transparent 75%)',
+            opacity: isEmbossed ? 0.6 : Math.max(0.15, (progress / 100) * 0.4),
+          }}
+        />
+
+        {/* Centered Stack: Emblem Badge + 3D Wordmark */}
+        <div className="relative z-[3] flex flex-col items-center justify-center gap-3 sm:gap-4">
+          {/* Official VOXA Icon Badge with Glowing Flame Dot */}
           <div
-            className="pointer-events-none absolute -inset-32 rounded-full transition-opacity duration-300"
+            className="relative flex items-center justify-center size-20 sm:size-24 md:size-28 rounded-2xl sm:rounded-3xl border border-white/20 bg-white/[0.04] p-3 shadow-[0_0_30px_rgba(99,161,242,0.4),inset_0_1px_0_rgba(255,255,255,0.2)] backdrop-blur-xl transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
             style={{
-              opacity: isFlash ? 0.4 : 0,
-              background: 'radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(99,161,242,0.4) 40%, transparent 70%)',
+              opacity: isEmbossed ? 1 : 0.08,
+              transform: isEmbossed ? 'scale(1) translateY(0)' : 'scale(0.92) translateY(12px)',
             }}
-          />
-        )}
-
-        {/* VARIANT A: Plasma Spark Tracer -> 3D Embossed Logo */}
-        {variant === 'a' && (
-          <div className="relative flex flex-col items-center justify-center">
-            <div
-              className="flex items-baseline font-manrope font-extrabold tracking-[-0.04em] text-white select-none transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
+          >
+            <img
+              src={logos.icon}
+              alt=""
+              aria-hidden="true"
+              className="size-full object-contain rounded-xl filter drop-shadow-[0_0_15px_rgba(99,161,242,0.7)]"
+            />
+            {/* Neon Flame Dot Accent */}
+            <span
+              className="absolute -bottom-1 -right-1 size-3.5 sm:size-4 rounded-full bg-flame transition-all duration-500"
               style={{
-                fontSize: 'clamp(4rem, 14vw, 10.5rem)',
-                opacity: isEmbossed ? 1 : 0.05,
-                transform: isEmbossed ? 'scale(1) translateY(0)' : 'scale(0.96) translateY(12px)',
-                filter: isEmbossed
-                  ? 'drop-shadow(0 20px 40px rgba(0,0,0,0.9)) drop-shadow(0 4px 6px rgba(255,255,255,0.45))'
-                  : 'none',
+                opacity: progress >= 75 ? 1 : 0,
+                transform: progress >= 75 ? 'scale(1)' : 'scale(0)',
+                filter: 'drop-shadow(0 0 12px #ff5a3c)',
+              }}
+            />
+          </div>
+
+          {/* 3D Embossed VOXA Wordmark */}
+          <div
+            className="flex items-baseline font-manrope font-extrabold tracking-[-0.04em] text-white select-none transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
+            style={{
+              fontSize: 'clamp(3.5rem, 11vw, 7.5rem)',
+              opacity: isEmbossed ? 1 : 0.08,
+              transform: isEmbossed ? 'scale(1) translateY(0)' : 'scale(0.96) translateY(12px)',
+              filter: isEmbossed
+                ? 'drop-shadow(0 20px 40px rgba(0,0,0,0.95)) drop-shadow(0 4px 6px rgba(255,255,255,0.45)) drop-shadow(0 0 35px rgba(99,161,242,0.65))'
+                : 'none',
+            }}
+          >
+            <span className="inline-block bg-gradient-to-b from-white via-[#f0f4fa] to-[#b8c6d9] bg-clip-text text-transparent">
+              VOXA
+            </span>
+            <span
+              className="inline-block text-flame transition-all duration-500"
+              style={{
+                opacity: progress >= 75 ? 1 : 0,
+                transform: progress >= 75 ? 'scale(1)' : 'scale(0)',
+                filter: 'drop-shadow(0 0 24px rgba(255,90,60,0.95))',
               }}
             >
-              <span className="inline-block bg-gradient-to-b from-white via-[#f0f4fa] to-[#b8c6d9] bg-clip-text text-transparent">
-                VOXA
-              </span>
-              <span
-                className="inline-block text-flame transition-all duration-500"
-                style={{
-                  opacity: progress >= 75 ? 1 : 0,
-                  transform: progress >= 75 ? 'scale(1)' : 'scale(0)',
-                  filter: 'drop-shadow(0 0 20px rgba(255,90,60,0.85))',
-                }}
-              >
-                .
-              </span>
-            </div>
-
-            <div className="mt-2 overflow-hidden">
-              <p
-                className="font-dm text-xs sm:text-sm font-bold tracking-[0.24em] uppercase text-white/50 transition-all duration-700 delay-150"
-                style={{
-                  opacity: isEmbossed ? 1 : 0,
-                  transform: isEmbossed ? 'translateY(0)' : 'translateY(10px)',
-                }}
-              >
-                From Design To Digital
-              </p>
-            </div>
+              .
+            </span>
           </div>
-        )}
 
-        {/* VARIANT B: Kinetic Fold */}
-        {variant === 'b' && <KineticFoldPreloader progress={progress} />}
-
-        {/* VARIANT C: Volumetric Laser Burn Carved 3D Logo */}
-        {variant === 'c' && (
-          <div className="relative flex flex-col items-center justify-center">
-            {/* Background unburned silhouette */}
-            <div
-              className="flex items-baseline font-manrope font-extrabold tracking-[-0.04em] text-white/10 select-none"
-              style={{ fontSize: 'clamp(4rem, 14vw, 10.5rem)' }}
-            >
-              <span>VOXA</span>
-              <span className="text-white/5">.</span>
-            </div>
-
-            {/* Foreground Laser-Carved Molten Surface */}
-            <div
-              className="absolute inset-0 flex items-baseline justify-center font-manrope font-extrabold tracking-[-0.04em] text-white select-none transition-all"
+          {/* Subtitle */}
+          <div className="overflow-hidden">
+            <p
+              className="font-dm text-xs sm:text-sm font-bold tracking-[0.24em] uppercase text-white/60 transition-all duration-700 delay-150"
               style={{
-                fontSize: 'clamp(4rem, 14vw, 10.5rem)',
-                clipPath: progress >= 85 ? 'none' : `polygon(0% 0%, ${laserCutPercent}% 0%, ${laserCutPercent}% 100%, 0% 100%)`,
-                filter:
-                  progress >= 85
-                    ? 'drop-shadow(0 20px 40px rgba(0,0,0,0.9)) drop-shadow(0 4px 6px rgba(255,255,255,0.45))'
-                    : 'drop-shadow(0 0 15px rgba(255,90,60,0.8)) drop-shadow(0 15px 30px rgba(0,0,0,0.9))',
+                opacity: isEmbossed ? 1 : 0,
+                transform: isEmbossed ? 'translateY(0)' : 'translateY(10px)',
+                textShadow: '0 0 12px rgba(99,161,242,0.6)',
               }}
             >
-              <span className="inline-block bg-gradient-to-b from-white via-[#f0f4fa] to-[#a8b8cc] bg-clip-text text-transparent">
-                VOXA
-              </span>
-              <span
-                className="inline-block text-flame transition-all duration-500"
-                style={{
-                  opacity: progress >= 75 ? 1 : 0,
-                  transform: progress >= 75 ? 'scale(1)' : 'scale(0)',
-                  filter: 'drop-shadow(0 0 24px rgba(255,90,60,0.9))',
-                }}
-              >
-                .
-              </span>
-            </div>
-
-            {/* Dynamic Telemetry Subtitle */}
-            <div className="mt-4 overflow-hidden">
-              <p
-                className="font-dm text-xs sm:text-sm font-bold tracking-[0.24em] uppercase transition-all duration-500"
-                style={{
-                  color: progress < 84 ? '#63a1f2' : 'rgba(255,255,255,0.7)',
-                  textShadow: progress < 84 ? '0 0 12px rgba(99,161,242,0.8)' : 'none',
-                }}
-              >
-                {progress < 84 ? 'Volumetric Laser Burn // GLSL Thermal Shimmer' : 'Substrate Solidified // 100% Geometry Intact'}
-              </p>
-            </div>
+              From Design To Digital
+            </p>
           </div>
-        )}
+        </div>
       </div>
 
       {/* Bottom Bar: Engineered Precision Slider with Millimeter Ticks */}
@@ -371,13 +279,7 @@ export function Preloader({ onComplete, forcedVariant }: PreloaderProps) {
           <span className="flex items-center gap-2">
             <span className="size-1.5 rounded-full bg-voxa animate-pulse" />
             <span>
-              {variant === 'c'
-                ? progress < 84
-                  ? 'Thermal Laser Burn Active...'
-                  : progress < 100
-                  ? 'Cooling Molten Contours...'
-                  : 'System Ready'
-                : progress < 70
+              {progress < 70
                 ? 'Synthesizing Contour Geometry...'
                 : progress < 100
                 ? 'Calibrating 3D Space...'
@@ -400,19 +302,11 @@ export function Preloader({ onComplete, forcedVariant }: PreloaderProps) {
 
           {/* Glowing Fill Bar */}
           <div
-            className={`relative h-full rounded-full transition-[width] duration-150 ease-out ${
-              variant === 'c'
-                ? 'bg-gradient-to-r from-[#ff5a3c] via-voxa to-white shadow-[0_0_16px_rgba(99,161,242,0.9)]'
-                : 'bg-gradient-to-r from-voxa via-[#80b9ff] to-white shadow-[0_0_16px_rgba(99,161,242,0.9)]'
-            }`}
+            className="relative h-full rounded-full transition-[width] duration-150 ease-out bg-gradient-to-r from-voxa via-[#80b9ff] to-white shadow-[0_0_16px_rgba(99,161,242,0.9)]"
             style={{ width: `${progress}%` }}
           >
             {/* Blazing Laser Tip / Spark Head */}
-            <div
-              className={`absolute right-0 top-1/2 -translate-y-1/2 size-2.5 rounded-full ${
-                variant === 'c' ? 'bg-[#ffcc00] shadow-[0_0_12px_#ff5a3c]' : 'bg-white shadow-[0_0_12px_#63a1f2]'
-              }`}
-            />
+            <div className="absolute right-0 top-1/2 -translate-y-1/2 size-2.5 rounded-full bg-white shadow-[0_0_12px_#63a1f2]" />
           </div>
         </div>
       </div>
