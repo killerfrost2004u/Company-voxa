@@ -11,7 +11,7 @@ void main() {
 }
 `
 
-// Fragment Shader: Volumetric Laser Burn, Heat Distortion, Molten Slag, and Anamorphic Flare
+// Fragment Shader: Volumetric Laser Burn, Heat Distortion, Anamorphic Flare, and Molten Sparks
 const FS_SOURCE = `
 precision highp float;
 
@@ -19,7 +19,6 @@ varying vec2 v_uv;
 uniform vec2 u_resolution;
 uniform float u_time;
 uniform float u_progress; // 0.0 to 1.0
-uniform sampler2D u_logo_texture;
 
 // Procedural 2D Hash & Noise
 float hash(vec2 p) {
@@ -54,114 +53,77 @@ void main() {
   vec2 uv = v_uv;
   float aspect = u_resolution.x / u_resolution.y;
 
-  // Normalize coordinates for aspect ratio preservation
+  // Normalized aspect ratio coordinates
   vec2 p = uv;
   p.x *= aspect;
 
-  // Laser trajectory: sweeps horizontally from x=0.15 to x=0.85
-  float t = smoothstep(0.05, 0.82, u_progress);
+  // Laser trajectory: sweeps horizontally across the center logo
+  float t = smoothstep(0.04, 0.84, u_progress);
   float laser_x = mix(0.12, 0.88, t);
-  float laser_y = 0.5 + sin(u_time * 12.0 + u_progress * 18.0) * 0.045;
+  float laser_y = 0.5 + sin(u_time * 14.0 + u_progress * 20.0) * 0.035;
   vec2 laser_pos = vec2(laser_x * aspect, laser_y);
 
-  // Active laser intensity (switches off during final hold/crystallization)
-  float laser_active = smoothstep(0.02, 0.08, u_progress) * (1.0 - smoothstep(0.80, 0.88, u_progress));
+  // Active laser intensity (switches off during final hold/solidification)
+  float laser_active = smoothstep(0.02, 0.06, u_progress) * (1.0 - smoothstep(0.82, 0.90, u_progress));
 
   // 1. Heat Shimmer / Thermal Distortion Field
-  float heat_mask = smoothstep(0.0, 0.45, uv.y - (laser_y - 0.15)) * exp(-abs(uv.x - laser_x) * 4.5) * laser_active;
+  float heat_mask = smoothstep(0.0, 0.45, uv.y - (laser_y - 0.12)) * exp(-abs(uv.x - laser_x) * 4.5) * laser_active;
   vec2 heat_offset = vec2(
     fbm(uv * 18.0 + vec2(0.0, -u_time * 3.5)) - 0.5,
     fbm(uv * 22.0 + vec2(u_time * 1.5, -u_time * 4.0)) - 0.5
-  ) * 0.035 * heat_mask;
+  ) * 0.03 * heat_mask;
 
   vec2 distorted_uv = uv + heat_offset;
 
-  // 2. Sample Offscreen Pre-rendered VOXA Logo Texture
-  vec4 logo_tex = texture2D(u_logo_texture, distorted_uv);
-  float logo_mask = logo_tex.r;
-  float logo_bevel = logo_tex.g;
+  vec3 col = vec3(0.0);
 
-  // 3. Progressive Cut Front Calculation
-  float cut_dist = uv.x - laser_x;
+  // 2. Subtle cyber blueprint grid in the background
+  vec2 grid = abs(fract(distorted_uv * vec2(28.0 * aspect, 28.0) - 0.5) - 0.5);
+  float grid_line = step(grid.x, 0.025) + step(grid.y, 0.025);
+  col += vec3(0.02, 0.035, 0.07) * grid_line * 0.35;
 
-  // Background deep ambient space
-  vec3 bg_color = vec3(0.015, 0.02, 0.035);
-  // Subtle cyber grid lines
-  vec2 grid = abs(fract(uv * vec2(40.0 * aspect, 40.0) - 0.5) - 0.5) / fwidth(uv * 40.0);
-  float grid_line = 1.0 - min(min(grid.x, grid.y), 1.0);
-  bg_color += vec3(0.025, 0.04, 0.08) * grid_line * 0.35;
-
-  vec3 col = bg_color;
-
-  // 4. Molten Edge / Cooled Logo Shading
-  if (cut_dist <= 0.0) {
-    // Left of the laser: already cut & cooled
-    float cool_factor = smoothstep(0.0, -0.15, cut_dist);
-    
-    // Cooled logo color: matte white with subtle directional rim light
-    vec3 cooled_logo = mix(vec3(0.95, 0.97, 1.0), vec3(0.72, 0.78, 0.88), logo_bevel);
-    
-    // Ambient occlusion / drop shadow inside logo mask
-    cooled_logo *= (0.85 + 0.15 * smoothstep(0.2, 0.8, distorted_uv.y));
-
-    // Molten residual glow right behind the cut line
-    vec3 molten_residual = vec3(1.0, 0.35, 0.05) * exp(cut_dist * 25.0) * 3.0;
-
-    col = mix(col, cooled_logo + molten_residual, logo_mask);
-  } else if (cut_dist < 0.04) {
-    // Incandescent molten edge right at the laser frontier
-    float burn_intensity = (1.0 - cut_dist / 0.04);
-    vec3 molten_glow = mix(
-      vec3(1.0, 0.3, 0.02),
-      vec3(1.0, 0.95, 0.8),
-      burn_intensity * burn_intensity
-    ) * (2.5 + sin(u_time * 25.0) * 0.8);
-
-    col = mix(col, molten_glow, logo_mask * burn_intensity);
+  // 3. Smoke & Hot Thermal Gas Plumes
+  if (laser_active > 0.02) {
+    float smoke = fbm(distorted_uv * 6.5 + vec2(0.0, -u_time * 1.6)) * heat_mask * 0.45;
+    col += vec3(0.08, 0.12, 0.22) * smoke;
   }
 
-  // 5. Smoke & Hot Gas Plumes
-  if (laser_active > 0.05) {
-    float smoke = fbm(uv * 7.0 + vec2(0.0, -u_time * 1.8)) * heat_mask * 0.55;
-    col += vec3(0.12, 0.14, 0.22) * smoke;
-  }
-
-  // 6. Volumetric Laser Beam, Contact Core & Anamorphic Lens Flare
+  // 4. Volumetric Laser Beam, Contact Core & Anamorphic Lens Flare
   if (laser_active > 0.01) {
-    // Vertical intense cutting beam from top of screen to contact point
+    // Vertical high-intensity cutting beam from top of screen
     float beam_dist = abs(p.x - laser_pos.x);
-    float beam_vert = step(laser_pos.y, p.y);
-    float beam_core = exp(-beam_dist * 350.0) * beam_vert;
-    float beam_glow = exp(-beam_dist * 45.0) * beam_vert * 0.5;
+    float beam_vert = step(laser_pos.y - 0.02, p.y);
+    float beam_core = exp(-beam_dist * 380.0) * beam_vert;
+    float beam_glow = exp(-beam_dist * 35.0) * beam_vert * 0.6;
 
-    vec3 beam_color = (vec3(1.0, 1.0, 1.0) * beam_core * 3.0 + vec3(0.25, 0.65, 1.0) * beam_glow * 1.8) * laser_active;
+    vec3 beam_color = (vec3(1.0, 1.0, 1.0) * beam_core * 3.5 + vec3(0.25, 0.65, 1.0) * beam_glow * 1.8) * laser_active;
     col += beam_color;
 
     // Contact point high-energy blast core
     float d_contact = length(p - laser_pos);
-    float contact_core = exp(-d_contact * 80.0) * 4.0;
-    float contact_halo = exp(-d_contact * 16.0) * 1.2;
-    vec3 contact_color = (vec3(1.0, 1.0, 1.0) * contact_core + vec3(0.4, 0.75, 1.0) * contact_halo) * laser_active;
+    float contact_core = exp(-d_contact * 85.0) * 4.5;
+    float contact_halo = exp(-d_contact * 16.0) * 1.4;
+    vec3 contact_color = (vec3(1.0, 1.0, 1.0) * contact_core + vec3(0.35, 0.75, 1.0) * contact_halo) * laser_active;
     col += contact_color;
 
-    // Anamorphic horizontal lens flare streak
-    float flare_h = exp(-abs(p.y - laser_pos.y) * 180.0) * exp(-abs(p.x - laser_pos.x) * 4.0);
-    col += vec3(0.35, 0.7, 1.0) * flare_h * 2.2 * laser_active;
+    // Anamorphic horizontal lens flare streak across the screen
+    float flare_h = exp(-abs(p.y - laser_pos.y) * 160.0) * exp(-abs(p.x - laser_pos.x) * 3.5);
+    col += vec3(0.4, 0.75, 1.0) * flare_h * 2.4 * laser_active;
 
-    // Secondary lens flare ring
-    float ring_dist = abs(d_contact - 0.14);
-    float flare_ring = exp(-ring_dist * 60.0) * 0.45 * laser_active;
-    col += vec3(0.9, 0.3, 0.1) * flare_ring;
+    // Molten sparks halo
+    float ring_dist = abs(d_contact - 0.12);
+    float flare_ring = exp(-ring_dist * 50.0) * 0.4 * laser_active;
+    col += vec3(1.0, 0.4, 0.1) * flare_ring;
   }
 
-  // 7. Post-convergence global bloom flash (when progress hits 85%)
+  // 5. Post-convergence global bloom flash (when laser finishes at 84% - 90%)
   float flash = smoothstep(0.82, 0.86, u_progress) * (1.0 - smoothstep(0.86, 0.94, u_progress));
-  col += vec3(0.5, 0.75, 1.0) * flash * 0.8;
+  col += vec3(0.45, 0.7, 1.0) * flash * 0.75;
 
-  // Soft cinematic vignette
+  // Soft edge vignette
   vec2 vig_uv = uv * (1.0 - uv.yx);
   float vig = vig_uv.x * vig_uv.y * 15.0;
-  vig = clamp(pow(vig, 0.25), 0.0, 1.0);
+  vig = clamp(pow(vig, 0.3), 0.0, 1.0);
   col *= vig;
 
   gl_FragColor = vec4(col, 1.0);
@@ -242,43 +204,9 @@ export function VolumetricLaserBurnCanvas({ progress }: { progress: number }) {
     const uResolution = gl.getUniformLocation(program, 'u_resolution')
     const uTime = gl.getUniformLocation(program, 'u_time')
     const uProgress = gl.getUniformLocation(program, 'u_progress')
-    const uLogoTexture = gl.getUniformLocation(program, 'u_logo_texture')
 
-    // 3. Render High-Resolution VOXA Logo to Offscreen Texture
-    const logoCanvas = document.createElement('canvas')
-    logoCanvas.width = 1024
-    logoCanvas.height = 512
-    const logoCtx = logoCanvas.getContext('2d')
-    if (logoCtx) {
-      logoCtx.fillStyle = '#000000'
-      logoCtx.fillRect(0, 0, 1024, 512)
-
-      // Draw stylized VOXA typographic mask
-      logoCtx.font = '900 190px "Manrope", sans-serif'
-      logoCtx.textAlign = 'center'
-      logoCtx.textBaseline = 'middle'
-
-      // Red channel = mask, Green channel = bevel shadow
-      logoCtx.fillStyle = '#ffffff'
-      logoCtx.fillText('VOXA.', 512, 256)
-
-      // Bevel highlight
-      logoCtx.strokeStyle = '#00ff00'
-      logoCtx.lineWidth = 6
-      logoCtx.strokeText('VOXA.', 512, 256)
-    }
-
-    const texture = gl.createTexture()
-    gl.bindTexture(gl.TEXTURE_2D, texture)
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE)
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, logoCanvas)
-
-    // 4. Resize Handler
+    // 3. Resize Handler
     const handleResize = () => {
-      // Mobile-friendly DPR capping (1 on mobile, 1.5 on desktop) to ensure 60fps
       const isMobile = window.innerWidth < 768
       const dpr = isMobile ? 1 : Math.min(window.devicePixelRatio || 1, 1.5)
 
@@ -313,10 +241,6 @@ export function VolumetricLaserBurnCanvas({ progress }: { progress: number }) {
       gl.enableVertexAttribArray(aPosition)
       gl.vertexAttribPointer(aPosition, 2, gl.FLOAT, false, 0, 0)
 
-      gl.activeTexture(gl.TEXTURE0)
-      gl.bindTexture(gl.TEXTURE_2D, texture)
-      gl.uniform1i(uLogoTexture, 0)
-
       gl.uniform2f(uResolution, glCanvas.width, glCanvas.height)
       gl.uniform1f(uTime, elapsed)
       gl.uniform1f(uProgress, normProgress)
@@ -329,21 +253,21 @@ export function VolumetricLaserBurnCanvas({ progress }: { progress: number }) {
         const h = window.innerHeight
         sparkCtx.clearRect(0, 0, w, h)
 
-        const isLaserActive = normProgress > 0.05 && normProgress < 0.82
+        const isLaserActive = normProgress > 0.04 && normProgress < 0.84
         if (isLaserActive) {
-          const tProgress = Math.min(Math.max((normProgress - 0.05) / 0.77, 0), 1)
+          const tProgress = Math.min(Math.max((normProgress - 0.04) / 0.8, 0), 1)
           const laserX = (0.12 + tProgress * 0.76) * w
-          const laserY = (0.5 + Math.sin(elapsed * 12.0 + normProgress * 18.0) * 0.045) * h
+          const laserY = (0.5 + Math.sin(elapsed * 14.0 + normProgress * 20.0) * 0.035) * h
 
           // Spawn molten sparks
-          for (let i = 0; i < 4; i++) {
+          for (let i = 0; i < 5; i++) {
             const angle = Math.random() * Math.PI * 2
-            const speed = Math.random() * 5 + 2
+            const speed = Math.random() * 6 + 2.5
             sparksRef.current.push({
               x: laserX,
               y: laserY,
               vx: Math.cos(angle) * speed + (Math.random() - 0.5) * 3,
-              vy: Math.sin(angle) * speed - Math.random() * 4, // upward burst
+              vy: Math.sin(angle) * speed - Math.random() * 5, // upward burst
               life: 1,
               maxLife: Math.random() * 25 + 15,
               color: Math.random() > 0.4 ? '#ff7a29' : Math.random() > 0.5 ? '#ffcc00' : '#ffffff',
@@ -387,13 +311,12 @@ export function VolumetricLaserBurnCanvas({ progress }: { progress: number }) {
       cancelAnimationFrame(animationFrameId)
       window.removeEventListener('resize', handleResize)
       if (positionBuffer) gl.deleteBuffer(positionBuffer)
-      if (texture) gl.deleteTexture(texture)
       if (program) gl.deleteProgram(program)
     }
   }, [progress])
 
   return (
-    <div ref={containerRef} className="pointer-events-none absolute inset-0 size-full overflow-hidden z-[2]">
+    <div ref={containerRef} className="pointer-events-none absolute inset-0 size-full overflow-hidden z-[1]">
       {/* 1. Main WebGL Shader Quad */}
       <canvas ref={glCanvasRef} className="absolute inset-0 size-full" />
       {/* 2. Incandescent Flying Sparks Overlay */}

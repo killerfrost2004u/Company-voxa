@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { playLaserSizzle, playSupernovaChime, playVortexSwell } from '@/lib/audio'
 import { KineticFoldPreloader } from './KineticFoldPreloader'
-import { ParticleVortexCanvas } from './ParticleVortexCanvas'
 import { PlasmaTracerCanvas } from './PlasmaTracerCanvas'
 import { VolumetricLaserBurnCanvas } from './VolumetricLaserBurnCanvas'
 
@@ -13,7 +12,7 @@ type PreloaderProps = {
 }
 
 export function Preloader({ onComplete, forcedVariant }: PreloaderProps) {
-  // Determine variant from props, URL param ?preload=a|b|c, or localStorage (defaults to 'c' per user request)
+  // Determine variant from props, URL param ?preload=a|b|c, or localStorage (defaults to 'c')
   const [variant, setVariant] = useState<PreloadVariant>(() => {
     if (forcedVariant) return forcedVariant
     if (typeof window !== 'undefined') {
@@ -50,7 +49,7 @@ export function Preloader({ onComplete, forcedVariant }: PreloaderProps) {
 
     let frameId: number
     const startTime = performance.now()
-    const targetDuration = 2400 // 2.4s cinematic volumetric sequence
+    const targetDuration = 2400 // 2.4s cinematic sequence
 
     const updateCounter = (now: number) => {
       const elapsed = now - startTime
@@ -150,9 +149,12 @@ export function Preloader({ onComplete, forcedVariant }: PreloaderProps) {
     return null
   }
 
-  // Visual thresholds for Approach A
+  // Visual thresholds for Approach A & C
   const isFlash = progress >= 68 && progress <= 82
   const isEmbossed = progress >= 72
+
+  // Laser cutting percentage for Approach C
+  const laserCutPercent = Math.min(Math.max((progress - 6) / 78, 0), 1) * 100
 
   return (
     <aside
@@ -250,12 +252,12 @@ export function Preloader({ onComplete, forcedVariant }: PreloaderProps) {
 
       {/* Centerpiece Container */}
       <div className="relative z-10 my-auto flex flex-col items-center justify-center text-center select-none pointer-events-none">
-        {/* Flash Burst during Convergence (Phase 2) */}
-        {variant === 'a' && (
+        {/* Flash Burst during Convergence */}
+        {(variant === 'a' || variant === 'c') && (
           <div
             className="pointer-events-none absolute -inset-32 rounded-full transition-opacity duration-300"
             style={{
-              opacity: isFlash ? 0.45 : 0,
+              opacity: isFlash ? 0.4 : 0,
               background: 'radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(99,161,242,0.4) 40%, transparent 70%)',
             }}
           />
@@ -307,56 +309,111 @@ export function Preloader({ onComplete, forcedVariant }: PreloaderProps) {
         {/* VARIANT B: Kinetic Fold */}
         {variant === 'b' && <KineticFoldPreloader progress={progress} />}
 
-        {/* VARIANT C: Volumetric Laser Burn Telemetry HUD */}
+        {/* VARIANT C: Volumetric Laser Burn Carved 3D Logo */}
         {variant === 'c' && (
-          <div className="relative flex flex-col items-center justify-center opacity-90 transition-opacity">
-            {/* The WebGL Canvas handles the full visual burn and logo geometry in real time */}
+          <div className="relative flex flex-col items-center justify-center">
+            {/* Background unburned silhouette */}
             <div
-              className="mt-64 sm:mt-72 font-dm text-[0.7rem] sm:text-xs tracking-[0.26em] uppercase transition-all duration-500"
+              className="flex items-baseline font-manrope font-extrabold tracking-[-0.04em] text-white/10 select-none"
+              style={{ fontSize: 'clamp(4rem, 14vw, 10.5rem)' }}
+            >
+              <span>VOXA</span>
+              <span className="text-white/5">.</span>
+            </div>
+
+            {/* Foreground Laser-Carved Molten Surface */}
+            <div
+              className="absolute inset-0 flex items-baseline justify-center font-manrope font-extrabold tracking-[-0.04em] text-white select-none transition-all"
               style={{
-                color: progress < 82 ? '#63a1f2' : '#ffffff',
-                textShadow: progress < 82 ? '0 0 10px rgba(99,161,242,0.8)' : 'none',
+                fontSize: 'clamp(4rem, 14vw, 10.5rem)',
+                clipPath: progress >= 85 ? 'none' : `polygon(0% 0%, ${laserCutPercent}% 0%, ${laserCutPercent}% 100%, 0% 100%)`,
+                filter:
+                  progress >= 85
+                    ? 'drop-shadow(0 20px 40px rgba(0,0,0,0.9)) drop-shadow(0 4px 6px rgba(255,255,255,0.45))'
+                    : 'drop-shadow(0 0 15px rgba(255,90,60,0.8)) drop-shadow(0 15px 30px rgba(0,0,0,0.9))',
               }}
             >
-              {progress < 82 ? 'Volumetric Laser Burn // GLSL Thermal Shimmer' : 'Substrate Solidified // 100% Geometry Intact'}
+              <span className="inline-block bg-gradient-to-b from-white via-[#f0f4fa] to-[#a8b8cc] bg-clip-text text-transparent">
+                VOXA
+              </span>
+              <span
+                className="inline-block text-flame transition-all duration-500"
+                style={{
+                  opacity: progress >= 75 ? 1 : 0,
+                  transform: progress >= 75 ? 'scale(1)' : 'scale(0)',
+                  filter: 'drop-shadow(0 0 24px rgba(255,90,60,0.9))',
+                }}
+              >
+                .
+              </span>
+            </div>
+
+            {/* Dynamic Telemetry Subtitle */}
+            <div className="mt-4 overflow-hidden">
+              <p
+                className="font-dm text-xs sm:text-sm font-bold tracking-[0.24em] uppercase transition-all duration-500"
+                style={{
+                  color: progress < 84 ? '#63a1f2' : 'rgba(255,255,255,0.7)',
+                  textShadow: progress < 84 ? '0 0 12px rgba(99,161,242,0.8)' : 'none',
+                }}
+              >
+                {progress < 84 ? 'Volumetric Laser Burn // GLSL Thermal Shimmer' : 'Substrate Solidified // 100% Geometry Intact'}
+              </p>
             </div>
           </div>
         )}
       </div>
 
-      {/* Bottom Bar: Minimalist Rounded Pill Progress Bar */}
-      <div className="relative z-20 mx-auto flex w-full max-w-md flex-col items-center gap-3">
+      {/* Bottom Bar: Engineered Precision Slider with Millimeter Ticks */}
+      <div className="relative z-20 mx-auto flex w-full max-w-lg flex-col items-center gap-3">
         {/* Progress Percentage & Status */}
         <div className="flex w-full items-center justify-between font-dm text-xs uppercase tracking-wider text-white/50">
-          <span>
-            {variant === 'c'
-              ? progress < 82
-                ? 'Thermal Volumetric Laser Burn...'
+          <span className="flex items-center gap-2">
+            <span className="size-1.5 rounded-full bg-voxa animate-pulse" />
+            <span>
+              {variant === 'c'
+                ? progress < 84
+                  ? 'Thermal Laser Burn Active...'
+                  : progress < 100
+                  ? 'Cooling Molten Contours...'
+                  : 'System Ready'
+                : progress < 70
+                ? 'Synthesizing Contour Geometry...'
                 : progress < 100
-                ? 'Cooling Molten Contours...'
-                : 'System Ready'
-              : progress < 70
-              ? 'Synthesizing Contour Geometry...'
-              : progress < 100
-              ? 'Calibrating 3D Space...'
-              : 'System Ready'}
+                ? 'Calibrating 3D Space...'
+                : 'System Ready'}
+            </span>
           </span>
           <span className="font-manrope text-base sm:text-lg font-bold text-white tabular-nums">
             {String(progress).padStart(2, '0')}%
           </span>
         </div>
 
-        {/* Minimalist Pill Container */}
-        <div className="relative h-2.5 w-full overflow-hidden rounded-full border border-white/10 bg-white/5 p-0.5 shadow-[inset_0_1px_3px_rgba(0,0,0,0.8)]">
+        {/* Engineered Progress Track Housing */}
+        <div className="relative h-3 w-full overflow-hidden rounded-full border border-white/20 bg-black/60 p-0.5 shadow-[inset_0_2px_8px_rgba(0,0,0,0.9)] backdrop-blur-md">
+          {/* Subtle Millimeter Calibration Ticks */}
+          <div aria-hidden className="pointer-events-none absolute inset-0 flex justify-between px-3 py-1 opacity-25">
+            {Array.from({ length: 20 }).map((_, i) => (
+              <span key={i} className="h-full w-[1px] bg-white/40" />
+            ))}
+          </div>
+
           {/* Glowing Fill Bar */}
           <div
-            className={`h-full rounded-full transition-[width] duration-150 ease-out shadow-[0_0_12px_rgba(99,161,242,0.8)] ${
+            className={`relative h-full rounded-full transition-[width] duration-150 ease-out ${
               variant === 'c'
-                ? 'bg-gradient-to-r from-flame via-voxa to-white'
-                : 'bg-gradient-to-r from-voxa via-[#80b9ff] to-white'
+                ? 'bg-gradient-to-r from-[#ff5a3c] via-voxa to-white shadow-[0_0_16px_rgba(99,161,242,0.9)]'
+                : 'bg-gradient-to-r from-voxa via-[#80b9ff] to-white shadow-[0_0_16px_rgba(99,161,242,0.9)]'
             }`}
             style={{ width: `${progress}%` }}
-          />
+          >
+            {/* Blazing Laser Tip / Spark Head */}
+            <div
+              className={`absolute right-0 top-1/2 -translate-y-1/2 size-2.5 rounded-full ${
+                variant === 'c' ? 'bg-[#ffcc00] shadow-[0_0_12px_#ff5a3c]' : 'bg-white shadow-[0_0_12px_#63a1f2]'
+              }`}
+            />
+          </div>
         </div>
       </div>
     </aside>
