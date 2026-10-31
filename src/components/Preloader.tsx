@@ -202,7 +202,23 @@ export function Preloader({ onComplete }: PreloaderProps) {
           }}
         />
 
-        {/* Centered Stack: Emblem Badge + 3D Wordmark */}
+        {/* Background Giant VOXA Emblem Watermark */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 flex items-center justify-center select-none overflow-hidden z-[1]"
+        >
+          <img
+            src={logos.icon}
+            alt=""
+            className="size-72 sm:size-88 md:size-[28rem] lg:size-[32rem] object-contain blur-[2px] transition-all duration-700 select-none filter drop-shadow-[0_0_60px_rgba(99,161,242,0.55)] drop-shadow-[0_0_120px_rgba(255,90,60,0.2)]"
+            style={{
+              opacity: isEmbossed ? 0.18 : Math.max(0.04, (progress / 100) * 0.12),
+              transform: isEmbossed ? 'scale(1.04)' : 'scale(0.92)',
+            }}
+          />
+        </div>
+
+        {/* Centered Stack: Emblem Badge + 3D Official VOXA Brand Logo + Subtitle */}
         <div className="relative z-[3] flex flex-col items-center justify-center gap-3 sm:gap-4">
           {/* Official VOXA Icon Badge with Glowing Flame Dot */}
           <div
@@ -229,31 +245,22 @@ export function Preloader({ onComplete }: PreloaderProps) {
             />
           </div>
 
-          {/* 3D Embossed VOXA Wordmark */}
+          {/* 3D Embossed Official VOXA Logo Asset (Not font typography) */}
           <div
-            className="flex items-baseline font-manrope font-extrabold tracking-[-0.04em] text-white select-none transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
+            className="relative flex items-center justify-center select-none transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
             style={{
-              fontSize: 'clamp(3.5rem, 11vw, 7.5rem)',
               opacity: isEmbossed ? 1 : 0.08,
-              transform: isEmbossed ? 'scale(1) translateY(0)' : 'scale(0.96) translateY(12px)',
+              transform: isEmbossed ? 'scale(1) translateY(0)' : 'scale(0.94) translateY(12px)',
               filter: isEmbossed
-                ? 'drop-shadow(0 20px 40px rgba(0,0,0,0.95)) drop-shadow(0 4px 6px rgba(255,255,255,0.45)) drop-shadow(0 0 35px rgba(99,161,242,0.65))'
+                ? 'drop-shadow(0 18px 36px rgba(0,0,0,0.95)) drop-shadow(0 0 28px rgba(99,161,242,0.85)) drop-shadow(0 0 60px rgba(99,161,242,0.4))'
                 : 'none',
             }}
           >
-            <span className="inline-block bg-gradient-to-b from-white via-[#f0f4fa] to-[#b8c6d9] bg-clip-text text-transparent">
-              VOXA
-            </span>
-            <span
-              className="inline-block text-flame transition-all duration-500"
-              style={{
-                opacity: progress >= 75 ? 1 : 0,
-                transform: progress >= 75 ? 'scale(1)' : 'scale(0)',
-                filter: 'drop-shadow(0 0 24px rgba(255,90,60,0.95))',
-              }}
-            >
-              .
-            </span>
+            <img
+              src={logos.wordmark}
+              alt="VOXA"
+              className="h-14 sm:h-18 md:h-22 lg:h-26 w-auto max-w-[85vw] object-contain select-none"
+            />
           </div>
 
           {/* Subtitle */}
