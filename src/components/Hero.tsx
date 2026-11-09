@@ -136,7 +136,7 @@ export function Hero() {
         <div
           data-reveal="scale"
           style={delay(260)}
-          className="pointer-events-none relative mx-auto -mb-6 mt-4 aspect-[626.45/649] w-full max-w-[24rem] sm:max-w-[28rem] lg:absolute lg:left-[calc(50%+1.3956rem)] lg:top-[7.3125rem] lg:mx-0 lg:mt-0 lg:aspect-auto lg:h-[40.5625rem] lg:w-[39.153rem] lg:max-w-none"
+          className="pointer-events-none relative mx-auto -mb-6 mt-4 aspect-[626.45/649] w-full max-w-[24rem] sm:max-w-[28rem] lg:absolute lg:left-[calc(50%+1.3956rem)] rtl:lg:left-[2rem] lg:top-[7.3125rem] lg:mx-0 lg:mt-0 lg:aspect-auto lg:h-[40.5625rem] lg:w-[39.153rem] lg:max-w-none"
         >
           <div
             className="size-full transition-transform duration-700 ease-out"

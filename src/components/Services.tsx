@@ -4,7 +4,7 @@ import { Logo } from './Logo'
 import { useLanguage } from '@/context/LanguageContext'
 
 const number =
-  'absolute right-5 top-14 font-manrope text-[2.75rem] font-extrabold leading-[1.075] tracking-[-0.07672em] text-voxa sm:right-8 lg:right-auto lg:top-[6.375rem] lg:text-[3.3139rem]'
+  'font-manrope text-[2.75rem] font-extrabold leading-[1.075] tracking-[-0.07672em] text-voxa lg:text-[3.3139rem]'
 const title =
   'font-manrope text-[2.25rem] leading-[1.05] tracking-[-0.025em] text-white lg:text-[2.5rem]'
 const body = 'font-dm text-[1.125rem] leading-[1.3] text-white lg:text-[1.25rem]'
@@ -46,7 +46,7 @@ export function Services() {
         />
 
         {/* 01 — Design */}
-        <article className="relative overflow-hidden bg-black px-5 pb-20 pt-14 sm:px-8 md:col-span-2 lg:col-span-1 lg:p-0 lg:pl-[2.625rem] lg:pt-[6.375rem]">
+        <article className="relative overflow-hidden bg-black px-5 pb-20 pt-14 sm:px-8 md:col-span-2 lg:col-span-1 lg:p-0 lg:px-[2.625rem] lg:pt-[6.375rem]">
           <img
             src={assets.ring}
             alt=""
@@ -60,29 +60,30 @@ export function Services() {
             className="pointer-events-none absolute -bottom-28 -right-24 w-[22rem] max-w-none animate-drift opacity-40 lg:hidden"
           />
 
-          <p data-reveal="up" className={`${number} lg:left-[29.875rem]`}>
-            01
-          </p>
-
           <div className="relative z-[2]">
-            <h2
-              data-reveal="up"
-              className="pr-16 font-manrope text-[2.25rem] font-medium leading-[1.05] tracking-[-0.04em] text-paper sm:text-[2.75rem] lg:pr-0 lg:text-[3rem]"
-            >
-              {lang === 'ar' ? (
-                <>
-                  استوديو متكامل.
-                  <br />
-                  لكل احتياج رقمي.
-                </>
-              ) : (
-                <>
-                  One studio.
-                  <br />
-                  Every digital need.
-                </>
-              )}
-            </h2>
+            <div className="flex items-start justify-between pr-4 rtl:pr-0 rtl:pl-4">
+              <h2
+                data-reveal="up"
+                className="font-manrope text-[2.25rem] font-medium leading-[1.05] tracking-[-0.04em] text-paper sm:text-[2.75rem] lg:text-[3rem]"
+              >
+                {lang === 'ar' ? (
+                  <>
+                    استوديو متكامل.
+                    <br />
+                    لكل احتياج رقمي.
+                  </>
+                ) : (
+                  <>
+                    One studio.
+                    <br />
+                    Every digital need.
+                  </>
+                )}
+              </h2>
+              <p data-reveal="up" className={number}>
+                01
+              </p>
+            </div>
             <p
               data-reveal="up"
               style={delay(80)}
@@ -124,20 +125,22 @@ export function Services() {
         </article>
 
         {/* 02 — Coding */}
-        <article className="relative overflow-hidden bg-[#0e0e0e] px-5 pb-20 pt-14 sm:px-8 lg:overflow-visible lg:p-0 lg:pl-[1.375rem] lg:pt-[6.8125rem]">
+        <article className="relative overflow-hidden bg-[#0e0e0e] px-5 pb-20 pt-14 sm:px-8 lg:overflow-visible lg:p-0 lg:px-[1.375rem] lg:pt-[6.8125rem]">
           <img
             src={assets.waves}
             alt=""
             aria-hidden
             className="pointer-events-none absolute -right-20 -top-24 w-[20rem] max-w-none animate-drift opacity-45 lg:hidden"
           />
-          <p data-reveal="up" className={`${number} lg:left-[15.8125rem]`}>
-            02
-          </p>
           <div className="relative z-[2]">
-            <h3 data-reveal="up" className={`${title} font-bold`}>
-              {lang === 'ar' ? 'برمجة وكود' : 'Coding'}
-            </h3>
+            <div className="flex items-start justify-between pr-4 rtl:pr-0 rtl:pl-4">
+              <h3 data-reveal="up" className={`${title} font-bold`}>
+                {lang === 'ar' ? 'برمجة وكود' : 'Coding'}
+              </h3>
+              <p data-reveal="up" className={number}>
+                02
+              </p>
+            </div>
             <img
               data-reveal="line"
               style={delay(120)}

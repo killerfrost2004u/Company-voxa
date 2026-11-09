@@ -2,12 +2,15 @@ import { useEffect, useMemo, useState } from 'react'
 import type { BlogPost } from '@/types/blog'
 import { blogService } from '@/lib/blogService'
 import { navigate } from '@/lib/router'
+import { useLanguage } from '@/context/LanguageContext'
 
 interface BlogPostProps {
   slug: string
 }
 
 export function BlogPostView({ slug }: BlogPostProps) {
+  const { lang } = useLanguage()
+  const isAr = lang === 'ar'
   const [copied, setCopied] = useState(false)
   const post = useMemo(() => blogService.getPostBySlug(slug), [slug])
   const allPosts = useMemo(() => blogService.getPosts(false), [])
@@ -17,39 +20,54 @@ export function BlogPostView({ slug }: BlogPostProps) {
     return allPosts.filter((p) => p.slug !== post.slug).slice(0, 3)
   }, [post, allPosts])
 
+  // Resolve localized post content
+  const title = post ? (isAr ? post.title : (post.titleEn || post.title)) : ''
+  const content = post ? (isAr ? post.content : (post.contentEn || post.content)) : ''
+  const excerpt = post ? (isAr ? post.excerpt : (post.excerptEn || post.excerpt)) : ''
+  const author = post ? (isAr ? post.author : (post.authorEn || post.author)) : ''
+  const authorRole = post
+    ? (isAr ? (post.authorRole || 'استوديو Voxa') : (post.authorRoleEn || 'Voxa Studio Team'))
+    : ''
+  const category = post ? (isAr ? post.category : (post.categoryEn || post.category)) : ''
+  const tags = post ? (isAr ? post.tags : (post.tagsEn || post.tags)) : []
+  const readTime = post ? (isAr ? post.readTime : (post.readTimeEn || post.readTime)) : ''
+
   // Dynamic SEO meta tags and Title
   useEffect(() => {
     if (!post) return
 
-    const pageTitle = `${post.seoTitle || post.title} | Voxa Studio`
+    const pageTitle = `${isAr ? (post.seoTitle || post.title) : (post.seoTitleEn || post.titleEn || post.title)} | Voxa Studio`
     document.title = pageTitle
 
-    const setMeta = (name: string, content: string) => {
+    const setMeta = (name: string, val: string) => {
       let tag = document.querySelector(`meta[name="${name}"]`)
       if (!tag) {
         tag = document.createElement('meta')
         tag.setAttribute('name', name)
         document.head.appendChild(tag)
       }
-      tag.setAttribute('content', content)
+      tag.setAttribute('content', val)
     }
 
-    const setOgMeta = (property: string, content: string) => {
+    const setOgMeta = (property: string, val: string) => {
       let tag = document.querySelector(`meta[property="${property}"]`)
       if (!tag) {
         tag = document.createElement('meta')
         tag.setAttribute('property', property)
         document.head.appendChild(tag)
       }
-      tag.setAttribute('content', content)
+      tag.setAttribute('content', val)
     }
 
-    const desc = post.seoDescription || post.excerpt
+    const desc = isAr
+      ? (post.seoDescription || post.excerpt)
+      : (post.seoDescriptionEn || post.excerptEn || post.excerpt)
     setMeta('description', desc)
-    if (post.seoKeywords) setMeta('keywords', post.seoKeywords)
+    if (isAr && post.seoKeywords) setMeta('keywords', post.seoKeywords)
+    if (!isAr && post.seoKeywordsEn) setMeta('keywords', post.seoKeywordsEn)
 
     const url = `https://voxa-pi-three.vercel.app/blog/${post.slug}`
-    setOgMeta('og:title', post.seoTitle || post.title)
+    setOgMeta('og:title', pageTitle)
     setOgMeta('og:description', desc)
     setOgMeta('og:url', url)
     setOgMeta('og:type', 'article')
@@ -63,21 +81,25 @@ export function BlogPostView({ slug }: BlogPostProps) {
       document.head.appendChild(canonical)
     }
     canonical.setAttribute('href', url)
-  }, [post])
+  }, [post, isAr])
 
   if (!post) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center bg-ink px-5 text-center text-white">
-        <h1 className="font-manrope text-4xl font-extrabold text-voxa">المقال غير موجود (404)</h1>
+        <h1 className="font-manrope text-4xl font-extrabold text-voxa">
+          {isAr ? 'المقال غير موجود (404)' : 'Article Not Found (404)'}
+        </h1>
         <p className="mt-4 font-dm text-base text-[#aaa7a0]">
-          عذراً، لم نتمكن من العثور على المقال المطلوب. ربما تم نقله أو حذفه.
+          {isAr
+            ? 'عذراً، لم نتمكن من العثور على المقال المطلوب. ربما تم نقله أو حذفه.'
+            : 'Sorry, we could not find the requested article. It may have been relocated or removed.'}
         </p>
         <button
           type="button"
           onClick={() => navigate('/blog')}
           className="mt-6 rounded-full bg-voxa px-6 py-2.5 font-manrope text-sm font-bold text-ash"
         >
-          العودة للمدونة
+          {isAr ? 'العودة للمدونة' : 'Back to Blog'}
         </button>
       </div>
     )
@@ -87,14 +109,14 @@ export function BlogPostView({ slug }: BlogPostProps) {
   const blogPostingSchema = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
-    headline: post.title,
-    description: post.seoDescription || post.excerpt,
+    headline: title,
+    description: excerpt,
     image: [post.featuredImage],
     datePublished: post.publishedAt,
     dateModified: post.updatedAt || post.publishedAt,
     author: {
       '@type': 'Organization',
-      name: post.author || 'Voxa Studio',
+      name: author,
       url: 'https://voxa-pi-three.vercel.app/',
     },
     publisher: {
@@ -136,7 +158,7 @@ export function BlogPostView({ slug }: BlogPostProps) {
             onClick={() => navigate('/')}
             className="transition-colors hover:text-voxa"
           >
-            الرئيسية
+            {isAr ? 'الرئيسية' : 'Home'}
           </button>
           <span>/</span>
           <button
@@ -144,33 +166,33 @@ export function BlogPostView({ slug }: BlogPostProps) {
             onClick={() => navigate('/blog')}
             className="transition-colors hover:text-voxa"
           >
-            المدونة
+            {isAr ? 'المدونة' : 'Blog'}
           </button>
           <span>/</span>
           <span className="line-clamp-1 max-w-[14rem] text-white/90 sm:max-w-none">
-            {post.title}
+            {title}
           </span>
         </nav>
 
         {/* Post Metadata Header */}
         <div className="flex flex-wrap items-center gap-3">
           <span className="rounded-full bg-voxa/15 px-3.5 py-1 font-dm text-xs font-bold text-voxa">
-            {post.category}
+            {category}
           </span>
           <span className="font-dm text-xs text-[#777]">
-            {new Date(post.publishedAt).toLocaleDateString('ar-EG', {
+            {new Date(post.publishedAt).toLocaleDateString(isAr ? 'ar-EG' : 'en-US', {
               year: 'numeric',
               month: 'long',
               day: 'numeric',
             })}
           </span>
           <span className="font-dm text-xs text-[#777]">•</span>
-          <span className="font-dm text-xs text-[#777]">{post.readTime}</span>
+          <span className="font-dm text-xs text-[#777]">{readTime}</span>
         </div>
 
         {/* Article Title */}
         <h1 className="mt-5 font-manrope text-2xl font-black leading-snug tracking-tight sm:text-4xl lg:text-[2.75rem] lg:leading-[1.25]">
-          {post.title}
+          {title}
         </h1>
 
         {/* Author & Share Bar */}
@@ -180,16 +202,16 @@ export function BlogPostView({ slug }: BlogPostProps) {
               V
             </div>
             <div>
-              <p className="font-manrope text-sm font-bold text-white">{post.author}</p>
-              <p className="font-dm text-xs text-[#888]">{post.authorRole || 'استوديو Voxa'}</p>
+              <p className="font-manrope text-sm font-bold text-white">{author}</p>
+              <p className="font-dm text-xs text-[#888]">{authorRole}</p>
             </div>
           </div>
 
           {/* Social Share Buttons */}
           <div className="flex items-center gap-2">
-            <span className="font-dm text-xs text-[#777] ml-2">مشاركة:</span>
+            <span className="font-dm text-xs text-[#777] mx-1">{isAr ? 'مشاركة:' : 'Share:'}</span>
             <a
-              href={`https://wa.me/?text=${encodeURIComponent(`${post.title} ${shareUrl}`)}`}
+              href={`https://wa.me/?text=${encodeURIComponent(`${title} ${shareUrl}`)}`}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Share on WhatsApp"
@@ -209,7 +231,7 @@ export function BlogPostView({ slug }: BlogPostProps) {
             <button
               type="button"
               onClick={copyLink}
-              title="نسخ الرابط"
+              title={isAr ? 'نسخ الرابط' : 'Copy Link'}
               className="flex size-9 items-center justify-center rounded-full border border-white/10 bg-ash/60 text-xs text-white transition-all hover:scale-110 hover:border-voxa"
             >
               {copied ? '✓' : '🔗'}
@@ -221,14 +243,14 @@ export function BlogPostView({ slug }: BlogPostProps) {
         <div className="mt-8 overflow-hidden rounded-3xl border border-white/10 bg-ash shadow-[0_20px_50px_rgba(0,0,0,0.7)]">
           <img
             src={post.featuredImage}
-            alt={post.title}
+            alt={title}
             className="h-[20rem] w-full object-cover sm:h-[26rem] lg:h-[30rem]"
           />
         </div>
 
         {/* Article Body Content */}
         <div className="mt-12 space-y-6 font-dm text-base leading-[1.9] text-[#d6d4ce] sm:text-lg lg:text-[1.1875rem]">
-          {post.content.split('\n\n').map((paragraph, index) => {
+          {content.split('\n\n').map((paragraph, index) => {
             const trimmed = paragraph.trim()
 
             // Header 1 (# ...)
@@ -264,7 +286,7 @@ export function BlogPostView({ slug }: BlogPostProps) {
             if (trimmed.startsWith('* ') || trimmed.startsWith('- ')) {
               const items = trimmed.split('\n')
               return (
-                <ul key={index} className="my-4 list-inside list-disc space-y-2 pr-2 text-[#ccc]">
+                <ul key={index} className="my-4 list-inside list-disc space-y-2 px-2 text-[#ccc]">
                   {items.map((it, i) => (
                     <li key={i} className="leading-relaxed">
                       {it.replace(/^[\*\-]\s+/, '')}
@@ -278,7 +300,7 @@ export function BlogPostView({ slug }: BlogPostProps) {
             if (/^\d+\./.test(trimmed)) {
               const items = trimmed.split('\n')
               return (
-                <ol key={index} className="my-4 list-inside list-decimal space-y-2 pr-2 text-[#ccc]">
+                <ol key={index} className="my-4 list-inside list-decimal space-y-2 px-2 text-[#ccc]">
                   {items.map((it, i) => (
                     <li key={i} className="leading-relaxed">
                       {it.replace(/^\d+\.\s*/, '')}
@@ -298,10 +320,10 @@ export function BlogPostView({ slug }: BlogPostProps) {
         </div>
 
         {/* Tags */}
-        {post.tags && post.tags.length > 0 && (
+        {tags && tags.length > 0 && (
           <div className="mt-12 flex flex-wrap items-center gap-2 border-t border-white/10 pt-6">
-            <span className="font-dm text-xs text-[#777] ml-2">الوسوم:</span>
-            {post.tags.map((tag) => (
+            <span className="font-dm text-xs text-[#777] mx-1">{isAr ? 'الوسوم:' : 'Tags:'}</span>
+            {tags.map((tag) => (
               <span
                 key={tag}
                 className="rounded-full border border-white/10 bg-ash/50 px-3 py-1 font-dm text-xs text-white/70"
@@ -315,44 +337,52 @@ export function BlogPostView({ slug }: BlogPostProps) {
         {/* Call to action inside post */}
         <div className="mt-14 rounded-3xl border border-voxa/30 bg-gradient-to-br from-ash via-ash to-[#0a1829] p-8 text-center sm:p-10">
           <h3 className="font-manrope text-2xl font-bold text-white">
-            هل تخطط لإطلاق أو إعادة تصميم موقعك؟
+            {isAr ? 'هل تخطط لإطلاق أو إعادة تصميم موقعك؟' : 'Planning to launch or redesign your digital platform?'}
           </h3>
           <p className="mt-2.5 font-dm text-sm text-[#aaa7a0] sm:text-base">
-            فريق استوديو Voxa يصمم لك منصة رقمية مخصصة تجمع بين الجمالية البصرية وسرعة التحميل الخارقة.
+            {isAr
+              ? 'فريق استوديو Voxa يصمم لك منصة رقمية مخصصة تجمع بين الجمالية البصرية وسرعة التحميل الخارقة.'
+              : 'Voxa Studio crafts bespoke digital platforms merging luxury aesthetics with sub-second loading performance.'}
           </p>
           <button
             type="button"
             onClick={() => navigate('/#contact')}
             className="mt-6 inline-flex rounded-full bg-voxa px-8 py-3.5 font-manrope text-sm font-bold text-ash shadow-[0_0_20px_rgba(99,161,242,0.4)] transition-transform hover:scale-105 active:scale-95"
           >
-            تواصل معنا وابدأ الآن
+            {isAr ? 'تواصل معنا وابدأ الآن' : 'Start Your Project Now'}
           </button>
         </div>
 
         {/* Related Posts */}
         {relatedPosts.length > 0 && (
           <div className="mt-20 border-t border-white/10 pt-12">
-            <h3 className="font-manrope text-2xl font-bold text-white">مقالات ذات صلة</h3>
+            <h3 className="font-manrope text-2xl font-bold text-white">
+              {isAr ? 'مقالات ذات صلة' : 'Related Articles'}
+            </h3>
             <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {relatedPosts.map((rel) => (
-                <div
-                  key={rel.id}
-                  onClick={() => navigate(`/blog/${rel.slug}`)}
-                  className="group cursor-pointer overflow-hidden rounded-2xl border border-white/10 bg-ash/30 p-4 transition-all hover:border-voxa/40"
-                >
-                  <img
-                    src={rel.featuredImage}
-                    alt={rel.title}
-                    className="h-36 w-full rounded-xl object-cover transition-transform group-hover:scale-105"
-                  />
-                  <span className="mt-3 inline-block font-dm text-[0.7rem] text-voxa">
-                    {rel.category}
-                  </span>
-                  <h4 className="mt-1.5 font-manrope text-sm font-bold leading-snug text-white line-clamp-2 group-hover:text-voxa">
-                    {rel.title}
-                  </h4>
-                </div>
-              ))}
+              {relatedPosts.map((rel) => {
+                const relTitle = isAr ? rel.title : (rel.titleEn || rel.title)
+                const relCat = isAr ? rel.category : (rel.categoryEn || rel.category)
+                return (
+                  <div
+                    key={rel.id}
+                    onClick={() => navigate(`/blog/${rel.slug}`)}
+                    className="group cursor-pointer overflow-hidden rounded-2xl border border-white/10 bg-ash/30 p-4 transition-all hover:border-voxa/40"
+                  >
+                    <img
+                      src={rel.featuredImage}
+                      alt={relTitle}
+                      className="h-36 w-full rounded-xl object-cover transition-transform group-hover:scale-105"
+                    />
+                    <span className="mt-3 inline-block font-dm text-[0.7rem] text-voxa">
+                      {relCat}
+                    </span>
+                    <h4 className="mt-1.5 font-manrope text-sm font-bold leading-snug text-white line-clamp-2 group-hover:text-voxa">
+                      {relTitle}
+                    </h4>
+                  </div>
+                )
+              })}
             </div>
           </div>
         )}

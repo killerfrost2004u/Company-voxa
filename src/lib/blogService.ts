@@ -1,7 +1,7 @@
 import type { BlogPost, BlogPostInput } from '@/types/blog'
 import { INITIAL_POSTS } from './blogData'
 
-const STORAGE_KEY = 'voxa_blog_posts_v1'
+const STORAGE_KEY = 'voxa_blog_posts_v2'
 
 function generateSlug(text: string): string {
   return text
@@ -13,10 +13,10 @@ function generateSlug(text: string): string {
     .replace(/^-+|-+$/g, '') || `post-${Date.now()}`
 }
 
-function calculateReadTime(content: string): string {
+function calculateReadTime(content: string, lang = 'ar'): string {
   const words = content.trim().split(/\s+/).length
   const minutes = Math.max(1, Math.round(words / 180))
-  return `${minutes} دقائق قراءة`
+  return lang === 'ar' ? `${minutes} دقائق قراءة` : `${minutes} min read`
 }
 
 export const blogService = {

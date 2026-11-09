@@ -147,14 +147,14 @@ export function BlogAdmin() {
             <div>
               <input
                 type="password"
-                placeholder="رمز المرور (الافتراضي: voxa2026)"
+                placeholder="رمز المرور (Admin PIN)"
                 value={pinInput}
                 onChange={(e) => setPinInput(e.target.value)}
                 className="w-full rounded-xl border border-white/15 bg-black/50 px-4 py-3 font-manrope text-sm text-white placeholder-white/40 outline-none focus:border-voxa focus:ring-1 focus:ring-voxa"
                 autoFocus
               />
               {authError && (
-                <p className="mt-2 text-xs text-flame">رمز المرور غير صحيح. جرب: voxa2026</p>
+                <p className="mt-2 text-xs text-flame">رمز المرور غير صحيح، يرجى المحاولة مجدداً</p>
               )}
             </div>
             <button
