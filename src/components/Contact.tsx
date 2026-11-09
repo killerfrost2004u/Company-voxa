@@ -1,6 +1,7 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import { assets } from '@/lib/assets'
 import { delay } from '@/lib/style'
+import { useLanguage } from '@/context/LanguageContext'
 
 const EMAIL = 'voxaa.business@gmail.com'
 
@@ -48,6 +49,7 @@ type ContactProps = {
 }
 
 export function Contact({ planRequest }: ContactProps) {
+  const { lang, t } = useLanguage()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [message, setMessage] = useState('')
@@ -116,31 +118,34 @@ export function Contact({ planRequest }: ContactProps) {
         </h2>
       </div>
 
-      <div className="relative z-[2] mx-auto grid max-w-[80rem] gap-14 lg:grid-cols-[573fr_608fr] lg:gap-[1.1875rem] lg:pl-[2.375rem] lg:pr-[2.625rem]">
+      <div className="relative z-[2] mx-auto grid max-w-[80rem] gap-14 lg:grid-cols-[573fr_608fr] lg:gap-[1.1875rem] lg:px-[2.4rem]">
         <div className="lg:pt-[17.9256rem]">
           <h3
             data-reveal="up"
-            className="font-manrope text-[2.5rem] font-bold leading-[1.1] text-white lg:text-[3rem] lg:leading-[1.4875rem]"
+            className="font-manrope text-[2.5rem] font-bold leading-[1.1] text-white lg:text-[3rem]"
           >
-            Get in touch
+            {lang === 'ar' ? 'تواصل معنا مباشرة' : 'Get in touch'}
           </h3>
           <p
             data-reveal="up"
             style={delay(100)}
-            className="mt-4 max-w-[21.8125rem] font-manrope text-[1.25rem] font-medium leading-[1.125] text-white lg:mt-[3.075rem] lg:text-[1.5rem]"
+            className="mt-4 max-w-[24rem] font-manrope text-[1.25rem] font-medium leading-[1.4] text-white/80 lg:mt-[2rem] lg:text-[1.4rem]"
           >
-            Feel free to ask anytime to start your project with us
+            {lang === 'ar'
+              ? 'ابدأ مشروعك معنا اليوم وتحدث مع فريقنا الهندسي مباشرة لتحديد أنسب باقة لعملك.'
+              : 'Feel free to ask anytime to start your project with us'}
           </p>
 
           <ul data-reveal-group className="mt-10 lg:mt-[3.1875rem]">
             {CHANNELS.map((channel, i) => {
+              const label = channel.label === 'Egypt' && lang === 'ar' ? 'مصر - القاهرة' : channel.label
               const inner = (
                 <>
                   <span className="glass [--glass-alpha:0.2]" />
                   <span
                     data-reveal="fade"
                     style={delay(i * 120 + 150)}
-                    className="relative z-[2] ml-3 shrink-0 lg:ml-[0.8125rem]"
+                    className="relative z-[2] mx-3 shrink-0 lg:mx-[0.8125rem]"
                   >
                     <span className="flex size-14 items-center justify-center rounded-[0.4375rem] bg-[#1f1f1f] transition-colors duration-300 group-hover:bg-voxa sm:size-16 lg:size-[4.75rem]">
                       <img src={channel.icon} alt="" className={`max-w-none ${channel.iconClass}`} />
@@ -149,9 +154,9 @@ export function Contact({ planRequest }: ContactProps) {
                   <span
                     data-reveal="fade"
                     style={delay(i * 120 + 220)}
-                    className={`relative z-[2] ml-4 min-w-0 truncate py-[0.25em] font-manrope text-[1rem] font-bold leading-[1.125] text-white sm:ml-5 sm:text-[1.25rem] lg:text-[1.5rem] ${channel.textClass}`}
+                    className={`relative z-[2] mx-4 min-w-0 truncate py-[0.25em] font-manrope text-[1rem] font-bold leading-[1.125] text-white sm:mx-5 sm:text-[1.25rem] lg:text-[1.5rem] ${channel.textClass}`}
                   >
-                    {channel.label}
+                    {label}
                   </span>
                 </>
               )
@@ -164,7 +169,7 @@ export function Contact({ planRequest }: ContactProps) {
                       href={channel.href}
                       target={channel.href.startsWith('http') ? '_blank' : undefined}
                       rel={channel.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                      className={`${card} hover:translate-x-1.5`}
+                      className={`${card} hover:translate-x-1.5 rtl:hover:-translate-x-1.5`}
                     >
                       {inner}
                     </a>
@@ -186,13 +191,13 @@ export function Contact({ planRequest }: ContactProps) {
             <span className="glass [--glass-alpha:0.2]" />
             <div data-reveal="up" style={delay(150)} className="relative z-[2]">
               <label className="sr-only" htmlFor="contact-name">
-                Name
+                {lang === 'ar' ? 'الاسم' : 'Name'}
               </label>
               <input
                 id="contact-name"
                 required
                 autoComplete="name"
-                placeholder="Name"
+                placeholder={lang === 'ar' ? 'الاسم بالكامل' : 'Name'}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 className={`${field} block h-16 lg:h-[5.3125rem]`}
@@ -200,14 +205,14 @@ export function Contact({ planRequest }: ContactProps) {
             </div>
             <div data-reveal="up" style={delay(230)} className="relative z-[2] mt-[0.9375rem]">
               <label className="sr-only" htmlFor="contact-email">
-                Email
+                {lang === 'ar' ? 'البريد الإلكتروني' : 'Email'}
               </label>
               <input
                 id="contact-email"
                 required
                 type="email"
                 autoComplete="email"
-                placeholder="Email"
+                placeholder={lang === 'ar' ? 'بريدك الإلكتروني' : 'Email'}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className={`${field} block h-16 lg:h-[5.3125rem]`}
@@ -215,12 +220,12 @@ export function Contact({ planRequest }: ContactProps) {
             </div>
             <div data-reveal="up" style={delay(310)} className="relative z-[2] mt-[1.0625rem]">
               <label className="sr-only" htmlFor="contact-message">
-                Message
+                {lang === 'ar' ? 'الرسالة' : 'Message'}
               </label>
               <textarea
                 id="contact-message"
                 required
-                placeholder="Message"
+                placeholder={lang === 'ar' ? 'تفاصيل مشروعك والخدمات أو الباقة المطلوبة...' : 'Message'}
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 className={`${field} block h-48 resize-none pt-[1.125rem] lg:h-[16.5rem]`}
@@ -239,7 +244,9 @@ export function Contact({ planRequest }: ContactProps) {
                       <span className="relative size-full rounded-full bg-emerald-400" />
                     </span>
                     <span className="font-manrope text-sm font-semibold tracking-wide">
-                      Enquiry received! We will reply to your email shortly.
+                      {lang === 'ar'
+                        ? 'تم استلام طلبك بنجاح! سيتواصل معك أحد مهندسينا قريباً.'
+                        : 'Enquiry received! We will reply to your email shortly.'}
                     </span>
                   </div>
                 </div>
@@ -253,13 +260,13 @@ export function Contact({ planRequest }: ContactProps) {
                   <div className="flex items-start gap-2.5">
                     <span className="mt-1 size-2 rounded-full bg-rose-400 shrink-0" />
                     <div className="text-sm">
-                      <p className="font-semibold">{errorMessage || 'Unable to deliver message right now.'}</p>
+                      <p className="font-semibold">{errorMessage || (lang === 'ar' ? 'تعذر إرسال الرسالة حالياً.' : 'Unable to deliver message right now.')}</p>
                       <p className="mt-1 text-xs text-white/70">
-                        You can also contact us directly at{' '}
+                        {lang === 'ar' ? 'يمكنك أيضاً التواصل معنا مباشرة عبر ' : 'You can also contact us directly at '}
                         <a href={`mailto:${EMAIL}`} className="text-voxa underline hover:text-white">
                           {EMAIL}
                         </a>{' '}
-                        or via{' '}
+                        {lang === 'ar' ? 'أو عبر ' : 'or via '}
                         <a
                           href="https://wa.me/201111717189"
                           target="_blank"
@@ -310,10 +317,10 @@ export function Contact({ planRequest }: ContactProps) {
                     </svg>
                   )}
                   {isSubmitting
-                    ? 'Sending enquiry…'
+                    ? (lang === 'ar' ? 'جاري الإرسال…' : 'Sending enquiry…')
                     : submitStatus === 'success'
-                      ? 'Sent Successfully ✓'
-                      : 'Submit'}
+                      ? (lang === 'ar' ? 'تم الإرسال بنجاح ✓' : 'Sent Successfully ✓')
+                      : (lang === 'ar' ? 'إرسال الطلب الآن' : 'Submit')}
                 </span>
               </button>
             </div>

@@ -1,13 +1,15 @@
 import { useState } from 'react'
+import { useLanguage } from '@/context/LanguageContext'
 
 const WHATSAPP_URL = 'https://wa.me/201111717189'
 
 export function FloatingWhatsApp() {
   const [isHovered, setIsHovered] = useState(false)
+  const { lang, t } = useLanguage()
 
   return (
     <aside
-      aria-label="Direct WhatsApp contact"
+      aria-label={t.whatsapp.ariaLabel}
       className="fixed bottom-6 right-6 z-50 flex items-center gap-3.5 sm:bottom-8 sm:right-8"
     >
       {/* Interactive Status Tooltip pill */}
@@ -21,8 +23,12 @@ export function FloatingWhatsApp() {
           <span className="relative size-full rounded-full bg-[#25D366]" />
         </span>
         <div className="flex flex-col">
-          <span className="font-dm text-xs font-bold tracking-wide text-white">Chat on WhatsApp</span>
-          <span className="font-dm text-[0.65rem] text-white/50">Online • Typically replies in 5m</span>
+          <span className="font-dm text-xs font-bold tracking-wide text-white">
+            {lang === 'ar' ? 'تواصل معنا عبر واتساب' : 'Chat on WhatsApp'}
+          </span>
+          <span className="font-dm text-[0.65rem] text-white/50">
+            {lang === 'ar' ? 'متاحون الآن • الرد خلال 5 دقائق' : 'Online • Typically replies in 5m'}
+          </span>
         </div>
       </div>
 
@@ -31,7 +37,7 @@ export function FloatingWhatsApp() {
         href={WHATSAPP_URL}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label="Chat with Voxa Studio on WhatsApp"
+        aria-label={t.whatsapp.ariaLabel}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         className="group relative flex size-18 sm:size-20 lg:size-22 items-center justify-center rounded-full bg-[#25D366] text-white shadow-[0_12px_45px_rgba(37,211,102,0.55)] transition-all duration-300 hover:scale-108 hover:shadow-[0_16px_55px_rgba(37,211,102,0.75)] active:scale-95"

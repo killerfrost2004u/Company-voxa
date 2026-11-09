@@ -2,31 +2,51 @@ import { useEffect, useState } from 'react'
 import { assets } from '@/lib/assets'
 import { Logo } from './Logo'
 import { navigate } from '@/lib/router'
-
-// Widths are the Figma text boxes, which keeps the link positions exact on desktop.
-const NAV = [
-  { label: 'Home', href: '#home', className: 'lg:w-[4.25rem]' },
-  { label: 'plans', href: '#plans', className: 'lg:w-[3.9375rem]' },
-  { label: 'Blog', href: '/blog', className: 'lg:w-[4.25rem]' },
-  { label: 'Contact us', href: '#contact', className: 'lg:w-[8rem]' },
-  { label: 'About us', href: '#about', className: 'lg:w-[6.4375rem]' },
-]
+import { useLanguage } from '@/context/LanguageContext'
 
 function StartNowArrow() {
   return (
-    <span className="relative flex h-[0.625rem] w-[0.5625rem] items-center justify-center transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5">
+    <span className="relative flex h-[0.625rem] w-[0.5625rem] items-center justify-center transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5">
       <img
         src={assets.arrowUpRight}
         alt=""
-        className="h-[0.6875rem] w-[0.75rem] max-w-none -rotate-90"
+        className="h-[0.6875rem] w-[0.75rem] max-w-none -rotate-90 rtl:scale-x-[-1]"
       />
     </span>
+  )
+}
+
+function GlobeIcon() {
+  return (
+    <svg
+      className="size-3.5 text-voxa"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <circle cx="12" cy="12" r="10" />
+      <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+      <path d="M2 12h20" />
+    </svg>
   )
 }
 
 export function Header({ isLoaded = true }: { isLoaded?: boolean }) {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
+  const { lang, setLang, t } = useLanguage()
+
+  const navItems = [
+    { label: t.header.home, href: '#home' },
+    { label: t.header.plans, href: '#plans' },
+    { label: t.header.blog, href: '/blog' },
+    { label: t.header.contact, href: '#contact' },
+    { label: t.header.about, href: '#about' },
+  ]
 
   useEffect(() => {
     if (!isLoaded) return
@@ -56,6 +76,10 @@ export function Header({ isLoaded = true }: { isLoaded?: boolean }) {
     navigate(href)
   }
 
+  const toggleLanguage = () => {
+    setLang(lang === 'en' ? 'ar' : 'en')
+  }
+
   return (
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow,backdrop-filter,opacity,transform] duration-500 ${
@@ -68,7 +92,7 @@ export function Header({ isLoaded = true }: { isLoaded?: boolean }) {
           : 'bg-transparent'
       }`}
     >
-      <div className="mx-auto flex h-[4.5rem] max-w-[80rem] items-center px-5 sm:px-8 lg:h-[5.8125rem] lg:pl-[2.4375rem] lg:pr-[2.6875rem]">
+      <div className="mx-auto flex h-[4.5rem] max-w-[80rem] items-center px-5 sm:px-8 lg:h-[5.8125rem] lg:px-[2.4375rem]">
         <a
           href="/"
           aria-label="Voxa home"
@@ -78,13 +102,14 @@ export function Header({ isLoaded = true }: { isLoaded?: boolean }) {
           <Logo variant="full" size="md" />
         </a>
 
-        <nav aria-label="Primary" className="ml-auto hidden items-center gap-[2.875rem] lg:flex">
-          {NAV.map((item) => (
+        {/* Desktop Navigation */}
+        <nav aria-label="Primary" className="ms-auto hidden items-center gap-[2.5rem] lg:flex">
+          {navItems.map((item) => (
             <a
               key={item.href}
               href={item.href}
               onClick={(e) => handleNavClick(e, item.href)}
-              className={`group relative whitespace-nowrap font-manrope text-[1.4799rem] font-bold leading-[1.485] text-white ${item.className ?? ''}`}
+              className="group relative whitespace-nowrap font-manrope text-[1.25rem] xl:text-[1.35rem] font-bold leading-[1.485] text-white"
             >
               {item.label}
               <span className="absolute -bottom-0.5 left-0 h-[2px] w-full origin-right scale-x-0 rounded-full bg-voxa transition-transform duration-500 ease-[var(--ease-expo)] group-hover:origin-left group-hover:scale-x-100" />
@@ -92,38 +117,55 @@ export function Header({ isLoaded = true }: { isLoaded?: boolean }) {
           ))}
         </nav>
 
-        <a
-          href="#contact"
-          onClick={(e) => handleNavClick(e, '#contact')}
-          className="btn-shine group ml-auto hidden h-[2.8125rem] w-[8.9375rem] items-center justify-center gap-[0.625rem] rounded-full bg-voxa px-[1.4375rem] pb-[0.3125rem] pt-[0.25rem] font-manrope text-[1rem] font-bold leading-[2.1976rem] text-white transition-shadow duration-300 hover:shadow-[0_0.5rem_1.75rem_-0.5rem_rgb(99_161_242/0.8)] sm:inline-flex lg:ml-[4.0625rem]"
-        >
-          Start Now
-          <StartNowArrow />
-        </a>
+        {/* Action Controls: Language Toggle & Start Now */}
+        <div className="ms-auto flex items-center gap-3 sm:gap-4 lg:ms-[3rem]">
+          {/* Global Language Toggle Switcher */}
+          <button
+            type="button"
+            onClick={toggleLanguage}
+            className="cursor-pointer inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/5 px-3 py-1.5 font-manrope text-xs font-bold text-white/90 shadow-sm backdrop-blur-md transition-all hover:border-voxa/60 hover:bg-voxa/10 hover:text-white active:scale-95"
+            aria-label={t.header.langButtonAria}
+          >
+            <GlobeIcon />
+            <span>{t.header.langButton}</span>
+          </button>
 
-        <button
-          type="button"
-          aria-expanded={open}
-          aria-controls="mobile-menu"
-          aria-label={open ? 'Close menu' : 'Open menu'}
-          onClick={() => setOpen((v) => !v)}
-          className="ml-auto grid size-11 place-items-center rounded-full border border-white/15 transition-colors hover:border-white/40 sm:ml-3 lg:hidden"
-        >
-          <span className="relative block h-3 w-5">
-            <span
-              className={`absolute left-0 top-0 h-0.5 w-5 rounded-full bg-white transition-transform duration-300 ${
-                open ? 'translate-y-[5px] rotate-45' : ''
-              }`}
-            />
-            <span
-              className={`absolute bottom-0 left-0 h-0.5 w-5 rounded-full bg-white transition-transform duration-300 ${
-                open ? '-translate-y-[5px] -rotate-45' : ''
-              }`}
-            />
-          </span>
-        </button>
+          {/* Desktop Start Now CTA */}
+          <a
+            href="#contact"
+            onClick={(e) => handleNavClick(e, '#contact')}
+            className="btn-shine group hidden h-[2.8125rem] items-center justify-center gap-[0.625rem] rounded-full bg-voxa px-[1.4375rem] pb-[0.3125rem] pt-[0.25rem] font-manrope text-[1rem] font-bold leading-[2.1976rem] text-white transition-shadow duration-300 hover:shadow-[0_0.5rem_1.75rem_-0.5rem_rgb(99_161_242/0.8)] sm:inline-flex"
+          >
+            {t.header.startNow}
+            <StartNowArrow />
+          </a>
+
+          {/* Mobile Hamburger Toggle */}
+          <button
+            type="button"
+            aria-expanded={open}
+            aria-controls="mobile-menu"
+            aria-label={open ? 'Close menu' : 'Open menu'}
+            onClick={() => setOpen((v) => !v)}
+            className="grid size-11 place-items-center rounded-full border border-white/15 transition-colors hover:border-white/40 lg:hidden"
+          >
+            <span className="relative block h-3 w-5">
+              <span
+                className={`absolute left-0 top-0 h-0.5 w-5 rounded-full bg-white transition-transform duration-300 ${
+                  open ? 'translate-y-[5px] rotate-45' : ''
+                }`}
+              />
+              <span
+                className={`absolute bottom-0 left-0 h-0.5 w-5 rounded-full bg-white transition-transform duration-300 ${
+                  open ? '-translate-y-[5px] -rotate-45' : ''
+                }`}
+              />
+            </span>
+          </button>
+        </div>
       </div>
 
+      {/* Mobile Menu Drawer */}
       <div
         id="mobile-menu"
         className={`grid transition-[grid-template-rows,opacity] duration-500 ease-[var(--ease-expo)] lg:hidden ${
@@ -132,14 +174,14 @@ export function Header({ isLoaded = true }: { isLoaded?: boolean }) {
       >
         <nav aria-label="Mobile" className="overflow-hidden">
           <div className="flex flex-col px-5 pb-8 pt-2 sm:px-8">
-            {NAV.map((item, i) => (
+            {navItems.map((item, i) => (
               <a
                 key={item.href}
                 href={item.href}
                 onClick={(e) => handleNavClick(e, item.href)}
                 tabIndex={open ? 0 : -1}
                 style={{ transitionDelay: open ? `${80 + i * 60}ms` : '0ms' }}
-                className={`border-b border-white/10 py-4 font-manrope text-[1.75rem] font-bold capitalize text-white transition-[translate,opacity,color] duration-500 hover:text-voxa ${
+                className={`border-b border-white/10 py-4 font-manrope text-[1.5rem] font-bold capitalize text-white transition-[translate,opacity,color] duration-500 hover:text-voxa ${
                   open ? 'translate-y-0 opacity-100' : '-translate-y-3 opacity-0'
                 }`}
               >
@@ -152,7 +194,7 @@ export function Header({ isLoaded = true }: { isLoaded?: boolean }) {
               tabIndex={open ? 0 : -1}
               className="mt-6 inline-flex h-[3.25rem] items-center justify-center gap-2.5 rounded-full bg-voxa font-manrope text-lg font-bold text-white shadow-lg active:scale-95"
             >
-              Start Now
+              {t.header.startNow}
               <StartNowArrow />
             </a>
           </div>

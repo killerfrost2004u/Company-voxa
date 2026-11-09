@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useLanguage } from '@/context/LanguageContext'
 
 export type TestimonialItem = {
   id: string
@@ -219,6 +220,7 @@ function repeatToFill<T>(items: T[], minLength: number = 8): T[] {
 }
 
 export function Testimonial() {
+  const { lang, t } = useLanguage()
   const [activeCategory, setActiveCategory] = useState<'all' | 'startup' | 'ecommerce' | 'corporate'>('all')
 
   const filtered =
@@ -232,6 +234,13 @@ export function Testimonial() {
 
   const track1Items = repeatToFill(row1.length > 0 ? row1 : filtered)
   const track2Items = repeatToFill(row2.length > 0 ? row2 : filtered)
+
+  const categories = [
+    { id: 'all', label: lang === 'ar' ? `الكل (${TESTIMONIALS.length})` : `All (${TESTIMONIALS.length})` },
+    { id: 'startup', label: lang === 'ar' ? 'الشركات الناشئة' : 'Tech & Startups' },
+    { id: 'ecommerce', label: lang === 'ar' ? 'المتاجر الإلكترونية' : 'E-Commerce' },
+    { id: 'corporate', label: lang === 'ar' ? 'الشركات والخدمات' : 'Corporate & Services' },
+  ]
 
   return (
     <section
@@ -252,7 +261,9 @@ export function Testimonial() {
             {'★'.repeat(5)}
           </div>
           <span className="font-dm text-xs font-bold tracking-wider uppercase text-white/80">
-            5.0 RATED BY 20+ FOUNDERS IN EGYPT & REGION
+            {lang === 'ar'
+              ? 'تقييم 5.0 من أكثر من 20 مؤسس شركة في مصر والمنطقة'
+              : '5.0 RATED BY 20+ FOUNDERS IN EGYPT & REGION'}
           </span>
         </div>
 
@@ -261,25 +272,30 @@ export function Testimonial() {
           data-reveal="rise"
           className="font-manrope text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-[-0.04em] text-white leading-[1.08]"
         >
-          Built for founders who <span className="text-voxa">refuse to compromise.</span>
+          {lang === 'ar' ? (
+            <>
+              مصمم لمؤسسي الشركات الذين <span className="text-voxa">لا يقبلون بأنصاف الحلول.</span>
+            </>
+          ) : (
+            <>
+              Built for founders who <span className="text-voxa">refuse to compromise.</span>
+            </>
+          )}
         </h2>
         <p
           data-reveal="up"
           className="mt-4 max-w-2xl mx-auto font-dm text-base sm:text-lg text-white/60"
         >
-          From Cairo and Alexandria to Dubai and London, we partner with ambitious teams to engineer digital experiences that convert.
+          {lang === 'ar'
+            ? 'من القاهرة والإسكندرية إلى دبي والرياض ولندن، نشارك الفرق الطموحة لبناء تجارب رقمية تزيد من مبيعاتها وأرباحها.'
+            : 'From Cairo and Alexandria to Dubai and London, we partner with ambitious teams to engineer digital experiences that convert.'}
         </p>
 
         {/* Controls Bar: Category Filter Pills + Live Stream Indicator */}
         <div className="mt-10 flex flex-wrap items-center justify-between gap-4 border-b border-white/10 pb-6">
           {/* Category Filter Pills */}
           <div className="flex flex-wrap items-center gap-2">
-            {[
-              { id: 'all', label: `All (${TESTIMONIALS.length})` },
-              { id: 'startup', label: 'Tech & Startups' },
-              { id: 'ecommerce', label: 'E-Commerce' },
-              { id: 'corporate', label: 'Corporate & Services' },
-            ].map((cat) => (
+            {categories.map((cat) => (
               <button
                 key={cat.id}
                 type="button"
@@ -302,7 +318,7 @@ export function Testimonial() {
               <span className="relative inline-flex size-2 rounded-full bg-emerald-500" />
             </span>
             <span className="font-dm text-xs font-semibold text-emerald-300 tracking-wide uppercase">
-              Automated Founder Stream • Hover to Pause
+              {lang === 'ar' ? 'عرض حي لآراء العملاء • قف بالماوس للإيقاف' : 'Automated Founder Stream • Hover to Pause'}
             </span>
           </div>
         </div>

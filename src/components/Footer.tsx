@@ -1,59 +1,127 @@
 import { Logo } from './Logo'
 import { navigate } from '@/lib/router'
-
-const LINKS = [
-  { label: 'Services', href: '#services' },
-  { label: 'Plans', href: '#plans' },
-  { label: 'Blog', href: '/blog' },
-  { label: 'FAQ', href: '#faq' },
-  { label: 'Contact', href: '#contact' },
-]
+import { useLanguage } from '@/context/LanguageContext'
 
 export function Footer() {
+  const { lang, t } = useLanguage()
+
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault()
     navigate(href)
   }
 
+  const navLinks = [
+    { label: t.header.home, href: '#home' },
+    { label: t.header.plans, href: '#plans' },
+    { label: t.header.blog, href: '/blog' },
+    { label: t.faq.badge, href: '#faq' },
+    { label: t.header.contact, href: '#contact' },
+    { label: t.header.about, href: '#about' },
+  ]
+
   return (
-    <footer className="bg-black px-5 py-12 sm:px-8 lg:h-[8.9375rem] lg:p-0">
-      <div
-        data-reveal="fade"
-        className="mx-auto flex max-w-[80rem] flex-col items-center justify-between gap-8 sm:gap-6 lg:h-full lg:flex-row lg:items-center lg:gap-0 lg:px-[2.375rem]"
-      >
-        {/* VOXA Brand Logo */}
-        <a
-          href="/"
-          onClick={(e) => handleLinkClick(e, '/')}
-          aria-label="Voxa home"
-          className="group inline-flex shrink-0 items-center transition-transform duration-300 hover:scale-[1.02]"
-        >
-          <Logo variant="full" size="md" />
-        </a>
-
-        {/* Studio Tagline */}
-        <p className="font-dm text-center text-base font-bold text-white sm:text-lg lg:ml-[2.625rem] lg:text-left lg:text-[1.25rem] lg:leading-[1.0804] lg:whitespace-nowrap">
-          Designing better digital experiences from Cairo to the world.
-        </p>
-
-        {/* Primary Navigation Links */}
-        <nav aria-label="Footer" className="flex flex-wrap items-center justify-center gap-5 lg:ml-auto lg:gap-[1.875rem]">
-          {LINKS.map((link) => (
+    <footer className="relative z-10 border-t border-white/10 bg-[#050608] px-5 pt-16 pb-28 sm:px-8 sm:pt-20 sm:pb-24 lg:px-[6.1rem] lg:pt-24 lg:pb-28">
+      <div className="mx-auto max-w-[80rem]">
+        {/* Main 3-Column Agency Grid */}
+        <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-12 lg:gap-8">
+          {/* Column 1: Brand & Studio Mission (lg: 5 cols) */}
+          <div className="flex flex-col items-start lg:col-span-5">
             <a
-              key={link.label}
-              href={link.href}
-              onClick={(e) => handleLinkClick(e, link.href)}
-              className="whitespace-nowrap font-dm text-[0.9375rem] font-semibold text-white transition-colors duration-300 hover:text-voxa"
+              href="/"
+              onClick={(e) => handleLinkClick(e, '/')}
+              aria-label="Voxa Studio home"
+              className="group inline-flex items-center transition-transform duration-300 hover:scale-[1.02]"
             >
-              {link.label}
+              <Logo variant="full" size="md" />
             </a>
-          ))}
-        </nav>
 
-        {/* Copyright Notice */}
-        <p className="whitespace-nowrap font-dm text-[0.9375rem] text-[#767676] lg:ml-[2.5rem]">
-          © 2026 Voxa Studio
-        </p>
+            <p className="mt-5 max-w-[24rem] font-dm text-[1rem] leading-[1.65] text-white/70 sm:text-[1.125rem]">
+              {t.footer.tagline}
+            </p>
+
+            {/* Live Availability Status Pill */}
+            <div className="mt-6 inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-white/[0.04] px-3.5 py-1.5 backdrop-blur-md">
+              <span className="relative flex size-2">
+                <span className="absolute inset-0 animate-ping-soft rounded-full bg-[#25D366] opacity-75" />
+                <span className="relative size-full rounded-full bg-[#25D366]" />
+              </span>
+              <span className="font-dm text-xs font-semibold tracking-wide text-white/90">
+                {t.footer.availableBadge}
+              </span>
+            </div>
+          </div>
+
+          {/* Column 2: Navigation Links (lg: 3 cols) */}
+          <div className="flex flex-col lg:col-span-3">
+            <h3 className="font-dm text-xs font-extrabold uppercase tracking-[0.16em] text-voxa">
+              {t.footer.quickLinksTitle}
+            </h3>
+            <ul className="mt-5 space-y-3">
+              {navLinks.map((link) => (
+                <li key={link.href}>
+                  <a
+                    href={link.href}
+                    onClick={(e) => handleLinkClick(e, link.href)}
+                    className="font-manrope text-[1rem] font-medium text-white/80 transition-colors duration-200 hover:text-voxa"
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Column 3: Contact & Studio Coordinates (lg: 4 cols) */}
+          <div className="flex flex-col lg:col-span-4">
+            <h3 className="font-dm text-xs font-extrabold uppercase tracking-[0.16em] text-voxa">
+              {t.footer.contactTitle}
+            </h3>
+            <div className="mt-5 space-y-3.5 font-dm text-[0.9375rem] text-white/70">
+              <p className="flex items-center gap-2.5 text-white/90">
+                <span className="size-2 rounded-full bg-voxa" />
+                <span>{t.footer.cairoEgypt}</span>
+              </p>
+              <p>
+                <a
+                  href="mailto:voxaa.business@gmail.com"
+                  className="font-medium text-white hover:text-voxa transition-colors"
+                >
+                  voxaa.business@gmail.com
+                </a>
+              </p>
+              <div className="flex flex-col gap-1.5 pt-1 text-xs text-white/60">
+                <a
+                  href="https://wa.me/201111717189"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-white transition-colors"
+                >
+                  WhatsApp: +20 1111 717 189
+                </a>
+                <a
+                  href="https://wa.me/201125537697"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-white transition-colors"
+                >
+                  Direct: +20 1125 537 697
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Bar: Divider & Credits */}
+        <div className="mt-14 border-t border-white/10 pt-8 sm:mt-16">
+          <div className="flex flex-col items-center justify-between gap-4 text-center sm:flex-row sm:text-left rtl:sm:text-right">
+            <p className="font-dm text-xs sm:text-sm text-white/50">
+              {t.footer.copyright}
+            </p>
+            <p className="font-dm text-xs text-white/40">
+              {t.footer.customCodeBadge}
+            </p>
+          </div>
+        </div>
       </div>
     </footer>
   )

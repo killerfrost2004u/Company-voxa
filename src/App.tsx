@@ -1,4 +1,5 @@
 import { useCallback, useState, useEffect } from 'react'
+import { LanguageProvider } from '@/context/LanguageContext'
 import { Contact } from '@/components/Contact'
 import { Cta } from '@/components/Cta'
 import { FAQ } from '@/components/FAQ'
@@ -70,7 +71,7 @@ export default function App() {
   useScrollEffects(isLoaded)
 
   return (
-    <>
+    <LanguageProvider>
       {route.type === 'home' && (
         <Preloader key={preloadKey} onComplete={handlePreloadComplete} />
       )}
@@ -111,6 +112,6 @@ export default function App() {
       <Footer />
       <FloatingWhatsApp />
       {route.type === 'home' && <PageScrollSlider />}
-    </>
+    </LanguageProvider>
   )
 }

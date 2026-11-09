@@ -1,10 +1,12 @@
 import { useRef, type PointerEvent } from 'react'
 import { assets, logos } from '@/lib/assets'
 import { delay } from '@/lib/style'
+import { useLanguage } from '@/context/LanguageContext'
 
 const lineMask = 'block overflow-hidden pb-[0.16em] -mb-[0.16em]'
 
 export function Hero() {
+  const { lang, t } = useLanguage()
   const sectionRef = useRef<HTMLElement>(null)
 
   // Mouse parallax for the stars and glow (fine pointers only).
@@ -68,22 +70,30 @@ export function Hero() {
               <span className="relative size-full rounded-full bg-flame" />
             </span>
             <span className="font-dm text-[0.75rem] font-bold uppercase tracking-[0.12em] text-paper lg:text-[0.8139rem]">
-              Available for new projects
+              {t.hero.statusBadge}
             </span>
           </div>
 
           <h1
             data-reveal-group
-            className="mt-8 font-manrope text-[clamp(3.25rem,15vw,6.5rem)] font-bold leading-[0.947] tracking-[-0.05918em] text-paper lg:mt-[2.8119rem] lg:text-[7.1033rem]"
+            className="mt-8 font-manrope text-[clamp(2.75rem,13vw,6.5rem)] font-bold leading-[1.05] tracking-[-0.04em] text-paper lg:mt-[2.8119rem] lg:text-[6.5rem]"
           >
             <span className={lineMask}>
               <span data-reveal="rise" style={delay(160)} className="block">
-                From design
+                {t.hero.titleLine1}
               </span>
             </span>
             <span className={lineMask}>
               <span data-reveal="rise" style={delay(280)} className="block">
-                to <span className="text-voxa">digital.</span>
+                {lang === 'ar' ? (
+                  <>
+                    إلى واقع رقمي <span className="text-voxa">استثنائي.</span>
+                  </>
+                ) : (
+                  <>
+                    to <span className="text-voxa">digital.</span>
+                  </>
+                )}
               </span>
             </span>
           </h1>
@@ -91,16 +101,15 @@ export function Hero() {
           <p
             data-reveal="up"
             style={delay(440)}
-            className="mt-7 max-w-[36.9963rem] font-manrope text-[1.125rem] leading-[1.5] text-[#b7b3ac] sm:text-[1.3rem] lg:mt-[4.2313rem] lg:text-[1.4799rem] lg:leading-[1.485]"
+            className="mt-7 max-w-[36.9963rem] font-manrope text-[1.125rem] leading-[1.65] text-[#b7b3ac] sm:text-[1.3rem] lg:mt-[4.2313rem] lg:text-[1.45rem] lg:leading-[1.55]"
           >
-            Voxa turns bold ideas into beautiful, high-performing websites that feel as good as they
-            function.
+            {t.hero.description}
           </p>
 
           <div
             data-reveal="up"
             style={delay(580)}
-            className="mt-9 flex flex-wrap items-center gap-x-[2.2198rem] gap-y-6 lg:ml-[0.1132rem] lg:mt-[3.15rem]"
+            className="mt-9 flex flex-wrap items-center gap-x-[2.2198rem] gap-y-6 lg:ms-[0.1132rem] lg:mt-[3.15rem]"
           >
             <a
               href="#plans"
@@ -108,20 +117,17 @@ export function Hero() {
               onPointerLeave={onMagneticLeave}
               className="btn-shine group inline-flex items-center justify-center gap-[0.8139rem] border-[0.074rem] border-transparent bg-voxa px-5 py-3.5 font-dm text-[1.125rem] font-bold leading-[1.05] text-ash transition-[box-shadow,background-color] duration-300 hover:shadow-[0_0.75rem_2rem_-0.75rem_rgb(99_161_242/0.9)] sm:text-[1.25rem] lg:px-[1.5539rem] lg:py-[1.1099rem] lg:text-[1.4799rem]"
             >
-              Explore our plans
-              <span className="flex size-[1.4059rem] items-center justify-center transition-transform duration-300 group-hover:translate-x-1">
-                <img src={assets.arrowRight} alt="" className="h-[0.8201rem] w-[0.9372rem] max-w-none" />
+              {t.hero.explorePlans}
+              <span className="flex size-[1.4059rem] items-center justify-center transition-transform duration-300 group-hover:translate-x-1 rtl:group-hover:-translate-x-1">
+                <img src={assets.arrowRight} alt="" className="h-[0.8201rem] w-[0.9372rem] max-w-none rtl:scale-x-[-1]" />
               </span>
             </a>
 
             <a href="#services" className="group inline-flex items-start gap-[0.4244rem] font-dm font-bold">
-              <span className="relative block h-[1.9238rem] whitespace-nowrap text-[1.1839rem] leading-[1.3125] text-paper lg:w-[9.9519rem]">
-                See how we work
+              <span className="relative block h-[1.9238rem] whitespace-nowrap text-[1.1839rem] leading-[1.3125] text-paper">
+                {t.hero.seeHowWeWork}
                 <span className="absolute inset-x-0 bottom-0 h-[0.074rem] bg-paper" />
                 <span className="absolute inset-x-0 bottom-0 h-[0.074rem] origin-left scale-x-0 bg-voxa transition-transform duration-500 ease-[var(--ease-expo)] group-hover:scale-x-100" />
-              </span>
-              <span className="text-[1.0359rem] leading-[1.5] text-flame transition-transform duration-300 group-hover:translate-x-1 group-hover:translate-y-1">
-                ↘
               </span>
             </a>
           </div>

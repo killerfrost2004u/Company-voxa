@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react'
-import { playSupernovaChime, playVortexSwell } from '@/lib/audio'
 import { logos } from '@/lib/assets'
 import { PlasmaTracerCanvas } from './PlasmaTracerCanvas'
 
@@ -10,20 +9,13 @@ type PreloaderProps = {
 export function Preloader({ onComplete }: PreloaderProps) {
   const [progress, setProgress] = useState(0)
   const [phase, setPhase] = useState<'counting' | 'holding' | 'exiting' | 'hidden'>('counting')
-  const [soundEnabled, setSoundEnabled] = useState(false)
   const completedRef = useRef(false)
-  const soundEnabledRef = useRef(soundEnabled)
-  soundEnabledRef.current = soundEnabled
 
   const runAnimation = () => {
     completedRef.current = false
     setPhase('counting')
     setProgress(0)
     document.body.style.overflow = 'hidden'
-
-    if (soundEnabledRef.current) {
-      playVortexSwell()
-    }
 
     let frameId: number
     const startTime = performance.now()
@@ -44,10 +36,6 @@ export function Preloader({ onComplete }: PreloaderProps) {
       } else {
         setProgress(100)
         setPhase('holding')
-
-        if (soundEnabledRef.current) {
-          playSupernovaChime()
-        }
 
         const holdTimer = setTimeout(() => {
           sessionStorage.setItem('voxa_preloaded', 'true')
@@ -108,20 +96,6 @@ export function Preloader({ onComplete }: PreloaderProps) {
     }
   }, [onComplete])
 
-  const handleReplay = () => {
-    runAnimation()
-  }
-
-  const toggleSound = () => {
-    setSoundEnabled((prev) => {
-      const next = !prev
-      if (next) {
-        playVortexSwell()
-      }
-      return next
-    })
-  }
-
   if (phase === 'hidden') {
     return null
   }
@@ -147,7 +121,7 @@ export function Preloader({ onComplete }: PreloaderProps) {
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_55%_at_50%_50%,rgb(99_161_242/0.14),transparent_75%)]"
       />
 
-      {/* Top Bar: Brand & Controls */}
+      {/* Top Bar: Brand */}
       <div className="relative z-20 flex items-center justify-between gap-3 text-xs sm:text-sm font-semibold tracking-[0.16em] uppercase">
         <div className="flex items-center gap-2.5 text-white/70">
           <span className="relative flex size-2">
@@ -155,30 +129,6 @@ export function Preloader({ onComplete }: PreloaderProps) {
             <span className="relative size-full rounded-full bg-flame" />
           </span>
           <span className="font-dm">VOXA DIGITAL LAB</span>
-        </div>
-
-        {/* Sound & Replay Buttons */}
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={handleReplay}
-            className="cursor-pointer rounded-full border border-white/20 bg-white/5 px-3 py-1 font-dm text-[0.7rem] tracking-wider text-white/70 hover:border-white/40 hover:text-white transition-all shadow-sm"
-            title="Replay intro sequence"
-          >
-            ↺ REPLAY
-          </button>
-
-          <button
-            type="button"
-            onClick={toggleSound}
-            className={`cursor-pointer rounded-full border px-3 py-1 font-dm text-[0.7rem] tracking-wider transition-all duration-300 shadow-sm ${
-              soundEnabled
-                ? 'border-voxa bg-voxa/20 text-voxa shadow-[0_0_12px_rgba(99,161,242,0.4)]'
-                : 'border-white/20 bg-white/5 text-white/50 hover:border-white/40 hover:text-white'
-            }`}
-          >
-            {soundEnabled ? 'SOUND: ON ♫' : 'SOUND: OFF'}
-          </button>
         </div>
       </div>
 

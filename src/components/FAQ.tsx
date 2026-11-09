@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { delay } from '@/lib/style'
+import { useLanguage } from '@/context/LanguageContext'
 
 export interface FAQItem {
   id: string
@@ -59,7 +60,7 @@ export const FAQS: FAQItem[] = [
 
 export function FAQ() {
   const [openId, setOpenId] = useState<string | null>(FAQS[0].id)
-  const [lang, setLang] = useState<'ar' | 'en'>('ar')
+  const { lang, t } = useLanguage()
 
   const toggle = (id: string) => {
     setOpenId((prev) => (prev === id ? null : id))
@@ -99,7 +100,7 @@ export function FAQ() {
               data-reveal="up"
               className="font-dm text-[0.875rem] font-extrabold uppercase tracking-[0.16em] text-voxa"
             >
-              Frequently Asked Questions
+              {t.faq.badge}
             </p>
             <h2
               id="faq-title"
@@ -107,38 +108,8 @@ export function FAQ() {
               style={delay(80)}
               className="mt-3 font-manrope text-[2.25rem] font-bold leading-[1.1] tracking-[-0.03em] text-white sm:text-[3rem] lg:text-[3.5rem]"
             >
-              {lang === 'ar' ? 'الأسئلة الشائعة' : 'Common Questions'}
+              {t.faq.title}
             </h2>
-          </div>
-
-          {/* Language Toggle */}
-          <div
-            data-reveal="up"
-            style={delay(120)}
-            className="flex items-center gap-1.5 rounded-full border border-white/10 bg-ash/70 p-1 backdrop-blur-md"
-          >
-            <button
-              type="button"
-              onClick={() => setLang('ar')}
-              className={`rounded-full px-4 py-1.5 font-manrope text-xs font-bold transition-all ${
-                lang === 'ar'
-                  ? 'bg-voxa text-ash shadow-[0_0_15px_rgba(99,161,242,0.4)]'
-                  : 'text-white/60 hover:text-white'
-              }`}
-            >
-              العربية
-            </button>
-            <button
-              type="button"
-              onClick={() => setLang('en')}
-              className={`rounded-full px-4 py-1.5 font-manrope text-xs font-bold transition-all ${
-                lang === 'en'
-                  ? 'bg-voxa text-ash shadow-[0_0_15px_rgba(99,161,242,0.4)]'
-                  : 'text-white/60 hover:text-white'
-              }`}
-            >
-              English
-            </button>
           </div>
         </div>
 

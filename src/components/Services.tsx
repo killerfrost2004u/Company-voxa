@@ -1,14 +1,17 @@
 import { assets } from '@/lib/assets'
 import { delay } from '@/lib/style'
 import { Logo } from './Logo'
+import { useLanguage } from '@/context/LanguageContext'
 
 const number =
   'absolute right-5 top-14 font-manrope text-[2.75rem] font-extrabold leading-[1.075] tracking-[-0.07672em] text-voxa sm:right-8 lg:right-auto lg:top-[6.375rem] lg:text-[3.3139rem]'
 const title =
   'font-manrope text-[2.25rem] leading-[1.05] tracking-[-0.025em] text-white lg:text-[2.5rem]'
-const body = 'font-dm text-[1.125rem] leading-[1.19] text-white lg:text-[1.25rem]'
+const body = 'font-dm text-[1.125rem] leading-[1.3] text-white lg:text-[1.25rem]'
 
 export function Services() {
+  const { lang } = useLanguage()
+
   return (
     <section
       id="services"
@@ -64,37 +67,50 @@ export function Services() {
           <div className="relative z-[2]">
             <h2
               data-reveal="up"
-              className="pr-16 font-manrope text-[2.25rem] font-medium leading-[0.8958] tracking-[-0.06394em] text-paper sm:text-[2.75rem] lg:pr-0 lg:text-[3rem]"
+              className="pr-16 font-manrope text-[2.25rem] font-medium leading-[1.05] tracking-[-0.04em] text-paper sm:text-[2.75rem] lg:pr-0 lg:text-[3rem]"
             >
-              One studio.
-              <br />
-              Every digital need.
+              {lang === 'ar' ? (
+                <>
+                  استوديو متكامل.
+                  <br />
+                  لكل احتياج رقمي.
+                </>
+              ) : (
+                <>
+                  One studio.
+                  <br />
+                  Every digital need.
+                </>
+              )}
             </h2>
             <p
               data-reveal="up"
               style={delay(80)}
-              className="mt-[1.4375rem] max-w-[22.6875rem] font-dm text-[1.125rem] leading-[1.36] text-[#aaa69f] lg:text-[1.25rem]"
+              className="mt-[1.4375rem] max-w-[22.6875rem] font-dm text-[1.125rem] leading-[1.5] text-[#aaa69f] lg:text-[1.25rem]"
             >
-              We bridge the gap between a beautiful concept and a website that works hard for your
-              business.
+              {lang === 'ar'
+                ? 'نردم الفجوة بين الفكرة الإبداعية والموقع فائق الأداء الذي يخدم أهداف نمو عملك التجاري.'
+                : 'We bridge the gap between a beautiful concept and a website that works hard for your business.'}
             </p>
             <h3
               data-reveal="up"
               style={delay(160)}
-              className="mt-[1.8375rem] max-w-[22.5625rem] font-manrope text-[3rem] leading-[1.2833] tracking-[-0.03056em] text-white lg:text-[4rem]"
+              className="mt-[1.8375rem] max-w-[22.5625rem] font-manrope text-[2.75rem] leading-[1.2] tracking-[-0.03em] text-white lg:text-[3.75rem]"
             >
-              Design that speaks
+              {lang === 'ar' ? 'تصميم يأسر الحواس' : 'Design that speaks'}
             </h3>
             <p
               data-reveal="up"
               style={delay(240)}
-              className="mt-[1.1706rem] max-w-[27.1639rem] font-manrope text-[1.25rem] font-semibold leading-[1.19] text-white lg:text-[1.4259rem]"
+              className="mt-[1.1706rem] max-w-[27.1639rem] font-manrope text-[1.25rem] font-semibold leading-[1.3] text-white lg:text-[1.4259rem]"
             >
-              Purposeful interfaces with personality, clarity, and a strong point of view.
+              {lang === 'ar'
+                ? 'واجهات مستخدم ذات طابع وهوية واضحة، سهلة التصفح وتخلق تأثيراً لا يُمحى.'
+                : 'Purposeful interfaces with personality, clarity, and a strong point of view.'}
             </p>
-            <div className="mt-[1.6063rem] lg:ml-[0.1875rem] lg:w-[30.7188rem]">
+            <div className="mt-[1.6063rem] lg:ms-[0.1875rem] lg:w-[30.7188rem]">
               <div data-reveal="up" style={delay(320)} className="flex justify-end lg:block">
-                <Logo tone="paper" variant="wordmark" size="sm" className="lg:ml-[25.5rem]" />
+                <Logo tone="paper" variant="wordmark" size="sm" className="lg:ms-[25.5rem]" />
               </div>
               <img
                 data-reveal="line"
@@ -120,24 +136,26 @@ export function Services() {
           </p>
           <div className="relative z-[2]">
             <h3 data-reveal="up" className={`${title} font-bold`}>
-              Coding
+              {lang === 'ar' ? 'برمجة وكود' : 'Coding'}
             </h3>
             <img
               data-reveal="line"
               style={delay(120)}
               src={assets.lineShort}
               alt=""
-              className="ml-[0.125rem] mt-[1.0313rem] block h-[0.1875rem] w-[19.0625rem] max-w-full"
+              className="ms-[0.125rem] mt-[1.0313rem] block h-[0.1875rem] w-[19.0625rem] max-w-full"
             />
             <h4
               data-reveal="up"
               style={delay(120)}
-              className={`${title} mt-[3.7813rem] max-w-[12.25rem] font-medium`}
+              className={`${title} mt-[3.7813rem] max-w-[14rem] font-medium`}
             >
-              Code that performs
+              {lang === 'ar' ? 'كود فائق السرعة' : 'Code that performs'}
             </h4>
             <p data-reveal="up" style={delay(200)} className={`${body} mt-[1.8125rem] max-w-[19.625rem]`}>
-              Clean, responsive development that is fast, reliable, and easy to scale.
+              {lang === 'ar'
+                ? 'تطوير نظيف ومتجاوب، فائق السرعة ومصمم للاستقرار والتوسع بسلاسة.'
+                : 'Clean, responsive development that is fast, reliable, and easy to scale.'}
             </p>
           </div>
         </article>
@@ -146,7 +164,7 @@ export function Services() {
         <article className="relative bg-[#0b0b0b] px-5 pb-20 pt-14 sm:px-8 lg:p-0 lg:pl-[0.9375rem] lg:pt-[10.5rem]">
           <div className="relative z-[2] lg:w-[19.0625rem]">
             <div data-reveal="up" className="relative flex max-w-[19.0625rem] items-end justify-between">
-              <h3 className={`${title} font-bold`}>System</h3>
+              <h3 className={`${title} font-bold`}>{lang === 'ar' ? 'أنظمة متكاملة' : 'System'}</h3>
               <p className="font-manrope text-[2.75rem] font-extrabold leading-[1.075] tracking-[-0.07672em] text-voxa lg:text-[3.3139rem]">
                 03
               </p>
@@ -163,10 +181,12 @@ export function Services() {
               style={delay(120)}
               className={`${title} mt-[2.9688rem] max-w-[15.4375rem] font-medium`}
             >
-              Systems that grow
+              {lang === 'ar' ? 'أنظمة تدعم نموك' : 'Systems that grow'}
             </h4>
             <p data-reveal="up" style={delay(200)} className={`${body} mt-[1.5rem] max-w-[19.0625rem]`}>
-              CMS, dashboards, APIs, and payments connected into one smooth experience.
+              {lang === 'ar'
+                ? 'ربط متقدم مع أنظمة إدارة المحتوى CMS، بوابات الدفع، ولوحات التحكم في تجربة واحدة انسيابية.'
+                : 'CMS, dashboards, APIs, and payments connected into one smooth experience.'}
             </p>
             <div data-reveal="up" style={delay(260)} className="mt-6 flex justify-end">
               <Logo tone="paper" variant="wordmark" size="sm" />
