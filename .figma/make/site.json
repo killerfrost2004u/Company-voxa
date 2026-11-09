@@ -1,5 +1,11 @@
 {
-  "title": "Voxa — From design to digital",
-  "description": "Voxa turns bold ideas into beautiful, high-performing websites that feel as good as they function.",
-  "language": "en"
+  "title": "شركة تصميم وتطوير مواقع وتطبيقات ويب في مصر | Voxa Studio",
+  "description": "استوديو Voxa المتخصص في تصميم وتطوير واجهات المستخدم، مواقع الويب، والمتاجر الإلكترونية باحترافية عالية وأسعار شفافة في مصر والعالم العربي. ابدأ مشروعك الآن!",
+  "language": "ar",
+  "icons": {
+    "icon": "/logo/iconnnnLOGOOO.svg"
+  },
+  "openGraph": {
+    "image": "https://voxa-pi-three.vercel.app/logo/voxa_logo.jpg"
+  }
 }

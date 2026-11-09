@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react'
 import { assets } from '@/lib/assets'
 import { Logo } from './Logo'
+import { navigate } from '@/lib/router'
 
 // Widths are the Figma text boxes, which keeps the link positions exact on desktop.
 const NAV = [
   { label: 'Home', href: '#home', className: 'lg:w-[4.25rem]' },
   { label: 'plans', href: '#plans', className: 'lg:w-[3.9375rem]' },
+  { label: 'Blog', href: '/blog', className: 'lg:w-[4.25rem]' },
   { label: 'Contact us', href: '#contact', className: 'lg:w-[8rem]' },
   { label: 'About us', href: '#about', className: 'lg:w-[6.4375rem]' },
 ]
@@ -48,6 +50,12 @@ export function Header({ isLoaded = true }: { isLoaded?: boolean }) {
 
   const solid = scrolled || open
 
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault()
+    setOpen(false)
+    navigate(href)
+  }
+
   return (
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow,backdrop-filter,opacity,transform] duration-500 ${
@@ -62,9 +70,9 @@ export function Header({ isLoaded = true }: { isLoaded?: boolean }) {
     >
       <div className="mx-auto flex h-[4.5rem] max-w-[80rem] items-center px-5 sm:px-8 lg:h-[5.8125rem] lg:pl-[2.4375rem] lg:pr-[2.6875rem]">
         <a
-          href="#home"
+          href="/"
           aria-label="Voxa home"
-          onClick={() => setOpen(false)}
+          onClick={(e) => handleNavClick(e, '/')}
           className="group inline-flex items-center transition-transform duration-300 hover:scale-[1.02]"
         >
           <Logo variant="full" size="md" />
@@ -75,6 +83,7 @@ export function Header({ isLoaded = true }: { isLoaded?: boolean }) {
             <a
               key={item.href}
               href={item.href}
+              onClick={(e) => handleNavClick(e, item.href)}
               className={`group relative whitespace-nowrap font-manrope text-[1.4799rem] font-bold leading-[1.485] text-white ${item.className ?? ''}`}
             >
               {item.label}
@@ -85,6 +94,7 @@ export function Header({ isLoaded = true }: { isLoaded?: boolean }) {
 
         <a
           href="#contact"
+          onClick={(e) => handleNavClick(e, '#contact')}
           className="btn-shine group ml-auto hidden h-[2.8125rem] w-[8.9375rem] items-center justify-center gap-[0.625rem] rounded-full bg-voxa px-[1.4375rem] pb-[0.3125rem] pt-[0.25rem] font-manrope text-[1rem] font-bold leading-[2.1976rem] text-white transition-shadow duration-300 hover:shadow-[0_0.5rem_1.75rem_-0.5rem_rgb(99_161_242/0.8)] sm:inline-flex lg:ml-[4.0625rem]"
         >
           Start Now
@@ -126,7 +136,7 @@ export function Header({ isLoaded = true }: { isLoaded?: boolean }) {
               <a
                 key={item.href}
                 href={item.href}
-                onClick={() => setOpen(false)}
+                onClick={(e) => handleNavClick(e, item.href)}
                 tabIndex={open ? 0 : -1}
                 style={{ transitionDelay: open ? `${80 + i * 60}ms` : '0ms' }}
                 className={`border-b border-white/10 py-4 font-manrope text-[1.75rem] font-bold capitalize text-white transition-[translate,opacity,color] duration-500 hover:text-voxa ${
@@ -138,12 +148,12 @@ export function Header({ isLoaded = true }: { isLoaded?: boolean }) {
             ))}
             <a
               href="#contact"
-              onClick={() => setOpen(false)}
+              onClick={(e) => handleNavClick(e, '#contact')}
               tabIndex={open ? 0 : -1}
-              className="btn-shine mt-6 inline-flex h-12 items-center justify-center gap-2.5 rounded-full bg-voxa font-manrope text-base font-bold text-white sm:hidden"
+              className="mt-6 inline-flex h-[3.25rem] items-center justify-center gap-2.5 rounded-full bg-voxa font-manrope text-lg font-bold text-white shadow-lg active:scale-95"
             >
               Start Now
-              <img src={assets.arrowUpRight} alt="" className="h-[0.6875rem] w-[0.75rem] -rotate-90" />
+              <StartNowArrow />
             </a>
           </div>
         </nav>

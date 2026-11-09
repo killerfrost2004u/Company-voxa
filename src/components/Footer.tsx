@@ -1,12 +1,20 @@
 import { Logo } from './Logo'
+import { navigate } from '@/lib/router'
 
 const LINKS = [
   { label: 'Services', href: '#services' },
   { label: 'Plans', href: '#plans' },
+  { label: 'Blog', href: '/blog' },
+  { label: 'FAQ', href: '#faq' },
   { label: 'Contact', href: '#contact' },
 ]
 
 export function Footer() {
+  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault()
+    navigate(href)
+  }
+
   return (
     <footer className="bg-black px-5 py-12 sm:px-8 lg:h-[8.9375rem] lg:p-0">
       <div
@@ -15,7 +23,8 @@ export function Footer() {
       >
         {/* VOXA Brand Logo */}
         <a
-          href="#home"
+          href="/"
+          onClick={(e) => handleLinkClick(e, '/')}
           aria-label="Voxa home"
           className="group inline-flex shrink-0 items-center transition-transform duration-300 hover:scale-[1.02]"
         >
@@ -28,11 +37,12 @@ export function Footer() {
         </p>
 
         {/* Primary Navigation Links */}
-        <nav aria-label="Footer" className="flex items-center justify-center gap-6 lg:ml-auto lg:gap-[1.875rem]">
+        <nav aria-label="Footer" className="flex flex-wrap items-center justify-center gap-5 lg:ml-auto lg:gap-[1.875rem]">
           {LINKS.map((link) => (
             <a
-              key={link.href}
+              key={link.label}
               href={link.href}
+              onClick={(e) => handleLinkClick(e, link.href)}
               className="whitespace-nowrap font-dm text-[0.9375rem] font-semibold text-white transition-colors duration-300 hover:text-voxa"
             >
               {link.label}

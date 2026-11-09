@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://voxa-pi-three.vercel.app/sitemap.xml

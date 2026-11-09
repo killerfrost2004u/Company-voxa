@@ -9,7 +9,15 @@
       "destination": "/api/$1"
     },
     {
-      "source": "/(.*)",
+      "source": "/sitemap.xml",
+      "destination": "/api/sitemap"
+    },
+    {
+      "source": "/robots.txt",
+      "destination": "/robots.txt"
+    },
+    {
+      "source": "/((?!api/|sitemap\\.xml|robots\\.txt).*)",
       "destination": "/index.html"
     }
   ]
