@@ -259,9 +259,22 @@ export const translations: Record<Language, TranslationDictionary> = {
           ],
         },
         {
+          id: 'store',
+          name: 'Store',
+          tagline: 'A complete e-commerce platform built for Egyptian & MENA digital commerce.',
+          price: '28,000',
+          features: [
+            'Complete custom e-commerce store with frictionless checkout',
+            'Local payment gateways: Paymob, Fawry, InstaPay & Cards',
+            'Shipping rate calculator & Bosta / Aramex integration',
+            'Inventory, variant manager & coupon discount system',
+            'Three months continuous VIP e-commerce support',
+          ],
+        },
+        {
           id: 'enterprise',
           name: 'Enterprise / Custom',
-          tagline: 'Tailored web applications, e-commerce stores, and digital platforms.',
+          tagline: 'Tailored web applications, digital portals, and complex systems.',
           price: 'Custom Quote',
           features: [
             'Full custom web app or e-commerce store',
@@ -436,7 +449,7 @@ export const translations: Record<Language, TranslationDictionary> = {
       plans: [
         {
           id: 'standard',
-          name: 'Standard (صفحة هبوط)',
+          name: 'standard - باقة البداية',
           tagline: 'مثالية للشركات الناشئة والحملات الإعلانية وصفحات الهبوط التسويقية.',
           price: '10,000',
           features: [
@@ -451,7 +464,7 @@ export const translations: Record<Language, TranslationDictionary> = {
         },
         {
           id: 'company',
-          name: 'Company (موقع شركات)',
+          name: 'Company - باقة الشركات',
           tagline: 'موقع متكامل للشركات والمؤسسات التي تبحث عن حضور رقمي احترافي.',
           price: '18,000',
           highlight: true,
@@ -466,12 +479,25 @@ export const translations: Record<Language, TranslationDictionary> = {
           ],
         },
         {
+          id: 'store',
+          name: 'المتجر الإلكتروني',
+          tagline: 'منصة تجارة إلكترونية متكاملة لزيادة المبيعات والتحويلات.',
+          price: '28,000',
+          features: [
+            'متجر إلكتروني متكامل وتجربة شراء سلسة',
+            'ربط بوابات الدفع Paymob, Fawry, InstaPay',
+            'تكامل مع شركات الشحن Bosta و Aramex',
+            'إدارة المخزون ونظام كوبونات الخصم',
+            'دعم فني ومتابعة دقيقة لمدة 3 أشهر',
+          ],
+        },
+        {
           id: 'enterprise',
-          name: 'Enterprise (مخصص ومتاجر)',
-          tagline: 'تطبيقات ويب مخصصة ومتاجر إلكترونية وحلول رقمية للمؤسسات.',
+          name: 'أنظمة مكتملة',
+          tagline: 'تطبيقات ويب مخصصة، منصات رقمية، وحلول متكاملة للمؤسسات.',
           price: 'عرض سعر مخصص',
           features: [
-            'تطبيقات ويب متكاملة أو متاجر إلكترونية متطورة',
+            'تطبيقات ويب متكاملة أو منصات سحابية مخصصة',
             'ربط بوابات الدفع الإلكتروني وبوابات المستخدمين',
             'هندسة قواعد البيانات وواجهات API متينة',
             'تتبع متقدم للتحويلات والتحليلات الرقمية',

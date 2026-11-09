@@ -35,7 +35,7 @@ type Plan = {
 const PLANS: Plan[] = [
   {
     name: 'Standard',
-    nameAr: 'ستاندرد (Standard)',
+    nameAr: 'standard - باقة البداية',
     tierNumber: '01',
     description: 'A focused launch package for founders who need a high-converting first impression.',
     descriptionAr: 'صفحة هبوط مخصصة للشركات الناشئة وأصحاب الأعمال الراغبين في انطلاقة قوية وتحويل الزوار لعملاء.',
@@ -88,7 +88,7 @@ const PLANS: Plan[] = [
   },
   {
     name: 'Company',
-    nameAr: 'كومباني (Company)',
+    nameAr: 'Company - باقة الشركات',
     tierNumber: '02',
     description: 'Everything an ambitious company needs to run and grow its online presence.',
     descriptionAr: 'الحل الشامل والمثالي للشركات والمؤسسات الطامحة لترسيخ حضور رقمي استثنائي ومتكامل.',
@@ -140,7 +140,7 @@ const PLANS: Plan[] = [
   },
   {
     name: 'Store',
-    nameAr: 'المتجر الإلكتروني (Store)',
+    nameAr: 'المتجر الإلكتروني',
     tierNumber: '03',
     description: 'A complete e-commerce platform built for Egyptian & MENA digital commerce.',
     descriptionAr: 'منصة تجارة إلكترونية متكاملة مصممة خصيصاً للشركات والعلامات التجارية لزيادة المبيعات.',
@@ -191,7 +191,7 @@ const PLANS: Plan[] = [
   },
   {
     name: 'Enterprise',
-    nameAr: 'المشاريع المخصصة (Enterprise)',
+    nameAr: 'أنظمة مكتملة',
     tierNumber: '04',
     description: 'Bespoke software architecture engineered for mission-critical web applications.',
     descriptionAr: 'حلول وتطبيقات ويب سحابية معقدة، بوابات رقمية، وتكاملات مخصصة مبنية على مقاس احتياجاتك.',
@@ -476,7 +476,7 @@ export function Pricing({ onChoosePlan }: PricingProps) {
                     </div>
 
                     {/* Price Display with Shimmer Text */}
-                    <div className="mt-5 sm:mt-7 flex items-baseline gap-2.5">
+                    <div className="mt-5 sm:mt-7 flex items-baseline gap-2.5 rtl:flex-row-reverse rtl:justify-end">
                       {planAmountPrefix && (
                         <span className="font-dm text-sm sm:text-base font-bold text-white/50">
                           {planAmountPrefix}
@@ -505,7 +505,7 @@ export function Pricing({ onChoosePlan }: PricingProps) {
                       >
                         {plan.isCustomQuote
                           ? (lang === 'ar' ? 'طلب عرض سعر مخصص' : 'Request Custom Quote')
-                          : (lang === 'ar' ? `اختر باقة ${plan.name}` : `Choose ${plan.name}`)}
+                          : (lang === 'ar' ? `اختر ${planName}` : `Choose ${plan.name}`)}
                         <span className="flex size-3.5 items-center justify-center transition-transform duration-300 group-hover/btn:-translate-y-0.5 group-hover/btn:translate-x-0.5 rtl:group-hover/btn:-translate-x-0.5">
                           <img
                             src={assets.arrowUpRightLarge}

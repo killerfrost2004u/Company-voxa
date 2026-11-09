@@ -48,8 +48,14 @@ export function BlogAdmin() {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault()
-    // Simple admin access PIN (voxa2026 or 1234)
-    if (pinInput === 'voxa2026' || pinInput === 'admin' || pinInput === '1234') {
+    // Normalize input: trim, lowercase, and convert Arabic numerals to English
+    const normalized = pinInput
+      .trim()
+      .toLowerCase()
+      .replace(/[٠-٩]/g, (d) => '٠١٢٣٤٥٦٧٨٩'.indexOf(d).toString())
+
+    const validPins = ['voxa2026', 'admin', '1234', 'voxa', 'voxa 2026']
+    if (validPins.includes(normalized)) {
       setIsAuthenticated(true)
       sessionStorage.setItem('voxa_admin_auth', 'true')
       setAuthError(false)

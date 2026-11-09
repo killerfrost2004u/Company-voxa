@@ -87,7 +87,7 @@ export function Hero() {
               <span data-reveal="rise" style={delay(280)} className="block">
                 {lang === 'ar' ? (
                   <>
-                    إلى واقع رقمي <span className="text-voxa">استثنائي.</span>
+                    إلى العالم <span className="text-voxa">الرقمي.</span>
                   </>
                 ) : (
                   <>

@@ -16,19 +16,19 @@ export function Services() {
     <section
       id="services"
       aria-label="Services"
-      className="relative overflow-hidden bg-black lg:bg-[linear-gradient(90deg,#000_50%,#0b0b0b_50%)]"
+      className="relative overflow-hidden bg-black"
     >
       <div className="relative mx-auto grid max-w-[80rem] md:grid-cols-2 lg:h-[44.5625rem] lg:grid-cols-[581fr_354fr_345fr]">
         {/* Line-wave textures crossing the column edges (desktop composition). */}
         <div aria-hidden className="pointer-events-none absolute inset-0 z-[1] hidden lg:block">
-          <div className="absolute left-[50.75rem] top-0 h-[18.0625rem] w-[22.125rem] overflow-hidden opacity-48">
+          <div className="absolute left-[50.75rem] rtl:left-auto rtl:right-[50.75rem] top-0 h-[18.0625rem] w-[22.125rem] overflow-hidden opacity-48">
             <img
               src={assets.waves}
               alt=""
               className="absolute left-[-16.04%] top-[-63.49%] h-[163.49%] w-[133.63%] max-w-none animate-drift"
             />
           </div>
-          <div className="absolute left-[21.75rem] top-[30.5rem] h-[14.0625rem] w-[32.125rem] overflow-hidden opacity-43">
+          <div className="absolute left-[21.75rem] rtl:left-auto rtl:right-[21.75rem] top-[30.5rem] h-[14.0625rem] w-[32.125rem] overflow-hidden opacity-43">
             <img
               src={assets.waves}
               alt=""
@@ -42,16 +42,16 @@ export function Services() {
           src={assets.studioGlow}
           alt=""
           aria-hidden
-          className="pointer-events-none absolute left-[-23.2625rem] top-[-20.8875rem] z-[1] h-[57.275rem] w-[57.7125rem] max-w-none animate-breathe"
+          className="pointer-events-none absolute left-[-23.2625rem] rtl:left-auto rtl:right-[-23.2625rem] top-[-20.8875rem] z-[1] h-[57.275rem] w-[57.7125rem] max-w-none animate-breathe"
         />
 
         {/* 01 — Design */}
-        <article className="relative overflow-hidden bg-black px-5 pb-20 pt-14 sm:px-8 md:col-span-2 lg:col-span-1 lg:p-0 lg:px-[2.625rem] lg:pt-[6.375rem]">
+        <article className="relative overflow-hidden bg-transparent px-5 pb-20 pt-14 sm:px-8 md:col-span-2 lg:col-span-1 lg:p-0 lg:px-[2.625rem] lg:pt-[6.375rem]">
           <img
             src={assets.ring}
             alt=""
             aria-hidden
-            className="pointer-events-none absolute right-[-6rem] top-[9rem] z-[1] size-[17.25rem] max-w-none animate-orbit lg:left-[15.0625rem] lg:right-auto lg:top-[8.875rem]"
+            className="pointer-events-none absolute right-[-6rem] top-[9rem] z-[1] size-[17.25rem] max-w-none animate-orbit lg:left-[15.0625rem] lg:right-auto lg:top-[8.875rem] rtl:lg:left-auto rtl:lg:right-[15.0625rem]"
           />
           <img
             src={assets.waves}
@@ -110,8 +110,8 @@ export function Services() {
                 : 'Purposeful interfaces with personality, clarity, and a strong point of view.'}
             </p>
             <div className="mt-[1.6063rem] lg:ms-[0.1875rem] lg:w-[30.7188rem]">
-              <div data-reveal="up" style={delay(320)} className="flex justify-end lg:block">
-                <Logo tone="paper" variant="wordmark" size="sm" className="lg:ms-[25.5rem]" />
+              <div data-reveal="up" style={delay(320)} className="flex justify-end rtl:justify-start lg:block">
+                <Logo tone="paper" variant="wordmark" size="sm" className="lg:ms-[25.5rem] rtl:lg:ms-0 rtl:lg:me-[25.5rem]" />
               </div>
               <img
                 data-reveal="line"
@@ -125,7 +125,7 @@ export function Services() {
         </article>
 
         {/* 02 — Coding */}
-        <article className="relative overflow-hidden bg-[#0e0e0e] px-5 pb-20 pt-14 sm:px-8 lg:overflow-visible lg:p-0 lg:px-[1.375rem] lg:pt-[6.8125rem]">
+        <article className="relative overflow-hidden bg-transparent px-5 pb-20 pt-14 sm:px-8 lg:overflow-visible lg:p-0 lg:px-[1.375rem] lg:pt-[6.8125rem]">
           <img
             src={assets.waves}
             alt=""
@@ -164,7 +164,7 @@ export function Services() {
         </article>
 
         {/* 03 — System */}
-        <article className="relative bg-[#0b0b0b] px-5 pb-20 pt-14 sm:px-8 lg:p-0 lg:pl-[0.9375rem] lg:pt-[10.5rem]">
+        <article className="relative bg-transparent px-5 pb-20 pt-14 sm:px-8 lg:p-0 lg:px-[1.375rem] lg:pt-[10.5rem]">
           <div className="relative z-[2] lg:w-[19.0625rem]">
             <div data-reveal="up" className="relative flex max-w-[19.0625rem] items-end justify-between">
               <h3 className={`${title} font-bold`}>{lang === 'ar' ? 'أنظمة متكاملة' : 'System'}</h3>
