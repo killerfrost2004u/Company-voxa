@@ -244,7 +244,7 @@ const PLANS: Plan[] = [
 ]
 
 function onTiltMove(e: PointerEvent<HTMLElement>) {
-  if (e.pointerType !== 'mouse') return
+  if (e.pointerType !== 'mouse' || window.innerWidth < 1024) return
   const card = e.currentTarget
   const rect = card.getBoundingClientRect()
   const x = e.clientX - rect.left
@@ -260,6 +260,7 @@ function onTiltMove(e: PointerEvent<HTMLElement>) {
 }
 
 function onTiltLeave(e: PointerEvent<HTMLElement>) {
+  if (window.innerWidth < 1024) return
   const card = e.currentTarget
   card.style.transform = ''
 }
@@ -392,16 +393,16 @@ export function Pricing({ onChoosePlan }: PricingProps) {
         </h2>
       </div>
 
-      {/* STACK CARDS DECK (Natural vertical flow on mobile, 3D sticky stack deck on desktop) */}
+      {/* STACK CARDS DECK (Mobile Compact 60FPS Stacking + Desktop 2-Column Deck) */}
       <div
-        className="relative mx-auto flex max-w-[76rem] flex-col space-y-8 sm:space-y-12 lg:space-y-20 lg:px-4"
+        className="relative mx-auto flex max-w-[76rem] flex-col space-y-20 sm:space-y-28 lg:space-y-36 lg:px-4"
       >
         {PLANS.map((plan, i) => {
           const topOffsets = [
-            'lg:top-[6.5rem]',
-            'lg:top-[7.75rem]',
-            'lg:top-[9rem]',
-            'lg:top-[10.25rem]',
+            'top-[4.5rem] sm:top-[5.25rem] lg:top-[6.5rem]',
+            'top-[5.25rem] sm:top-[6.5rem] lg:top-[7.75rem]',
+            'top-[6rem] sm:top-[7.75rem] lg:top-[9rem]',
+            'top-[6.75rem] sm:top-[9rem] lg:top-[10.25rem]',
           ]
           const zIndexes = ['z-10', 'z-20', 'z-30', 'z-40']
 
@@ -419,13 +420,13 @@ export function Pricing({ onChoosePlan }: PricingProps) {
               key={plan.name}
               data-reveal="lift"
               style={delay(i * 120)}
-              className={`relative lg:sticky ${topOffsets[i]} ${zIndexes[i]} transition-all duration-500`}
+              className={`sticky ${topOffsets[i]} ${zIndexes[i]} transition-all duration-500 will-change-transform transform-gpu`}
             >
               <article
                 onPointerMove={onTiltMove}
                 onPointerLeave={onTiltLeave}
                 style={vars(plan.layout)}
-                className={`group relative flex min-h-[420px] sm:min-h-[460px] lg:h-[490px] flex-col justify-between overflow-hidden rounded-[2rem] border border-white/10 bg-[#0e0e0e] lg:bg-[#0e0e0e]/95 p-6 sm:p-8 lg:p-10 lg:backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.85)] lg:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.95)] transition-[transform,box-shadow,border-color] duration-500 ease-[var(--ease-expo)] hover:border-voxa/50 ${
+                className={`group relative flex min-h-[380px] max-h-[calc(100dvh-7.5rem)] sm:min-h-[420px] lg:h-[490px] flex-col justify-between overflow-hidden rounded-[1.75rem] sm:rounded-[2rem] border border-white/10 bg-[#0e0e0e] lg:bg-[#0e0e0e]/95 p-4 sm:p-6 lg:p-10 lg:backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.85)] lg:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.95)] transition-[transform,box-shadow,border-color] duration-500 ease-[var(--ease-expo)] hover:border-voxa/50 ${
                   plan.popular
                     ? 'ring-1 ring-voxa/60 shadow-[0_30px_70px_-15px_rgba(99,161,242,0.35)]'
                     : ''
@@ -441,26 +442,106 @@ export function Pricing({ onChoosePlan }: PricingProps) {
 
                 {/* Top Bar of the Card */}
                 <div className="relative z-10 flex items-start justify-between">
-                  <div className="flex items-center gap-2.5">
-                    <span className="font-dm text-[0.7rem] sm:text-xs font-bold tracking-[0.2em] text-voxa uppercase">
+                  <div className="flex items-center gap-2">
+                    <span className="font-dm text-[0.65rem] sm:text-xs font-bold tracking-[0.2em] text-voxa uppercase">
                       {lang === 'ar' ? `الباقة ${plan.tierNumber}` : `TIER ${plan.tierNumber}`}
                     </span>
                     <span className="text-white/20">•</span>
-                    <span className="rounded-full bg-white/5 border border-white/10 px-3 py-0.5 font-dm text-[0.7rem] sm:text-xs font-semibold text-white/70">
+                    <span className="rounded-full bg-white/5 border border-white/10 px-2.5 py-0.5 font-dm text-[0.65rem] sm:text-xs font-semibold text-white/70">
                       {planTimeline}
                     </span>
                   </div>
 
                   {plan.popular && (
-                    <div className="inline-flex items-center gap-2 rounded-full border border-voxa/60 bg-ash/95 px-3.5 py-1 text-xs font-bold uppercase tracking-[0.16em] text-voxa shadow-[0_0_18px_rgba(99,161,242,0.4)] backdrop-blur-md animate-[pulse_3s_ease-in-out_infinite]">
+                    <div className="inline-flex items-center gap-1.5 rounded-full border border-voxa/60 bg-ash/95 px-2.5 py-0.5 sm:px-3.5 sm:py-1 text-[0.65rem] sm:text-xs font-bold uppercase tracking-[0.16em] text-voxa shadow-[0_0_18px_rgba(99,161,242,0.4)] backdrop-blur-md animate-[pulse_3s_ease-in-out_infinite]">
                       <span className="size-1.5 rounded-full bg-flame animate-pulse shadow-[0_0_8px_#ff5a3c]" />
                       <span>{t.pricing.popularBadge}</span>
                     </div>
                   )}
                 </div>
 
-                {/* Main Grid: Left Details & Right Deliverables */}
-                <div className="relative z-10 my-auto grid gap-6 sm:gap-8 lg:grid-cols-[1.2fr_1.2fr] lg:gap-12 items-center">
+                {/* MOBILE VIEW (< lg): Lightweight, complete, zero cut-off */}
+                <div className="lg:hidden relative z-10 flex flex-col justify-between flex-1 py-1.5 gap-2.5 min-w-0">
+                  {/* Title & Price Header */}
+                  <div className="flex flex-col gap-1 min-w-0">
+                    <div className="flex flex-wrap items-baseline justify-between gap-2">
+                      <h3 className="font-manrope text-xl sm:text-2xl font-extrabold text-white tracking-tight">
+                        {planName}
+                      </h3>
+                      <div className="flex flex-wrap items-baseline gap-1.5 shrink-0 rtl:flex-row-reverse">
+                        {planAmountPrefix && (
+                          <span className="font-dm text-xs font-bold text-white/50 shrink-0">
+                            {planAmountPrefix}
+                          </span>
+                        )}
+                        <span className={`font-manrope font-black tracking-tight ${
+                          plan.isCustomQuote
+                            ? 'text-lg sm:text-xl text-shimmer'
+                            : 'text-2xl sm:text-3xl text-white'
+                        }`}>
+                          {planAmount}
+                        </span>
+                        {planAmountSuffix && (
+                          <span className="font-dm text-[0.7rem] font-medium text-voxa shrink-0">
+                            {planAmountSuffix}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    <p className="font-manrope text-xs text-white/75 line-clamp-2">
+                      {planDesc}
+                    </p>
+                  </div>
+
+                  {/* Included Deliverables Checklist */}
+                  <div className="rounded-xl border border-white/10 bg-black/40 p-3 shadow-inner">
+                    <div className="flex items-center justify-between mb-2 pb-1 border-b border-white/10">
+                      <span className="font-dm text-[0.65rem] font-bold uppercase tracking-wider text-voxa">
+                        {lang === 'ar' ? 'المميزات والمخرجات' : 'INCLUDED DELIVERABLES'}
+                      </span>
+                      <span className="font-dm text-[0.65rem] text-white/50">
+                        {lang === 'ar' ? 'ملكية كود كاملة' : 'Full IP Ownership'}
+                      </span>
+                    </div>
+
+                    <ul className="flex flex-col gap-1.5">
+                      {planFeatures.slice(0, 4).map((feature) => (
+                        <li key={feature} className="flex items-center gap-2">
+                          <div className="flex size-3.5 shrink-0 items-center justify-center rounded-full bg-voxa/20 text-voxa">
+                            <img src={assets.check} alt="" className="size-2" />
+                          </div>
+                          <span className="text-[0.75rem] sm:text-xs text-white/90 line-clamp-1">
+                            {feature}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* CTA Button */}
+                  <div className="pt-1">
+                    <a
+                      href="#contact"
+                      onClick={() => onChoosePlan(plan.name)}
+                      className="btn-shine inline-flex h-11 w-full items-center justify-center gap-2 rounded-full bg-voxa font-manrope text-sm font-bold text-ash shadow-[0_4px_16px_rgba(99,161,242,0.35)] transition-all active:scale-95"
+                    >
+                      {plan.isCustomQuote
+                        ? (lang === 'ar' ? 'طلب عرض سعر مخصص' : 'Request Custom Quote')
+                        : (lang === 'ar' ? `اختر ${planName}` : `Choose ${plan.name}`)}
+                      <span className="flex size-3 items-center justify-center">
+                        <img
+                          src={assets.arrowUpRightLarge}
+                          alt=""
+                          className="size-3 -rotate-90 rtl:scale-x-[-1]"
+                        />
+                      </span>
+                    </a>
+                  </div>
+                </div>
+
+                {/* DESKTOP VIEW (lg:): Full Luxury 2-Column Layout */}
+                <div className="hidden lg:grid relative z-10 my-auto grid-cols-[1.2fr_1.2fr] gap-12 items-center">
                   {/* Left Column: Plan Title, Description, Price, CTA */}
                   <div className="flex flex-col justify-between min-w-0">
                     <div>
@@ -549,7 +630,7 @@ export function Pricing({ onChoosePlan }: PricingProps) {
                 </div>
 
                 {/* Bottom Footer Details */}
-                <div className="relative z-10 flex items-center justify-between border-t border-white/10 pt-3 text-[0.75rem] font-dm text-white/40">
+                <div className="relative z-10 flex items-center justify-between border-t border-white/10 pt-2.5 sm:pt-3 text-[0.7rem] sm:text-[0.75rem] font-dm text-white/40">
                   <span>VOXA STUDIO // PACKAGE {plan.tierNumber}</span>
                   <span className="text-voxa">Scroll to stack next plan ↓</span>
                 </div>
