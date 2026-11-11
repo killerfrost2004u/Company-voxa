@@ -109,7 +109,7 @@ export function Header({ isLoaded = true }: { isLoaded?: boolean }) {
               key={item.href}
               href={item.href}
               onClick={(e) => handleNavClick(e, item.href)}
-              className="group relative whitespace-nowrap font-manrope text-sm lg:text-[0.95rem] font-semibold text-white/80 transition-colors hover:text-white"
+              className="group relative whitespace-nowrap font-manrope text-sm lg:text-[0.95rem] font-medium text-white/80 transition-colors hover:text-white"
             >
               {item.label}
               <span className="absolute -bottom-1 left-0 h-[2px] w-full origin-right scale-x-0 rounded-full bg-voxa transition-transform duration-500 ease-[var(--ease-expo)] group-hover:origin-left group-hover:scale-x-100" />

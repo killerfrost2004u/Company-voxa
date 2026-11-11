@@ -20,7 +20,7 @@ export function WhyVoxa() {
       <div data-reveal-group className="mx-auto max-w-[67.9894rem]">
         <p
           data-reveal="up"
-          className="font-dm text-xs sm:text-sm font-extrabold uppercase tracking-[0.18em] text-voxa"
+          className="font-dm text-xs sm:text-sm font-bold uppercase tracking-[0.18em] text-voxa"
         >
           {t.whyVoxa.badge}
         </p>
@@ -28,23 +28,18 @@ export function WhyVoxa() {
           id="why-voxa-title"
           data-reveal="blur"
           style={delay(80)}
-          className="mt-4 max-w-[68rem] font-manrope text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-[-0.03em] text-white"
+          className="mt-4 max-w-[68rem] font-manrope text-3xl sm:text-4xl lg:text-5xl font-bold tracking-[-0.03em] text-white leading-[1.2]"
         >
-          {t.whyVoxa.title}
+          {t.whyVoxa.title}{' '}
+          <span className="font-serif font-normal italic text-voxa">
+            {t.whyVoxa.subtitle}
+          </span>
         </h2>
 
         <p
           data-reveal="up"
-          style={delay(120)}
-          className="mt-4 max-w-[68rem] font-manrope text-lg sm:text-xl lg:text-2xl font-semibold leading-relaxed text-voxa"
-        >
-          {t.whyVoxa.subtitle}
-        </p>
-
-        <p
-          data-reveal="up"
-          style={delay(160)}
-          className="mt-3.5 max-w-[68rem] font-dm text-base sm:text-lg leading-relaxed text-[#aaa7a0]"
+          style={delay(140)}
+          className="mt-4 max-w-[68rem] font-dm text-base sm:text-lg leading-relaxed text-[#aaa7a0]"
         >
           {lang === 'ar'
             ? 'التصميم والبرمجة يجب ألا ينفصلا أبداً. يعمل فريقنا المتخصص ككتلة واحدة من أول رسم تخطيطي إلى آخر سطر برمجي لضمان تحويل زوارك إلى عملاء فعليين.'

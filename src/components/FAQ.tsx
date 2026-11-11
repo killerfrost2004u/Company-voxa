@@ -98,7 +98,7 @@ export function FAQ() {
           <div>
             <p
               data-reveal="up"
-              className="font-dm text-xs sm:text-sm font-extrabold uppercase tracking-[0.18em] text-voxa"
+              className="font-dm text-xs sm:text-sm font-bold uppercase tracking-[0.18em] text-voxa"
             >
               {t.faq.badge}
             </p>
@@ -106,18 +106,21 @@ export function FAQ() {
               id="faq-title"
               data-reveal="blur"
               style={delay(80)}
-              className="mt-4 max-w-[68rem] font-manrope text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-[-0.03em] text-white"
+              className="mt-4 max-w-[68rem] font-manrope text-3xl sm:text-4xl lg:text-5xl font-bold tracking-[-0.03em] text-white leading-[1.2]"
             >
-              {t.faq.title}
+              {t.faq.title}{' '}
+              <span className="font-serif font-normal italic text-voxa block sm:inline mt-2 sm:mt-0">
+                {lang === 'ar' ? 'إجابات مباشرة وشفافة.' : 'Clear, direct answers.'}
+              </span>
             </h2>
             <p
               data-reveal="up"
-              style={delay(120)}
-              className="mt-4 max-w-[68rem] font-manrope text-lg sm:text-xl lg:text-2xl font-semibold leading-relaxed text-voxa"
+              style={delay(140)}
+              className="mt-4 max-w-[68rem] font-dm text-base sm:text-lg leading-relaxed text-[#aaa7a0]"
             >
               {lang === 'ar'
-                ? 'إجابات واضحة ومباشرة عن كل ما يخص خدماتنا، الأسعار، ومراحل العمل.'
-                : 'Clear, direct answers about our services, pricing, and process.'}
+                ? 'إجابات واضحة ومباشرة عن كل ما يخص خدماتنا التقنية، الأسعار الثابتة، ومراحل العمل البرمجي.'
+                : 'Clear, direct answers about our engineering process, fixed-price tiers, and post-launch SLA.'}
             </p>
           </div>
         </div>

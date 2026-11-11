@@ -27,6 +27,10 @@ export interface BlogPost {
   seoDescriptionEn?: string
   seoKeywords?: string
   seoKeywordsEn?: string
+  keyTakeaways?: string[]
+  keyTakeawaysEn?: string[]
+  faqs?: { question: string; answer: string }[]
+  faqsEn?: { question: string; answer: string }[]
 }
 
 export type BlogPostInput = Omit<BlogPost, 'id' | 'publishedAt' | 'updatedAt'> & {

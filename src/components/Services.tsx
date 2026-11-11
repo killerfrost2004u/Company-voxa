@@ -65,25 +65,27 @@ export function Services() {
               <div>
                 <p
                   data-reveal="up"
-                  className="font-dm text-xs sm:text-sm font-extrabold uppercase tracking-[0.18em] text-voxa"
+                  className="font-dm text-xs sm:text-sm font-bold uppercase tracking-[0.18em] text-voxa"
                 >
                   {lang === 'ar' ? 'خدمات الاستوديو' : 'OUR CORE SERVICES'}
                 </p>
                 <h2
                   data-reveal="up"
-                  className="mt-3 font-manrope text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-[1.1] tracking-[-0.03em] text-paper"
+                  className="mt-3 font-manrope text-3xl sm:text-4xl lg:text-5xl font-bold leading-[1.15] tracking-[-0.03em] text-paper"
                 >
                   {lang === 'ar' ? (
                     <>
-                      استوديو متكامل.
-                      <br />
-                      لكل احتياج رقمي.
+                      استوديو متكامل.{' '}
+                      <span className="font-serif font-normal italic text-voxa block sm:inline mt-2 sm:mt-0">
+                        لكل احتياج رقمي.
+                      </span>
                     </>
                   ) : (
                     <>
-                      One studio.
-                      <br />
-                      Every digital need.
+                      One studio.{' '}
+                      <span className="font-serif font-normal italic text-voxa block sm:inline mt-2 sm:mt-0">
+                        Every digital need.
+                      </span>
                     </>
                   )}
                 </h2>
@@ -94,15 +96,8 @@ export function Services() {
             </div>
             <p
               data-reveal="up"
-              style={delay(80)}
-              className="mt-4 max-w-[26rem] font-manrope text-lg sm:text-xl font-semibold leading-relaxed text-voxa"
-            >
-              {lang === 'ar' ? 'تصميم يأسر الحواس وكود فائق الأداء' : 'Design that speaks, code that converts'}
-            </p>
-            <p
-              data-reveal="up"
               style={delay(120)}
-              className="mt-3 max-w-[26rem] font-dm text-base sm:text-lg leading-relaxed text-[#aaa69f]"
+              className="mt-4 max-w-[26rem] font-dm text-base sm:text-lg leading-relaxed text-[#aaa69f]"
             >
               {lang === 'ar'
                 ? 'نردم الفجوة بين الفكرة الإبداعية والموقع فائق الأداء الذي يخدم أهداف نمو عملك التجاري بواجهات مستخدم ذات طابع وهوية واضحة.'

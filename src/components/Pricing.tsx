@@ -378,25 +378,30 @@ export function Pricing({ onChoosePlan }: PricingProps) {
 
       {/* Header */}
       <div className="relative z-10 mx-auto mb-12 max-w-[76rem] lg:mb-16 lg:px-4">
-        <p className="font-dm text-xs sm:text-sm font-extrabold uppercase tracking-[0.18em] text-voxa flex items-center gap-2">
+        <p className="font-dm text-xs sm:text-sm font-bold uppercase tracking-[0.18em] text-voxa flex items-center gap-2">
           <span className="size-2 rounded-full bg-voxa animate-ping-soft" />
           {t.pricing.badge}
         </p>
         <h2
           id="pricing-title"
           ref={headerRef}
-          className="mt-4 max-w-[68rem] font-manrope text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-[-0.03em] text-white"
+          className="mt-4 max-w-[68rem] font-manrope text-3xl sm:text-4xl lg:text-5xl font-bold tracking-[-0.03em] text-white leading-[1.2]"
         >
-          {lang === 'ar'
-            ? 'باقات وأسعار واضحة ومدروسة لنمو أعمالك.'
-            : 'Transparent pricing tailored for your business growth.'}
+          {lang === 'ar' ? (
+            <>
+              باقات وأسعار واضحة ومدروسة{' '}
+              <span className="font-serif font-normal italic text-voxa">لنمو أعمالك الرقمية.</span>
+            </>
+          ) : (
+            <>
+              Transparent pricing tiers{' '}
+              <span className="font-serif font-normal italic text-voxa">tailored for your growth.</span>
+            </>
+          )}
         </h2>
-        <p className="mt-4 max-w-[68rem] font-manrope text-lg sm:text-xl lg:text-2xl font-semibold leading-relaxed text-voxa">
-          {t.pricing.subtitle}
-        </p>
-        <p className="mt-3 max-w-[68rem] font-dm text-base sm:text-lg leading-relaxed text-[#aaa7a0]">
+        <p className="mt-4 max-w-[68rem] font-dm text-base sm:text-lg leading-relaxed text-[#aaa7a0]">
           {lang === 'ar'
-            ? 'باقات شفافة بدون تكاليف خفية، مع التزام كامل بالجودة والتسليم في الموعد المحدد وضمان صيانة مستمر.'
+            ? 'باقات شفافة بدون أي تكاليف خفية، مع التزام كامل بالجودة والتسليم في الموعد المحدد وضمان صيانة مستمر.'
             : 'Transparent tiers with no hidden fees, uncompromising engineering quality, and dedicated SLA.'}
         </p>
       </div>
@@ -476,7 +481,7 @@ export function Pricing({ onChoosePlan }: PricingProps) {
                       <h3 className="font-manrope text-xl sm:text-2xl font-extrabold text-white tracking-tight">
                         {planName}
                       </h3>
-                      <div className="flex flex-wrap items-baseline gap-1.5 shrink-0 rtl:flex-row-reverse">
+                      <div className="flex flex-wrap items-baseline gap-1.5 shrink-0">
                         {planAmountPrefix && (
                           <span className="font-dm text-xs font-bold text-white/50 shrink-0">
                             {planAmountPrefix}
@@ -549,11 +554,11 @@ export function Pricing({ onChoosePlan }: PricingProps) {
                 </div>
 
                 {/* DESKTOP VIEW (lg:): Full Luxury 2-Column Layout */}
-                <div className="hidden lg:grid relative z-10 my-auto grid-cols-[1.2fr_1.2fr] gap-12 items-center">
+                <div className="hidden lg:grid relative z-10 my-auto grid-cols-[1.1fr_1.25fr] gap-6 xl:gap-10 2xl:gap-12 items-center">
                   {/* Left Column: Plan Title, Description, Price, CTA */}
                   <div className="flex flex-col justify-between min-w-0">
                     <div>
-                      <h3 className="font-manrope text-2xl sm:text-3xl lg:text-[2.25rem] font-extrabold tracking-[-0.03em] text-white">
+                      <h3 className="font-manrope text-2xl sm:text-3xl lg:text-[2.25rem] font-bold tracking-[-0.03em] text-white">
                         {planName}
                       </h3>
 
@@ -567,7 +572,7 @@ export function Pricing({ onChoosePlan }: PricingProps) {
                     </div>
 
                     {/* Price Display with Shimmer Text */}
-                    <div className="mt-5 sm:mt-7 flex flex-wrap items-baseline gap-2 sm:gap-2.5 rtl:flex-row-reverse rtl:justify-end">
+                    <div className="mt-5 sm:mt-7 flex flex-wrap items-baseline gap-2.5 sm:gap-3">
                       {planAmountPrefix && (
                         <span className="font-dm text-sm sm:text-base font-bold text-white/50 shrink-0">
                           {planAmountPrefix}
@@ -575,7 +580,7 @@ export function Pricing({ onChoosePlan }: PricingProps) {
                       )}
                       <span className={`font-manrope font-extrabold tracking-tight drop-shadow-[0_0_20px_rgba(255,255,255,0.12)] ${
                         plan.isCustomQuote
-                          ? 'text-2xl sm:text-3xl lg:text-[2.2rem] text-shimmer leading-tight'
+                          ? 'text-xl sm:text-2xl lg:text-[2.1rem] xl:text-[2.5rem] text-shimmer leading-tight'
                           : 'text-3xl sm:text-4xl lg:text-5xl text-white group-hover:text-shimmer transition-colors'
                       }`}>
                         {planAmount}

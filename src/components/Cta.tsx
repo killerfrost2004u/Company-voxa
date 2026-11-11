@@ -27,7 +27,7 @@ export function Cta() {
         <p
           data-reveal="up"
           style={delay(80)}
-          className="mt-4 font-dm text-xs sm:text-sm font-extrabold uppercase tracking-[0.18em] text-ash/80"
+          className="mt-4 font-dm text-xs sm:text-sm font-bold uppercase tracking-[0.18em] text-ash/80"
         >
           {t.cta.subtitle}
         </p>
@@ -35,10 +35,10 @@ export function Cta() {
           id="cta-title"
           data-reveal="blur"
           style={delay(160)}
-          className="mt-4 font-manrope text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-[-0.03em] text-ash max-w-4xl"
+          className="mt-4 font-manrope text-3xl sm:text-4xl lg:text-5xl font-bold tracking-[-0.03em] text-ash max-w-4xl leading-[1.2]"
         >
           <span className="sm:block">{t.cta.title} </span>
-          <span className="text-voxa">{t.cta.titleAccent}</span>
+          <span className="font-serif font-normal italic text-voxa">{t.cta.titleAccent}</span>
         </h2>
         <a
           href="mailto:voxaa.business@gmail.com"

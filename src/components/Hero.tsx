@@ -76,7 +76,7 @@ export function Hero() {
 
           <h1
             data-reveal-group
-            className="mt-6 font-manrope text-4xl sm:text-6xl lg:text-[5.5rem] font-extrabold leading-[1.1] tracking-[-0.03em] text-paper lg:mt-8"
+            className="mt-6 font-manrope text-4xl sm:text-6xl lg:text-[5.5rem] font-bold leading-[1.1] tracking-[-0.03em] text-paper lg:mt-8"
           >
             <span className={lineMask}>
               <span data-reveal="rise" style={delay(160)} className="block">
@@ -87,11 +87,11 @@ export function Hero() {
               <span data-reveal="rise" style={delay(280)} className="block">
                 {lang === 'ar' ? (
                   <>
-                    إلى العالم <span className="text-voxa">الرقمي.</span>
+                    إلى العالم <span className="font-serif font-normal italic text-voxa">الرقمي.</span>
                   </>
                 ) : (
                   <>
-                    to <span className="text-voxa">digital.</span>
+                    to <span className="font-serif font-normal italic text-voxa">digital.</span>
                   </>
                 )}
               </span>

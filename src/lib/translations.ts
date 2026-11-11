@@ -193,7 +193,7 @@ export const translations: Record<Language, TranslationDictionary> = {
     },
     whyVoxa: {
       badge: 'The Voxa Advantage',
-      title: 'Why Brands Choose Voxa Studio',
+      title: 'Why brands choose us',
       subtitle:
         'We replace slow agency bureaucracy with transparent pricing, direct communication, and uncompromised custom code.',
       pillars: [
@@ -413,7 +413,7 @@ export const translations: Record<Language, TranslationDictionary> = {
     },
     whyVoxa: {
       badge: 'ميزة استوديو Voxa',
-      title: 'لماذا تختار الشركات استوديو Voxa لتصميم وتطوير مواقعها؟',
+      title: 'لماذا تختار الشركات استوديو Voxa؟',
       subtitle:
         'نستبدل بيروقراطية الشركات التقليدية بالشفافية الكاملة في الأسعار، التواصل المباشر، وجودة الكود المخصص بدون تنازلات.',
       pillars: [

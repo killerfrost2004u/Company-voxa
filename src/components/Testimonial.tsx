@@ -379,7 +379,7 @@ export function Testimonial() {
           <div className="flex text-[#ffb800] text-sm tracking-widest">
             {'★'.repeat(5)}
           </div>
-          <span className="font-dm text-xs sm:text-sm font-extrabold uppercase tracking-[0.18em] text-voxa">
+          <span className="font-dm text-xs sm:text-sm font-bold uppercase tracking-[0.18em] text-voxa">
             {lang === 'ar'
               ? 'تقييم 5.0 من أكثر من 20 مؤسس شركة'
               : '5.0 RATED BY 20+ FOUNDERS'}
@@ -389,29 +389,23 @@ export function Testimonial() {
         {/* Section Heading */}
         <h2
           data-reveal="blur"
-          className="font-manrope text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-[-0.03em] text-white leading-tight max-w-4xl mx-auto"
+          className="font-manrope text-3xl sm:text-4xl lg:text-5xl font-bold tracking-[-0.03em] text-white leading-[1.2] max-w-4xl mx-auto"
         >
           {lang === 'ar' ? (
             <>
-              مصمم لمؤسسي الشركات الذين <span className="text-voxa">لا يقبلون بأنصاف الحلول.</span>
+              مصمم لمؤسسي الشركات الذين{' '}
+              <span className="font-serif font-normal italic text-voxa">لا يقبلون بأنصاف الحلول.</span>
             </>
           ) : (
             <>
-              Built for founders who <span className="text-voxa">refuse to compromise.</span>
+              Built for founders who{' '}
+              <span className="font-serif font-normal italic text-voxa">refuse to compromise.</span>
             </>
           )}
         </h2>
         <p
           data-reveal="up"
-          className="mt-4 max-w-3xl mx-auto font-manrope text-lg sm:text-xl lg:text-2xl font-semibold leading-relaxed text-voxa"
-        >
-          {lang === 'ar'
-            ? 'تجارب رقمية متطورة تُعزز الثقة وتزيد المبيعات والأرباح.'
-            : 'Next-generation digital experiences that build trust and drive conversions.'}
-        </p>
-        <p
-          data-reveal="up"
-          className="mt-3 max-w-2xl mx-auto font-dm text-base sm:text-lg leading-relaxed text-[#aaa7a0]"
+          className="mt-4 max-w-2xl mx-auto font-dm text-base sm:text-lg leading-relaxed text-[#aaa7a0]"
         >
           {lang === 'ar'
             ? 'من القاهرة والإسكندرية إلى دبي والرياض ولندن، نشارك الفرق الطموحة لبناء تجارب رقمية تزيد من مبيعاتها وأرباحها.'

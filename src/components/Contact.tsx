@@ -112,7 +112,7 @@ export function Contact({ planRequest }: ContactProps) {
         <div
           aria-hidden="true"
           data-reveal="blur"
-          className="mb-8 text-center font-manrope text-[18vw] font-medium leading-[0.9] text-white/[0.04] lg:absolute lg:left-1/2 lg:top-[4.8006rem] lg:mb-0 lg:-ml-[19.25rem] lg:h-[5.625rem] lg:w-[38.5625rem] lg:text-left lg:text-[9.5625rem] lg:leading-[1.4875rem] pointer-events-none select-none"
+          className="mb-8 text-center font-manrope text-[18vw] font-light tracking-widest leading-[0.9] text-white/[0.02] lg:absolute lg:left-1/2 lg:top-[4.8006rem] lg:mb-0 lg:-ml-[19.25rem] lg:h-[5.625rem] lg:w-[38.5625rem] lg:text-left lg:text-[9.5625rem] lg:leading-[1.4875rem] pointer-events-none select-none"
         >
           Contact
         </div>
@@ -122,7 +122,7 @@ export function Contact({ planRequest }: ContactProps) {
         <div className="lg:pt-[15rem]">
           <p
             data-reveal="up"
-            className="font-dm text-xs sm:text-sm font-extrabold uppercase tracking-[0.18em] text-voxa"
+            className="font-dm text-xs sm:text-sm font-bold uppercase tracking-[0.18em] text-voxa"
           >
             {lang === 'ar' ? 'تواصل مع الاستوديو' : 'CONTACT STUDIO'}
           </p>
@@ -130,27 +130,28 @@ export function Contact({ planRequest }: ContactProps) {
             id="contact-title"
             data-reveal="blur"
             style={delay(80)}
-            className="mt-3 font-manrope text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-[-0.03em] text-white"
+            className="mt-3 font-manrope text-3xl sm:text-4xl lg:text-5xl font-bold tracking-[-0.03em] text-white leading-[1.2]"
           >
-            {lang === 'ar' ? 'تواصل معنا مباشرة' : 'Get in touch with us'}
+            {lang === 'ar' ? (
+              <>
+                تواصل معنا مباشرة.{' '}
+                <span className="font-serif font-normal italic text-voxa">لنبدأ مشروعك القادم.</span>
+              </>
+            ) : (
+              <>
+                Get in touch with us.{' '}
+                <span className="font-serif font-normal italic text-voxa">Let’s engineer something great.</span>
+              </>
+            )}
           </h2>
           <p
             data-reveal="up"
-            style={delay(120)}
-            className="mt-4 max-w-[28rem] font-manrope text-lg sm:text-xl lg:text-2xl font-semibold leading-relaxed text-voxa"
+            style={delay(140)}
+            className="mt-4 max-w-[28rem] font-dm text-base sm:text-lg leading-relaxed text-[#aaa7a0]"
           >
             {lang === 'ar'
-              ? 'ابدأ مشروعك معنا اليوم وتحدث مع فريقنا الهندسي مباشرة لتحديد أنسب باقة لعملك.'
-              : 'Feel free to ask anytime to start your project with us'}
-          </p>
-          <p
-            data-reveal="up"
-            style={delay(160)}
-            className="mt-3 max-w-[28rem] font-dm text-base sm:text-lg leading-relaxed text-[#aaa7a0]"
-          >
-            {lang === 'ar'
-              ? 'فريقنا متاح للرد على استفساراتك وتقديم استشارة تقنية وفنية مجانية لمشروعك.'
-              : 'Our team is available to answer inquiries and provide free technical consultation.'}
+              ? 'تحدث مع فريقنا الهندسي مباشرة لتحديد أنسب باقة لعملك وتقديم استشارة تقنية وفنية مجانية لمشروعك.'
+              : 'Talk directly with our senior engineering team to evaluate your scope and get a bespoke roadmap.'}
           </p>
 
           <ul data-reveal-group className="mt-10 lg:mt-[3.1875rem]">
