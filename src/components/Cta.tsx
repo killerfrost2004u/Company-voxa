@@ -27,7 +27,7 @@ export function Cta() {
         <p
           data-reveal="up"
           style={delay(80)}
-          className="mt-[1.5694rem] font-dm text-[0.785rem] font-extrabold leading-[1.5] tracking-[0.18em] text-ash"
+          className="mt-4 font-dm text-xs sm:text-sm font-extrabold uppercase tracking-[0.18em] text-ash/80"
         >
           {t.cta.subtitle}
         </p>
@@ -35,23 +35,21 @@ export function Cta() {
           id="cta-title"
           data-reveal="blur"
           style={delay(160)}
-          className="mt-[1.4131rem] font-manrope text-[clamp(2rem,10.5vw,4.5rem)] font-bold leading-[1.05] tracking-[-0.04em] text-ash lg:text-[5.2rem]"
+          className="mt-4 font-manrope text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-[-0.03em] text-ash max-w-4xl"
         >
           <span className="sm:block">{t.cta.title} </span>
-          <span className="font-serif italic leading-[0]">
-            <span className="text-voxa">{t.cta.titleAccent}</span>
-          </span>
+          <span className="text-voxa">{t.cta.titleAccent}</span>
         </h2>
         <a
           href="mailto:voxaa.business@gmail.com"
           data-reveal="up"
           style={delay(260)}
-          className="mt-12 lg:mt-[3.1381rem]"
+          className="mt-10 lg:mt-12"
         >
-          <span className="btn-shine group inline-flex items-center justify-center gap-[0.8636rem] border-[0.0785rem] border-transparent bg-voxa px-[1.6486rem] py-[1.1776rem] font-dm text-[1.0991rem] font-bold leading-[1.5] text-ash transition-[translate,box-shadow] duration-300 hover:-translate-y-0.5 hover:shadow-[0_0.75rem_2rem_-0.75rem_rgb(99_161_242/0.95)]">
+          <span className="btn-shine group inline-flex items-center justify-center gap-3 rounded-full bg-voxa px-8 py-3.5 font-manrope text-base sm:text-lg font-bold text-ash shadow-lg transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_0.75rem_2rem_-0.75rem_rgb(99_161_242/0.95)]">
             voxaa.business@gmail.com
-            <span className="flex size-[1.5701rem] items-center justify-center transition-transform duration-300 group-hover:translate-x-1 rtl:group-hover:-translate-x-1">
-              <img src={assets.arrowRightLarge} alt="" className="h-[0.9159rem] w-[1.0468rem] max-w-none rtl:scale-x-[-1]" />
+            <span className="flex size-5 items-center justify-center transition-transform duration-300 group-hover:translate-x-1 rtl:group-hover:-translate-x-1">
+              <img src={assets.arrowRightLarge} alt="" className="h-3.5 w-4 max-w-none rtl:scale-x-[-1]" />
             </span>
           </span>
         </a>

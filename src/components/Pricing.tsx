@@ -333,7 +333,7 @@ export function Pricing({ onChoosePlan }: PricingProps) {
       aria-labelledby="pricing-title"
       className="relative px-5 pb-24 pt-16 sm:px-8 lg:px-0 lg:pb-[6rem] lg:pt-[7.5rem]"
     >
-      {/* Background Title Watermark: Full 195px font glyphs preserved with zero clipping */}
+      {/* Background Title Watermark: Subtle luxury depth with zero clipping */}
       <div data-parallax="0.08" className="relative z-0 lg:absolute lg:inset-x-0 lg:top-0 pointer-events-none select-none">
         <div
           ref={titleRef}
@@ -344,13 +344,13 @@ export function Pricing({ onChoosePlan }: PricingProps) {
             '--blur-start': `${blurSplit.blurStart}%`,
             '--blur-full': `${blurSplit.blurFull}%`,
           } as React.CSSProperties}
-          className="-mb-[8vw] text-center font-manrope text-[26vw] font-bold leading-none text-white/70 lg:absolute lg:left-1/2 lg:top-[5.5rem] lg:mb-0 lg:-ml-[20.875rem] lg:w-[41.8125rem] lg:text-left lg:text-[12.1875rem] pointer-events-none select-none"
+          className="-mb-[8vw] text-center font-manrope text-[24vw] font-medium leading-none text-white/[0.04] lg:absolute lg:left-1/2 lg:top-[5.5rem] lg:mb-0 lg:-ml-[20.875rem] lg:w-[41.8125rem] lg:text-left lg:text-[12.1875rem] pointer-events-none select-none"
         >
           <span className="relative block select-none leading-none">
             {/* Sharp top half (above crossing line) */}
             <span
               aria-hidden="true"
-              className="block text-white/60 leading-none select-none"
+              className="block text-white/[0.04] leading-none select-none"
               style={{
                 WebkitMaskImage:
                   'linear-gradient(to bottom, black 0%, black var(--blur-start, 45%), transparent var(--sharp-end, 55%))',
@@ -362,7 +362,7 @@ export function Pricing({ onChoosePlan }: PricingProps) {
             </span>
             {/* Blurred portion (from middle crossing line through to the bottom of the letters - zero cut!) */}
             <span
-              className="absolute inset-0 block text-white/60 leading-none select-none filter blur-[10px] lg:blur-[14px]"
+              className="absolute inset-0 block text-white/[0.04] leading-none select-none filter blur-[10px] lg:blur-[14px]"
               style={{
                 WebkitMaskImage:
                   'linear-gradient(to bottom, transparent 0%, transparent var(--blur-start, 45%), black var(--blur-full, 70%), black 100%)',
@@ -377,20 +377,28 @@ export function Pricing({ onChoosePlan }: PricingProps) {
       </div>
 
       {/* Header */}
-      <div className="relative z-10 mx-auto mb-10 max-w-[76rem] lg:mb-12 lg:px-4">
-        <span className="font-dm text-xs sm:text-sm font-bold tracking-[0.2em] uppercase text-voxa flex items-center gap-2">
+      <div className="relative z-10 mx-auto mb-12 max-w-[76rem] lg:mb-16 lg:px-4">
+        <p className="font-dm text-xs sm:text-sm font-extrabold uppercase tracking-[0.18em] text-voxa flex items-center gap-2">
           <span className="size-2 rounded-full bg-voxa animate-ping-soft" />
           {t.pricing.badge}
-        </span>
+        </p>
         <h2
           id="pricing-title"
           ref={headerRef}
-          className="mt-1 font-manrope text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white"
+          className="mt-4 max-w-[68rem] font-manrope text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-[-0.03em] text-white"
         >
           {lang === 'ar'
-            ? 'باقات وأسعار واضحة ومدروسة للسوق المصري والخليجي والعالمي.'
-            : 'Transparent pricing tailored for the Egyptian & global market.'}
+            ? 'باقات وأسعار واضحة ومدروسة لنمو أعمالك.'
+            : 'Transparent pricing tailored for your business growth.'}
         </h2>
+        <p className="mt-4 max-w-[68rem] font-manrope text-lg sm:text-xl lg:text-2xl font-semibold leading-relaxed text-voxa">
+          {t.pricing.subtitle}
+        </p>
+        <p className="mt-3 max-w-[68rem] font-dm text-base sm:text-lg leading-relaxed text-[#aaa7a0]">
+          {lang === 'ar'
+            ? 'باقات شفافة بدون تكاليف خفية، مع التزام كامل بالجودة والتسليم في الموعد المحدد وضمان صيانة مستمر.'
+            : 'Transparent tiers with no hidden fees, uncompromising engineering quality, and dedicated SLA.'}
+        </p>
       </div>
 
       {/* STACK CARDS DECK (Mobile Compact 60FPS Stacking + Desktop 2-Column Deck) */}
@@ -545,7 +553,7 @@ export function Pricing({ onChoosePlan }: PricingProps) {
                   {/* Left Column: Plan Title, Description, Price, CTA */}
                   <div className="flex flex-col justify-between min-w-0">
                     <div>
-                      <h3 className="font-manrope text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-[-0.03em] text-white">
+                      <h3 className="font-manrope text-2xl sm:text-3xl lg:text-[2.25rem] font-extrabold tracking-[-0.03em] text-white">
                         {planName}
                       </h3>
 
@@ -565,10 +573,10 @@ export function Pricing({ onChoosePlan }: PricingProps) {
                           {planAmountPrefix}
                         </span>
                       )}
-                      <span className={`font-manrope font-black tracking-tight drop-shadow-[0_0_20px_rgba(255,255,255,0.12)] ${
+                      <span className={`font-manrope font-extrabold tracking-tight drop-shadow-[0_0_20px_rgba(255,255,255,0.12)] ${
                         plan.isCustomQuote
-                          ? 'text-2xl sm:text-3xl lg:text-[2.2rem] xl:text-[2.75rem] 2xl:text-5xl text-shimmer leading-tight'
-                          : 'text-4xl sm:text-5xl lg:text-5xl xl:text-6xl 2xl:text-7xl text-white group-hover:text-shimmer transition-colors'
+                          ? 'text-2xl sm:text-3xl lg:text-[2.2rem] text-shimmer leading-tight'
+                          : 'text-3xl sm:text-4xl lg:text-5xl text-white group-hover:text-shimmer transition-colors'
                       }`}>
                         {planAmount}
                       </span>

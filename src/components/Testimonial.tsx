@@ -379,17 +379,17 @@ export function Testimonial() {
           <div className="flex text-[#ffb800] text-sm tracking-widest">
             {'★'.repeat(5)}
           </div>
-          <span className="font-dm text-xs font-bold tracking-wider uppercase text-white/80">
+          <span className="font-dm text-xs sm:text-sm font-extrabold uppercase tracking-[0.18em] text-voxa">
             {lang === 'ar'
-              ? 'تقييم 5.0 من أكثر من 20 مؤسس شركة في مصر والمنطقة'
-              : '5.0 RATED BY 20+ FOUNDERS IN EGYPT & REGION'}
+              ? 'تقييم 5.0 من أكثر من 20 مؤسس شركة'
+              : '5.0 RATED BY 20+ FOUNDERS'}
           </span>
         </div>
 
         {/* Section Heading */}
         <h2
-          data-reveal="rise"
-          className="font-manrope text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-[-0.04em] text-white leading-[1.08]"
+          data-reveal="blur"
+          className="font-manrope text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-[-0.03em] text-white leading-tight max-w-4xl mx-auto"
         >
           {lang === 'ar' ? (
             <>
@@ -403,7 +403,15 @@ export function Testimonial() {
         </h2>
         <p
           data-reveal="up"
-          className="mt-4 max-w-2xl mx-auto font-dm text-base sm:text-lg text-white/60"
+          className="mt-4 max-w-3xl mx-auto font-manrope text-lg sm:text-xl lg:text-2xl font-semibold leading-relaxed text-voxa"
+        >
+          {lang === 'ar'
+            ? 'تجارب رقمية متطورة تُعزز الثقة وتزيد المبيعات والأرباح.'
+            : 'Next-generation digital experiences that build trust and drive conversions.'}
+        </p>
+        <p
+          data-reveal="up"
+          className="mt-3 max-w-2xl mx-auto font-dm text-base sm:text-lg leading-relaxed text-[#aaa7a0]"
         >
           {lang === 'ar'
             ? 'من القاهرة والإسكندرية إلى دبي والرياض ولندن، نشارك الفرق الطموحة لبناء تجارب رقمية تزيد من مبيعاتها وأرباحها.'

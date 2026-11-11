@@ -103,27 +103,27 @@ export function Header({ isLoaded = true }: { isLoaded?: boolean }) {
         </a>
 
         {/* Desktop Navigation */}
-        <nav aria-label="Primary" className="ms-auto hidden items-center gap-[2.5rem] lg:flex">
+        <nav aria-label="Primary" className="ms-auto hidden items-center gap-[2.25rem] lg:flex">
           {navItems.map((item) => (
             <a
               key={item.href}
               href={item.href}
               onClick={(e) => handleNavClick(e, item.href)}
-              className="group relative whitespace-nowrap font-manrope text-[1.25rem] xl:text-[1.35rem] font-bold leading-[1.485] text-white"
+              className="group relative whitespace-nowrap font-manrope text-sm lg:text-[0.95rem] font-semibold text-white/80 transition-colors hover:text-white"
             >
               {item.label}
-              <span className="absolute -bottom-0.5 left-0 h-[2px] w-full origin-right scale-x-0 rounded-full bg-voxa transition-transform duration-500 ease-[var(--ease-expo)] group-hover:origin-left group-hover:scale-x-100" />
+              <span className="absolute -bottom-1 left-0 h-[2px] w-full origin-right scale-x-0 rounded-full bg-voxa transition-transform duration-500 ease-[var(--ease-expo)] group-hover:origin-left group-hover:scale-x-100" />
             </a>
           ))}
         </nav>
 
         {/* Action Controls: Language Toggle & Start Now */}
-        <div className="ms-auto flex items-center gap-3 sm:gap-4 lg:ms-[3rem]">
+        <div className="ms-auto flex items-center gap-3 sm:gap-4 lg:ms-[2.5rem]">
           {/* Global Language Toggle Switcher */}
           <button
             type="button"
             onClick={toggleLanguage}
-            className="cursor-pointer inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/5 px-3 py-1.5 font-manrope text-xs font-bold text-white/90 shadow-sm backdrop-blur-md transition-all hover:border-voxa/60 hover:bg-voxa/10 hover:text-white active:scale-95"
+            className="cursor-pointer inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/5 px-3 py-1.5 font-manrope text-xs font-semibold text-white/90 shadow-sm backdrop-blur-md transition-all hover:border-voxa/60 hover:bg-voxa/10 hover:text-white active:scale-95"
             aria-label={t.header.langButtonAria}
           >
             <GlobeIcon />
@@ -134,7 +134,7 @@ export function Header({ isLoaded = true }: { isLoaded?: boolean }) {
           <a
             href="#contact"
             onClick={(e) => handleNavClick(e, '#contact')}
-            className="btn-shine group hidden h-[2.8125rem] items-center justify-center gap-[0.625rem] rounded-full bg-voxa px-[1.4375rem] pb-[0.3125rem] pt-[0.25rem] font-manrope text-[1rem] font-bold leading-[2.1976rem] text-white transition-shadow duration-300 hover:shadow-[0_0.5rem_1.75rem_-0.5rem_rgb(99_161_242/0.8)] sm:inline-flex"
+            className="btn-shine group hidden h-[2.5rem] items-center justify-center gap-2 rounded-full bg-voxa px-5 font-manrope text-xs sm:text-sm font-bold text-ash transition-all hover:shadow-[0_0.5rem_1.75rem_-0.5rem_rgb(99_161_242/0.8)] active:scale-95 sm:inline-flex"
           >
             {t.header.startNow}
             <StartNowArrow />
@@ -181,7 +181,7 @@ export function Header({ isLoaded = true }: { isLoaded?: boolean }) {
                 onClick={(e) => handleNavClick(e, item.href)}
                 tabIndex={open ? 0 : -1}
                 style={{ transitionDelay: open ? `${80 + i * 60}ms` : '0ms' }}
-                className={`border-b border-white/10 py-4 font-manrope text-[1.5rem] font-bold capitalize text-white transition-[translate,opacity,color] duration-500 hover:text-voxa ${
+                className={`border-b border-white/10 py-3.5 font-manrope text-base sm:text-lg font-semibold capitalize text-white/90 transition-colors hover:text-voxa ${
                   open ? 'translate-y-0 opacity-100' : '-translate-y-3 opacity-0'
                 }`}
               >
@@ -192,7 +192,7 @@ export function Header({ isLoaded = true }: { isLoaded?: boolean }) {
               href="#contact"
               onClick={(e) => handleNavClick(e, '#contact')}
               tabIndex={open ? 0 : -1}
-              className="mt-6 inline-flex h-[3.25rem] items-center justify-center gap-2.5 rounded-full bg-voxa font-manrope text-lg font-bold text-white shadow-lg active:scale-95"
+              className="mt-6 inline-flex h-12 items-center justify-center gap-2 rounded-full bg-voxa font-manrope text-base font-bold text-ash shadow-lg active:scale-95"
             >
               {t.header.startNow}
               <StartNowArrow />

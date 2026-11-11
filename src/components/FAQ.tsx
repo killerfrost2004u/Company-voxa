@@ -98,7 +98,7 @@ export function FAQ() {
           <div>
             <p
               data-reveal="up"
-              className="font-dm text-[0.875rem] font-extrabold uppercase tracking-[0.16em] text-voxa"
+              className="font-dm text-xs sm:text-sm font-extrabold uppercase tracking-[0.18em] text-voxa"
             >
               {t.faq.badge}
             </p>
@@ -106,10 +106,19 @@ export function FAQ() {
               id="faq-title"
               data-reveal="blur"
               style={delay(80)}
-              className="mt-3 font-manrope text-[2.25rem] font-bold leading-[1.1] tracking-[-0.03em] text-white sm:text-[3rem] lg:text-[3.5rem]"
+              className="mt-4 max-w-[68rem] font-manrope text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-[-0.03em] text-white"
             >
               {t.faq.title}
             </h2>
+            <p
+              data-reveal="up"
+              style={delay(120)}
+              className="mt-4 max-w-[68rem] font-manrope text-lg sm:text-xl lg:text-2xl font-semibold leading-relaxed text-voxa"
+            >
+              {lang === 'ar'
+                ? 'إجابات واضحة ومباشرة عن كل ما يخص خدماتنا، الأسعار، ومراحل العمل.'
+                : 'Clear, direct answers about our services, pricing, and process.'}
+            </p>
           </div>
         </div>
 

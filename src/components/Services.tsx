@@ -4,10 +4,10 @@ import { Logo } from './Logo'
 import { useLanguage } from '@/context/LanguageContext'
 
 const number =
-  'font-manrope text-[2.75rem] font-extrabold leading-[1.075] tracking-[-0.07672em] text-voxa lg:text-[3.3139rem]'
+  'font-manrope text-[2.5rem] font-extrabold leading-[1.075] tracking-[-0.07672em] text-voxa lg:text-[3rem]'
 const title =
-  'font-manrope text-[2.25rem] leading-[1.05] tracking-[-0.025em] text-white lg:text-[2.5rem]'
-const body = 'font-dm text-[1.125rem] leading-[1.3] text-white lg:text-[1.25rem]'
+  'font-manrope text-2xl lg:text-3xl font-extrabold tracking-tight text-white'
+const body = 'font-dm text-sm sm:text-base leading-relaxed text-[#aaa69f]'
 
 export function Services() {
   const { lang } = useLanguage()
@@ -62,24 +62,32 @@ export function Services() {
 
           <div className="relative z-[2]">
             <div className="flex items-start justify-between pr-4 rtl:pr-0 rtl:pl-4">
-              <h2
-                data-reveal="up"
-                className="font-manrope text-[2.25rem] font-medium leading-[1.05] tracking-[-0.04em] text-paper sm:text-[2.75rem] lg:text-[3rem]"
-              >
-                {lang === 'ar' ? (
-                  <>
-                    استوديو متكامل.
-                    <br />
-                    لكل احتياج رقمي.
-                  </>
-                ) : (
-                  <>
-                    One studio.
-                    <br />
-                    Every digital need.
-                  </>
-                )}
-              </h2>
+              <div>
+                <p
+                  data-reveal="up"
+                  className="font-dm text-xs sm:text-sm font-extrabold uppercase tracking-[0.18em] text-voxa"
+                >
+                  {lang === 'ar' ? 'خدمات الاستوديو' : 'OUR CORE SERVICES'}
+                </p>
+                <h2
+                  data-reveal="up"
+                  className="mt-3 font-manrope text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-[1.1] tracking-[-0.03em] text-paper"
+                >
+                  {lang === 'ar' ? (
+                    <>
+                      استوديو متكامل.
+                      <br />
+                      لكل احتياج رقمي.
+                    </>
+                  ) : (
+                    <>
+                      One studio.
+                      <br />
+                      Every digital need.
+                    </>
+                  )}
+                </h2>
+              </div>
               <p data-reveal="up" className={number}>
                 01
               </p>
@@ -87,27 +95,18 @@ export function Services() {
             <p
               data-reveal="up"
               style={delay(80)}
-              className="mt-[1.4375rem] max-w-[22.6875rem] font-dm text-[1.125rem] leading-[1.5] text-[#aaa69f] lg:text-[1.25rem]"
+              className="mt-4 max-w-[26rem] font-manrope text-lg sm:text-xl font-semibold leading-relaxed text-voxa"
             >
-              {lang === 'ar'
-                ? 'نردم الفجوة بين الفكرة الإبداعية والموقع فائق الأداء الذي يخدم أهداف نمو عملك التجاري.'
-                : 'We bridge the gap between a beautiful concept and a website that works hard for your business.'}
+              {lang === 'ar' ? 'تصميم يأسر الحواس وكود فائق الأداء' : 'Design that speaks, code that converts'}
             </p>
-            <h3
-              data-reveal="up"
-              style={delay(160)}
-              className="mt-[1.8375rem] max-w-[22.5625rem] font-manrope text-[2.75rem] leading-[1.2] tracking-[-0.03em] text-white lg:text-[3.75rem]"
-            >
-              {lang === 'ar' ? 'تصميم يأسر الحواس' : 'Design that speaks'}
-            </h3>
             <p
               data-reveal="up"
-              style={delay(240)}
-              className="mt-[1.1706rem] max-w-[27.1639rem] font-manrope text-[1.25rem] font-semibold leading-[1.3] text-white lg:text-[1.4259rem]"
+              style={delay(120)}
+              className="mt-3 max-w-[26rem] font-dm text-base sm:text-lg leading-relaxed text-[#aaa69f]"
             >
               {lang === 'ar'
-                ? 'واجهات مستخدم ذات طابع وهوية واضحة، سهلة التصفح وتخلق تأثيراً لا يُمحى.'
-                : 'Purposeful interfaces with personality, clarity, and a strong point of view.'}
+                ? 'نردم الفجوة بين الفكرة الإبداعية والموقع فائق الأداء الذي يخدم أهداف نمو عملك التجاري بواجهات مستخدم ذات طابع وهوية واضحة.'
+                : 'We bridge the gap between a beautiful concept and a website that works hard for your business with purposeful interfaces.'}
             </p>
             <div className="mt-[1.6063rem] lg:ms-[0.1875rem] lg:w-[30.7188rem]">
               <div data-reveal="up" style={delay(320)} className="flex justify-end rtl:justify-start lg:block">

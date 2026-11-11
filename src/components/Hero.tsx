@@ -69,14 +69,14 @@ export function Hero() {
               <span className="absolute inset-0 animate-ping-soft rounded-full bg-flame" />
               <span className="relative size-full rounded-full bg-flame" />
             </span>
-            <span className="font-dm text-[0.75rem] font-bold uppercase tracking-[0.12em] text-paper lg:text-[0.8139rem]">
+            <span className="font-dm text-xs sm:text-sm font-extrabold uppercase tracking-[0.16em] text-paper">
               {t.hero.statusBadge}
             </span>
           </div>
 
           <h1
             data-reveal-group
-            className="mt-8 font-manrope text-[clamp(2.75rem,13vw,6.5rem)] font-bold leading-[1.05] tracking-[-0.04em] text-paper lg:mt-[2.8119rem] lg:text-[6.5rem]"
+            className="mt-6 font-manrope text-4xl sm:text-6xl lg:text-[5.5rem] font-extrabold leading-[1.1] tracking-[-0.03em] text-paper lg:mt-8"
           >
             <span className={lineMask}>
               <span data-reveal="rise" style={delay(160)} className="block">
@@ -101,7 +101,7 @@ export function Hero() {
           <p
             data-reveal="up"
             style={delay(440)}
-            className="mt-7 max-w-[36.9963rem] font-manrope text-[1.125rem] leading-[1.65] text-[#b7b3ac] sm:text-[1.3rem] lg:mt-[4.2313rem] lg:text-[1.45rem] lg:leading-[1.55]"
+            className="mt-6 max-w-[37rem] font-dm text-base sm:text-lg lg:text-xl leading-relaxed text-[#b7b3ac] lg:mt-8"
           >
             {t.hero.description}
           </p>

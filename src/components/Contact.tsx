@@ -108,32 +108,49 @@ export function Contact({ planRequest }: ContactProps) {
       aria-labelledby="contact-title"
       className="relative px-5 pb-24 pt-16 sm:px-8 lg:min-h-[56.1756rem] lg:h-auto lg:p-0 lg:pb-16"
     >
-      <div data-parallax="0.08" className="relative z-0 lg:absolute lg:inset-x-0 lg:top-0">
-        <h2
-          id="contact-title"
+      <div data-parallax="0.08" className="relative z-0 lg:absolute lg:inset-x-0 lg:top-0 pointer-events-none select-none">
+        <div
+          aria-hidden="true"
           data-reveal="blur"
-          className="mb-12 text-center font-manrope text-[21vw] font-bold leading-[0.9] text-white/70 lg:absolute lg:left-1/2 lg:top-[4.8006rem] lg:mb-0 lg:-ml-[19.25rem] lg:h-[5.625rem] lg:w-[38.5625rem] lg:text-left lg:text-[9.5625rem] lg:leading-[1.4875rem]"
+          className="mb-8 text-center font-manrope text-[18vw] font-medium leading-[0.9] text-white/[0.04] lg:absolute lg:left-1/2 lg:top-[4.8006rem] lg:mb-0 lg:-ml-[19.25rem] lg:h-[5.625rem] lg:w-[38.5625rem] lg:text-left lg:text-[9.5625rem] lg:leading-[1.4875rem] pointer-events-none select-none"
         >
           Contact
-        </h2>
+        </div>
       </div>
 
       <div className="relative z-[2] mx-auto grid max-w-[80rem] gap-14 lg:grid-cols-[573fr_608fr] lg:gap-[1.1875rem] lg:px-[2.4rem]">
-        <div className="lg:pt-[17.9256rem]">
-          <h3
-            data-reveal="up"
-            className="font-manrope text-[2.5rem] font-bold leading-[1.1] text-white lg:text-[3rem]"
-          >
-            {lang === 'ar' ? 'تواصل معنا مباشرة' : 'Get in touch'}
-          </h3>
+        <div className="lg:pt-[15rem]">
           <p
             data-reveal="up"
-            style={delay(100)}
-            className="mt-4 max-w-[24rem] font-manrope text-[1.25rem] font-medium leading-[1.4] text-white/80 lg:mt-[2rem] lg:text-[1.4rem]"
+            className="font-dm text-xs sm:text-sm font-extrabold uppercase tracking-[0.18em] text-voxa"
+          >
+            {lang === 'ar' ? 'تواصل مع الاستوديو' : 'CONTACT STUDIO'}
+          </p>
+          <h2
+            id="contact-title"
+            data-reveal="blur"
+            style={delay(80)}
+            className="mt-3 font-manrope text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-[-0.03em] text-white"
+          >
+            {lang === 'ar' ? 'تواصل معنا مباشرة' : 'Get in touch with us'}
+          </h2>
+          <p
+            data-reveal="up"
+            style={delay(120)}
+            className="mt-4 max-w-[28rem] font-manrope text-lg sm:text-xl lg:text-2xl font-semibold leading-relaxed text-voxa"
           >
             {lang === 'ar'
               ? 'ابدأ مشروعك معنا اليوم وتحدث مع فريقنا الهندسي مباشرة لتحديد أنسب باقة لعملك.'
               : 'Feel free to ask anytime to start your project with us'}
+          </p>
+          <p
+            data-reveal="up"
+            style={delay(160)}
+            className="mt-3 max-w-[28rem] font-dm text-base sm:text-lg leading-relaxed text-[#aaa7a0]"
+          >
+            {lang === 'ar'
+              ? 'فريقنا متاح للرد على استفساراتك وتقديم استشارة تقنية وفنية مجانية لمشروعك.'
+              : 'Our team is available to answer inquiries and provide free technical consultation.'}
           </p>
 
           <ul data-reveal-group className="mt-10 lg:mt-[3.1875rem]">
@@ -285,7 +302,7 @@ export function Contact({ planRequest }: ContactProps) {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className={`btn-shine block h-14 w-full rounded-[0.875rem] font-manrope text-[1.5rem] font-bold leading-[1.6875rem] text-white transition-[box-shadow,filter,opacity] duration-300 lg:h-[4.25rem] lg:text-[2rem] ${
+                className={`btn-shine block h-14 w-full rounded-[0.875rem] font-manrope text-base sm:text-lg font-bold text-white transition-[box-shadow,filter,opacity] duration-300 lg:h-16 lg:text-xl ${
                   isSubmitting
                     ? 'cursor-not-allowed bg-voxa/70 opacity-80'
                     : submitStatus === 'success'
