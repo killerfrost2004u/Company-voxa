@@ -281,15 +281,15 @@ export function Pricing({ onChoosePlan }: PricingProps) {
   useEffect(() => {
     const computeSplit = () => {
       if (!titleRef.current || !headerRef.current) return
-      const tRect = titleRef.current.getBoundingClientRect()
-      const hRect = headerRef.current.getBoundingClientRect()
-
-      if (tRect.height <= 0) return
-
       if (window.innerWidth < 1024) {
         setBlurSplit({ sharpEnd: 60, blurStart: 45, blurFull: 75 })
         return
       }
+
+      const tRect = titleRef.current.getBoundingClientRect()
+      const hRect = headerRef.current.getBoundingClientRect()
+
+      if (tRect.height <= 0) return
 
       // Exact intersection on desktop
       const crossStartPct = ((hRect.top - tRect.top) / tRect.height) * 100
@@ -308,6 +308,7 @@ export function Pricing({ onChoosePlan }: PricingProps) {
 
     let frame = 0
     const onUpdate = () => {
+      if (window.innerWidth < 1024) return
       if (!frame) {
         frame = requestAnimationFrame(() => {
           frame = 0
@@ -333,9 +334,9 @@ export function Pricing({ onChoosePlan }: PricingProps) {
     >
       {/* Background Title Watermark: Full 195px font glyphs preserved with zero clipping */}
       <div data-parallax="0.08" className="relative z-0 lg:absolute lg:inset-x-0 lg:top-0 pointer-events-none select-none">
-        <h2
+        <div
           ref={titleRef}
-          id="pricing-title"
+          aria-hidden="true"
           data-reveal="blur"
           style={{
             '--sharp-end': `${blurSplit.sharpEnd}%`,
@@ -371,7 +372,7 @@ export function Pricing({ onChoosePlan }: PricingProps) {
               Pricing
             </span>
           </span>
-        </h2>
+        </div>
       </div>
 
       {/* Header */}
@@ -380,26 +381,27 @@ export function Pricing({ onChoosePlan }: PricingProps) {
           <span className="size-2 rounded-full bg-voxa animate-ping-soft" />
           {t.pricing.badge}
         </span>
-        <p
+        <h2
+          id="pricing-title"
           ref={headerRef}
           className="mt-1 font-manrope text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white"
         >
           {lang === 'ar'
             ? 'باقات وأسعار واضحة ومدروسة للسوق المصري والخليجي والعالمي.'
             : 'Transparent pricing tailored for the Egyptian & global market.'}
-        </p>
+        </h2>
       </div>
 
-      {/* STACK CARDS DECK (4 Egyptian market tiers with 3D tilt & smooth stacking) */}
+      {/* STACK CARDS DECK (Natural vertical flow on mobile, 3D sticky stack deck on desktop) */}
       <div
-        className="relative mx-auto flex max-w-[76rem] flex-col space-y-12 sm:space-y-16 lg:space-y-20 lg:px-4"
+        className="relative mx-auto flex max-w-[76rem] flex-col space-y-8 sm:space-y-12 lg:space-y-20 lg:px-4"
       >
         {PLANS.map((plan, i) => {
           const topOffsets = [
-            'top-[5.5rem] lg:top-[6.5rem]',
-            'top-[6.75rem] lg:top-[7.75rem]',
-            'top-[8rem] lg:top-[9rem]',
-            'top-[9.25rem] lg:top-[10.25rem]',
+            'lg:top-[6.5rem]',
+            'lg:top-[7.75rem]',
+            'lg:top-[9rem]',
+            'lg:top-[10.25rem]',
           ]
           const zIndexes = ['z-10', 'z-20', 'z-30', 'z-40']
 
@@ -417,13 +419,13 @@ export function Pricing({ onChoosePlan }: PricingProps) {
               key={plan.name}
               data-reveal="lift"
               style={delay(i * 120)}
-              className={`sticky ${topOffsets[i]} ${zIndexes[i]} transition-all duration-500`}
+              className={`relative lg:sticky ${topOffsets[i]} ${zIndexes[i]} transition-all duration-500`}
             >
               <article
                 onPointerMove={onTiltMove}
                 onPointerLeave={onTiltLeave}
                 style={vars(plan.layout)}
-                className={`group relative flex min-h-[420px] sm:min-h-[460px] lg:h-[490px] flex-col justify-between overflow-hidden rounded-[2rem] border border-white/10 bg-[#0e0e0e]/95 p-6 sm:p-8 lg:p-10 backdrop-blur-2xl shadow-[0_25px_60px_-15px_rgba(0,0,0,0.95)] transition-[transform,box-shadow,border-color] duration-500 ease-[var(--ease-expo)] hover:border-voxa/50 ${
+                className={`group relative flex min-h-[420px] sm:min-h-[460px] lg:h-[490px] flex-col justify-between overflow-hidden rounded-[2rem] border border-white/10 bg-[#0e0e0e] lg:bg-[#0e0e0e]/95 p-6 sm:p-8 lg:p-10 lg:backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.85)] lg:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.95)] transition-[transform,box-shadow,border-color] duration-500 ease-[var(--ease-expo)] hover:border-voxa/50 ${
                   plan.popular
                     ? 'ring-1 ring-voxa/60 shadow-[0_30px_70px_-15px_rgba(99,161,242,0.35)]'
                     : ''
@@ -460,7 +462,7 @@ export function Pricing({ onChoosePlan }: PricingProps) {
                 {/* Main Grid: Left Details & Right Deliverables */}
                 <div className="relative z-10 my-auto grid gap-6 sm:gap-8 lg:grid-cols-[1.2fr_1.2fr] lg:gap-12 items-center">
                   {/* Left Column: Plan Title, Description, Price, CTA */}
-                  <div className="flex flex-col justify-between">
+                  <div className="flex flex-col justify-between min-w-0">
                     <div>
                       <h3 className="font-manrope text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-[-0.03em] text-white">
                         {planName}
@@ -476,21 +478,21 @@ export function Pricing({ onChoosePlan }: PricingProps) {
                     </div>
 
                     {/* Price Display with Shimmer Text */}
-                    <div className="mt-5 sm:mt-7 flex items-baseline gap-2.5 rtl:flex-row-reverse rtl:justify-end">
+                    <div className="mt-5 sm:mt-7 flex flex-wrap items-baseline gap-2 sm:gap-2.5 rtl:flex-row-reverse rtl:justify-end">
                       {planAmountPrefix && (
-                        <span className="font-dm text-sm sm:text-base font-bold text-white/50">
+                        <span className="font-dm text-sm sm:text-base font-bold text-white/50 shrink-0">
                           {planAmountPrefix}
                         </span>
                       )}
                       <span className={`font-manrope font-black tracking-tight drop-shadow-[0_0_20px_rgba(255,255,255,0.12)] ${
                         plan.isCustomQuote
-                          ? 'text-3xl sm:text-4xl lg:text-5xl text-shimmer'
-                          : 'text-4xl sm:text-6xl lg:text-7xl text-white group-hover:text-shimmer transition-colors'
+                          ? 'text-2xl sm:text-3xl lg:text-[2.2rem] xl:text-[2.75rem] 2xl:text-5xl text-shimmer leading-tight'
+                          : 'text-4xl sm:text-5xl lg:text-5xl xl:text-6xl 2xl:text-7xl text-white group-hover:text-shimmer transition-colors'
                       }`}>
                         {planAmount}
                       </span>
                       {planAmountSuffix && (
-                        <span className="font-dm text-xs sm:text-sm font-medium text-voxa">
+                        <span className="font-dm text-xs sm:text-sm font-medium text-voxa shrink-0">
                           {planAmountSuffix}
                         </span>
                       )}

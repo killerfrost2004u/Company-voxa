@@ -449,14 +449,14 @@ export function Testimonial() {
         className="group relative flex flex-col gap-6 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]"
       >
         {/* Track 1: Smooth Leftward Floating Animation */}
-        <div className="flex w-max gap-6 animate-marquee-left group-hover:[animation-play-state:paused] px-4 pointer-events-auto">
+        <div className="flex w-max gap-6 animate-marquee-left will-change-transform transform-gpu group-hover:[animation-play-state:paused] px-4 pointer-events-auto">
           {track1Items.map((item, index) => (
             <TestimonialCard key={`t1-${item.id}-${index}`} item={item} />
           ))}
         </div>
 
         {/* Track 2: Smooth Rightward Floating Animation */}
-        <div className="flex w-max gap-6 animate-marquee-right group-hover:[animation-play-state:paused] px-4 pointer-events-auto">
+        <div className="flex w-max gap-6 animate-marquee-right will-change-transform transform-gpu group-hover:[animation-play-state:paused] px-4 pointer-events-auto">
           {track2Items.map((item, index) => (
             <TestimonialCard key={`t2-${item.id}-${index}`} item={item} />
           ))}
@@ -480,7 +480,7 @@ function TestimonialCard({ item }: { item: TestimonialItem }) {
   return (
     <article
       dir={isAr ? 'rtl' : 'ltr'}
-      className="group/card relative flex w-[22rem] sm:w-[26rem] shrink-0 flex-col justify-between overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.06] via-white/[0.02] to-transparent p-6 sm:p-7 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.7)] transition-all duration-300 hover:border-voxa/50 hover:bg-white/[0.08] hover:-translate-y-1.5 hover:shadow-[0_25px_60px_rgba(99,161,242,0.18)] select-none text-left rtl:text-right"
+      className="group/card relative flex w-[22rem] sm:w-[26rem] shrink-0 flex-col justify-between overflow-hidden rounded-2xl border border-white/10 bg-[#0d0d0d] p-6 sm:p-7 shadow-[0_15px_35px_rgba(0,0,0,0.85)] transition-all duration-300 hover:border-voxa/50 hover:bg-[#141414] hover:-translate-y-1.5 hover:shadow-[0_20px_45px_rgba(99,161,242,0.18)] select-none text-left rtl:text-right will-change-transform transform-gpu"
     >
       {/* Decorative ambient watermark */}
       <div

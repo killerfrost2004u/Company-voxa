@@ -48,6 +48,8 @@ export function PlasmaTracerCanvas({ progress }: { progress: number }) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const sparksRef = useRef<Spark[]>([])
   const headPosRef = useRef<{ x: number; y: number } | null>(null)
+  const progressRef = useRef(progress)
+  progressRef.current = progress
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -56,10 +58,14 @@ export function PlasmaTracerCanvas({ progress }: { progress: number }) {
     if (!ctx) return
 
     let animationFrameId: number
+    let width = 0
+    let height = 0
 
     const handleResize = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, 2)
       const rect = canvas.getBoundingClientRect()
+      width = rect.width
+      height = rect.height
       canvas.width = rect.width * dpr
       canvas.height = rect.height * dpr
       ctx.setTransform(1, 0, 0, 1, 0, 0)
@@ -67,13 +73,15 @@ export function PlasmaTracerCanvas({ progress }: { progress: number }) {
     }
 
     handleResize()
-    window.addEventListener('resize', handleResize)
+    window.addEventListener('resize', handleResize, { passive: true })
 
     const render = () => {
-      const rect = canvas.getBoundingClientRect()
-      const width = rect.width
-      const height = rect.height
-      if (width === 0 || height === 0) return
+      if (width === 0 || height === 0) {
+        animationFrameId = requestAnimationFrame(render)
+        return
+      }
+
+      const currentProgress = progressRef.current
 
       ctx.clearRect(0, 0, width, height)
 
@@ -93,7 +101,7 @@ export function PlasmaTracerCanvas({ progress }: { progress: number }) {
 
       for (const seg of STROKES) {
         const [startP, endP] = seg.progressRange
-        if (progress < startP) continue
+        if (currentProgress < startP) continue
 
         const p1 = transformPoint(seg.from)
         const p2 = transformPoint(seg.to)
@@ -101,7 +109,7 @@ export function PlasmaTracerCanvas({ progress }: { progress: number }) {
         ctx.beginPath()
         ctx.moveTo(p1[0], p1[1])
 
-        if (progress >= endP) {
+        if (currentProgress >= endP) {
           // Fully traced segment
           ctx.lineTo(p2[0], p2[1])
           ctx.lineWidth = 3 * scale
@@ -121,7 +129,7 @@ export function PlasmaTracerCanvas({ progress }: { progress: number }) {
           ctx.stroke()
         } else {
           // Partially traced active segment
-          const t = (progress - startP) / (endP - startP)
+          const t = (currentProgress - startP) / (endP - startP)
           const currX = p1[0] + (p2[0] - p1[0]) * t
           const currY = p1[1] + (p2[1] - p1[1]) * t
           ctx.lineTo(currX, currY)
@@ -145,7 +153,7 @@ export function PlasmaTracerCanvas({ progress }: { progress: number }) {
       }
 
       // 2. Active electric spark at tracer head
-      if (currentHead && progress < 75) {
+      if (currentHead && currentProgress < 75) {
         headPosRef.current = { x: currentHead[0], y: currentHead[1] }
 
         // Spawn trailing sparks
@@ -217,7 +225,7 @@ export function PlasmaTracerCanvas({ progress }: { progress: number }) {
       cancelAnimationFrame(animationFrameId)
       window.removeEventListener('resize', handleResize)
     }
-  }, [progress])
+  }, [])
 
   return (
     <canvas

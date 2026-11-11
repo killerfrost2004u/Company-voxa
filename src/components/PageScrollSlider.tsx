@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 const SECTIONS = [
   { id: 'home', label: 'Home' },
   { id: 'services', label: 'Services' },
-  { id: 'pricing', label: 'Plans' },
+  { id: 'plans', label: 'Plans' },
   { id: 'testimonials', label: 'Reviews' },
   { id: 'contact', label: 'Contact' },
 ]
@@ -26,13 +26,15 @@ export function PageScrollSlider() {
           const percent = docHeight > 0 ? Math.min(Math.max((currentScroll / docHeight) * 100, 0), 100) : 0
           setScrollPercent(percent)
 
-          // Determine active section
-          const scrollPos = currentScroll + window.innerHeight * 0.35
-          for (let i = SECTIONS.length - 1; i >= 0; i--) {
-            const el = document.getElementById(SECTIONS[i].id)
-            if (el && el.offsetTop <= scrollPos) {
-              setActiveSection(SECTIONS[i].id)
-              break
+          // Determine active section on desktop HUD only
+          if (window.innerWidth >= 768) {
+            const scrollPos = currentScroll + window.innerHeight * 0.35
+            for (let i = SECTIONS.length - 1; i >= 0; i--) {
+              const el = document.getElementById(SECTIONS[i].id)
+              if (el && el.offsetTop <= scrollPos) {
+                setActiveSection(SECTIONS[i].id)
+                break
+              }
             }
           }
 
